@@ -7,12 +7,17 @@ import SectionSubscribe2 from "components/SectionSubscribe2/SectionSubscribe2";
 import React, { FC } from "react";
 import SectionGridFilterCard from "./SectionGridFilterCard";
 import { Helmet } from "react-helmet-async";
+import { useParams } from "react-router-dom";
 
 export interface ListingStayPageProps {
   className?: string;
+  categSlug?: string;
 }
 
 const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
+  const {categSlug} = useParams()
+  console.log(categSlug);
+  
   return (
     <div
       className={`nc-ListingStayPage relative overflow-hidden ${className}`}
@@ -28,18 +33,16 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
         <SectionHeroArchivePage
           currentPage="Stays"
           currentTab="Stays"
+          currentSlug= {categSlug}
           className="pt-10 pb-24 lg:pb-28 lg:pt-16 "
         />
 
-        {/* SECTION */}
-        <SectionGridFilterCard className="pb-24 lg:pb-28" />
-
         {/* SECTION 1 */}
-        <div className="relative py-16">
+        <div className="relative  py-24">
           <BackgroundSection />
           <SectionSliderNewCategories
-            heading="Explore by types of stays"
-            subHeading="Explore houses based on 10 types of stays"
+            heading="Explore The Best Chosen"
+            subHeading="As per the customers rating"
             categoryCardType="card5"
             itemPerRow={5}
             sliderStyle="style2"
@@ -48,13 +51,18 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
         </div>
 
         {/* SECTION */}
-        <SectionSubscribe2 className="py-24 lg:py-28" />
+        <SectionGridFilterCard currentSlug= {categSlug || ''} className="py-16 lg:pb-28" />
 
-        {/* SECTION */}
-        <div className="relative py-16 mb-24 lg:mb-28">
+       {/* SECTION */}
+       <div className="relative py-16 mb-24 lg:mb-28">
           <BackgroundSection className="bg-orange-50 dark:bg-black dark:bg-opacity-20 " />
           <SectionGridAuthorBox />
         </div>
+
+        {/* SECTION */}
+        <SectionSubscribe2 className="py-24 lg:py-28" />
+
+        
       </div>
     </div>
   );

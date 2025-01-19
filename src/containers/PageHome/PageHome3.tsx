@@ -9,11 +9,13 @@ import SectionGridAuthorBox from "components/SectionGridAuthorBox/SectionGridAut
 import SectionGridCategoryBox from "components/SectionGridCategoryBox/SectionGridCategoryBox";
 import SectionHero3 from "components/SectionHero/SectionHero3";
 import CardCategory6 from "components/CardCategory6/CardCategory6";
+import ButtonSecondary from "shared/Button/ButtonSecondary";
+import { Link } from "react-router-dom";
 
 const DEMO_CATS_2: TaxonomyType[] = [
   {
     id: "1",
-    href: "/listing-stay",
+    href: "/All-categories",
     name: "Find the best in Amman",
     taxonomy: "category",
     count: 188288,
@@ -95,7 +97,15 @@ function PageHome3() {
         </div>
 
         {/* SECTION */}
-        <SectionGridCategoryBox />
+        <>
+          <SectionGridCategoryBox />
+          <div className="mt-8 flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-5">
+            <Link to={'/All-categories'}>
+              <ButtonSecondary>Show me more </ButtonSecondary>
+            </Link>
+          </div>
+        </>
+        
 
         {/* SECTION */}
         <div className="relative py-16">

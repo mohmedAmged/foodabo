@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logoImg from "images/logo.png";
-import logoLightImg from "images/logo-light.png";
+import logoImg from "../../images/fodaboo images/logoDark.png";
+import logoLightImg from "../../images/fodaboo images/logoDark.png";
 import LogoSvgLight from "./LogoSvgLight";
 import LogoSvg from "./LogoSvg";
 
@@ -21,12 +21,12 @@ const Logo: React.FC<LogoProps> = ({
       to="/"
       className={`ttnc-logo inline-block text-primary-6000 focus:outline-none focus:ring-0 ${className}`}
     >
-      <LogoSvgLight />
-      <LogoSvg />
+      {/* <LogoSvgLight />
+      <LogoSvg /> */}
 
       {/* THIS USE FOR MY CLIENT */}
       {/* PLEASE UN COMMENT BELLOW CODE AND USE IT */}
-      {/* {img ? (
+      {img ? (
         <img
           className={`block max-h-12 ${imgLight ? "dark:hidden" : ""}`}
           src={img}
@@ -41,7 +41,7 @@ const Logo: React.FC<LogoProps> = ({
           src={imgLight}
           alt="Logo-Light"
         />
-      )} */}
+      )}
     </Link>
   );
 };

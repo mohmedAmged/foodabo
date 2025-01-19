@@ -14,10 +14,10 @@ const CardCategoryBox1: FC<CardCategoryBox1Props> = ({
   className = "",
   taxonomy,
 }) => {
-  const { count, name, thumbnail, href = "/" } = taxonomy;
+  const { count, name, thumbnail, href = '/' } = taxonomy;
   return (
     <Link
-      to={href}
+      to={`/categories/${name}`}
       className={`nc-CardCategoryBox1 relative flex items-center p-3 sm:p-6 [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ]  ${className}`}
       data-nc-id="CardCategoryBox1"
     >

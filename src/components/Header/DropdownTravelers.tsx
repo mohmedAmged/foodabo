@@ -14,26 +14,26 @@ interface SolutionItem {
 
 const solutions: SolutionItem[] = [
   {
-    name: "Stays",
+    name: "Amman",
     description: "Stays rental description ",
     href: "/listing-stay",
     icon: IconFour,
     active: true,
   },
   {
-    name: "Flights",
+    name: "Riyadh",
     description: "Flights description",
     href: "/listing-flights",
     icon: IconTwo,
   },
   {
-    name: "Things to do",
+    name: "Dubai",
     description: "Tour and experiences",
     href: "/listing-experiences",
     icon: IconOne,
   },
   {
-    name: "Cars",
+    name: "Cairo",
     description: "Car rental description",
     href: "/listing-car",
     icon: IconThree,
@@ -51,7 +51,7 @@ export default function DropdownTravelers() {
                 group py-2 rounded-md text-sm sm:text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
             >
               <div className={` inline-flex items-center `} role="button">
-                <span>Travelers</span>
+                <span>Amman</span>
                 <ChevronDownIcon
                   className={`${open ? "-rotate-180" : "text-opacity-70 "}
                   ml-2 h-5 w-5 text-neutral-700 group-hover:text-opacity-80 transition ease-in-out duration-150 `}

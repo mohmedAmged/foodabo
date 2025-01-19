@@ -9,6 +9,7 @@ import Heading2 from "components/Heading/Heading2";
 export interface SectionGridFilterCardProps {
   className?: string;
   data?: StayDataType[];
+  currentSlug: string;
 }
 
 const DEMO_DATA: StayDataType[] = DEMO_STAY_LISTINGS.filter((_, i) => i < 8);
@@ -16,13 +17,14 @@ const DEMO_DATA: StayDataType[] = DEMO_STAY_LISTINGS.filter((_, i) => i < 8);
 const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
   className = "",
   data = DEMO_DATA,
+  currentSlug
 }) => {
   return (
     <div
       className={`nc-SectionGridFilterCard ${className}`}
       data-nc-id="SectionGridFilterCard"
     >
-      <Heading2 />
+      <Heading2 currentSlug={currentSlug || ''}/>
 
       <div className="mb-8 lg:mb-11">
         <TabFilters />

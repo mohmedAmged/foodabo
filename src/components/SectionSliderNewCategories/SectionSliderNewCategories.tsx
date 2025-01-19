@@ -28,7 +28,7 @@ const DEMO_CATS: TaxonomyType[] = [
     taxonomy: "category",
     count: 17288,
     thumbnail:
-      "https://images.pexels.com/photos/2581922/pexels-photo-2581922.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
+      "https://images.pexels.com/photos/1307698/pexels-photo-1307698.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
   {
     id: "2",
@@ -37,7 +37,7 @@ const DEMO_CATS: TaxonomyType[] = [
     taxonomy: "category",
     count: 2118,
     thumbnail:
-      "https://images.pexels.com/photos/2351649/pexels-photo-2351649.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+      "https://images.pexels.com/photos/13485217/pexels-photo-13485217.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
   {
     id: "3",
@@ -46,7 +46,7 @@ const DEMO_CATS: TaxonomyType[] = [
     taxonomy: "category",
     count: 36612,
     thumbnail:
-      "https://images.pexels.com/photos/962464/pexels-photo-962464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+      "https://images.pexels.com/photos/12689167/pexels-photo-12689167.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
   {
     id: "4",
@@ -55,7 +55,7 @@ const DEMO_CATS: TaxonomyType[] = [
     taxonomy: "category",
     count: 188288,
     thumbnail:
-      "https://images.pexels.com/photos/248837/pexels-photo-248837.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+      "https://images.pexels.com/photos/1307698/pexels-photo-1307698.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
   {
     id: "5",
@@ -64,7 +64,7 @@ const DEMO_CATS: TaxonomyType[] = [
     taxonomy: "category",
     count: 188288,
     thumbnail:
-      "https://images.pexels.com/photos/3613236/pexels-photo-3613236.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/13485217/pexels-photo-13485217.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
   {
     id: "6",
@@ -73,7 +73,7 @@ const DEMO_CATS: TaxonomyType[] = [
     taxonomy: "category",
     count: 188288,
     thumbnail:
-      "https://images.pexels.com/photos/3613236/pexels-photo-3613236.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/12689167/pexels-photo-12689167.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
 ];
 

@@ -10,6 +10,9 @@ export interface LocationStates {
   "/listing-flights"?: {};
   //
   "/listing-stay"?: {};
+  "/categories/:categSlug"?: {}; //new added for fodabo
+  "/All-categories"?: {}; //new added for fodabo
+
   "/listing-stay-map"?: {};
   "/listing-stay-detail"?: {};
   //
