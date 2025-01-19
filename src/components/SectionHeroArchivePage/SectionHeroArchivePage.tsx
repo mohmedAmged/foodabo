@@ -47,7 +47,7 @@ const SectionHeroArchivePage: FC<SectionHeroArchivePageProps> = ({
           </div>
         </div>
         <div className="flex-grow">
-          <img className="w-full" src="/public/hero-right2.png" alt="hero" />
+          <img className="w-full" src={rightImage} alt="hero" />
         </div>
       </div>
 
