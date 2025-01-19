@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from "react";
-import imagePng from "../../images/hero-right2.png";
+import imagePng from "../../../public/hero-right2.png";
 
 import HeroSearchForm, {
   SearchTab,
@@ -19,7 +19,7 @@ const SectionHeroArchivePage: FC<SectionHeroArchivePageProps> = ({
   listingType,
   currentPage,
   currentTab,
-  rightImage = `${imagePng}`,
+  rightImage = imagePng,
   currentSlug
 }) => {
   return (
