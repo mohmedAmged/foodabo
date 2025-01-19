@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from "react";
-import imagePng from "../../../public/hero-right2.png";
+import imagePng from "../../images/hero-right2.png";
 
 import HeroSearchForm, {
   SearchTab,
@@ -47,7 +47,7 @@ const SectionHeroArchivePage: FC<SectionHeroArchivePageProps> = ({
           </div>
         </div>
         <div className="flex-grow">
-          <img className="w-full" src={rightImage} alt="hero" />
+          <img className="w-full" src="/public/hero-right2.png" alt="hero" />
         </div>
       </div>
 
