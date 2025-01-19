@@ -19,7 +19,7 @@ const SectionHeroArchivePage: FC<SectionHeroArchivePageProps> = ({
   listingType,
   currentPage,
   currentTab,
-  rightImage = imagePng,
+  rightImage = `${imagePng}`,
   currentSlug
 }) => {
   return (
@@ -47,7 +47,7 @@ const SectionHeroArchivePage: FC<SectionHeroArchivePageProps> = ({
           </div>
         </div>
         <div className="flex-grow">
-          <img className="w-full" src={imagePng} alt="hero" />
+          <img className="w-full" src={rightImage} alt="hero" />
         </div>
       </div>
 
