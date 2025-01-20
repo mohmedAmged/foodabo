@@ -6,23 +6,23 @@ import Checkbox from "shared/Checkbox/Checkbox";
 
 const defaultPropertyType: ClassOfProperties[] = [
   {
-    name: "Duplex House",
+    name: "burger",
     description: "Have a place to yourself",
     checked: true,
   },
   {
-    name: "Ferme House",
+    name: "pizza",
     description: "Have your own room and share some common spaces",
     checked: false,
   },
   {
-    name: "Chalet House",
+    name: "Shawerma",
     description:
       "Have a private or shared room in a boutique hotel, hostel, and more",
     checked: false,
   },
   {
-    name: "Maison House",
+    name: "Kabab",
     description: "Stay in a shared space, like a common room",
     checked: false,
   },

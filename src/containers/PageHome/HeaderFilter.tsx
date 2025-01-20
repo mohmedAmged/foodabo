@@ -4,6 +4,7 @@ import Nav from "shared/Nav/Nav";
 import NavItem from "shared/NavItem/NavItem";
 import ButtonSecondary from "shared/Button/ButtonSecondary";
 import { ReactNode } from "react";
+import { Link } from "react-router-dom";
 
 export interface HeaderFilterProps {
   tabActive: string;
@@ -11,6 +12,7 @@ export interface HeaderFilterProps {
   heading: ReactNode;
   subHeading?: ReactNode;
   onClickTab: (item: string) => void;
+  allItemsLink?: string
 }
 
 const HeaderFilter: FC<HeaderFilterProps> = ({
@@ -19,6 +21,7 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
   subHeading = "",
   heading = "🎈 Latest Articles",
   onClickTab,
+  allItemsLink
 }) => {
   const [tabActiveState, setTabActiveState] = useState(tabActive);
 
@@ -50,10 +53,12 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
           ))}
         </Nav>
         <span className="hidden sm:block flex-shrink-0">
+          <Link to={allItemsLink ? `${allItemsLink}` : ''} >
           <ButtonSecondary className="!leading-none">
             <span>View all</span>
             <i className="ml-3 las la-arrow-right text-xl"></i>
           </ButtonSecondary>
+          </Link>
         </span>
       </div>
     </div>
