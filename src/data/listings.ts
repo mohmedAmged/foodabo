@@ -23,6 +23,9 @@ import car13 from "images/cars/13.png";
 import car14 from "images/cars/14.png";
 import car15 from "images/cars/15.png";
 import car16 from "images/cars/16.png";
+import menu1 from 'images/fodaboo images/pexels-photo-1639557.webp'
+import menu2 from 'images/fodaboo images/pexels-photo-1653877.webp'
+import menu3 from 'images/fodaboo images/pexels-photo-769289.jpeg'
 const carsImgs = [
   car1,
   car2,
@@ -41,6 +44,22 @@ const carsImgs = [
   car15,
   car16,
 ];
+const menuImgs =[
+  menu1,
+  menu2,
+  menu3,
+  menu1,
+  menu2,
+  menu3,
+  menu1,
+  menu2,
+  menu3,
+  menu1,
+  menu2,
+  menu3,
+  menu1,
+  menu2,
+]
 
 const DEMO_STAY_LISTINGS = __stayListing.map((post, index): StayDataType => {
   //  ##########  GET CATEGORY BY CAT ID ######## //
@@ -92,5 +111,21 @@ const DEMO_CAR_LISTINGS = __carsListing.map((post, index): CarDataType => {
     featuredImage: carsImgs[index],
   };
 });
+const DEMO_MENU_LISTINGS = __carsListing.map((post, index): CarDataType => {
+  //  ##########  GET CATEGORY BY CAT ID ######## //
+  const category = DEMO_EXPERIENCES_CATEGORIES.filter(
+    (taxonomy) => taxonomy.id === post.listingCategoryId
+  )[0];
 
-export { DEMO_STAY_LISTINGS, DEMO_EXPERIENCES_LISTINGS, DEMO_CAR_LISTINGS };
+  return {
+    ...post,
+    id: `carsListing_${index}_`,
+    saleOff: !index ? "-20% today" : post.saleOff,
+    isAds: !index ? true : post.isAds,
+    author: DEMO_AUTHORS.filter((user) => user.id === post.authorId)[0],
+    listingCategory: category,
+    featuredImage: menuImgs[index],
+  };
+});
+
+export { DEMO_STAY_LISTINGS, DEMO_EXPERIENCES_LISTINGS, DEMO_CAR_LISTINGS, DEMO_MENU_LISTINGS };

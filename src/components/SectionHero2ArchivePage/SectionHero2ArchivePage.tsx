@@ -35,7 +35,6 @@ const SectionHero2ArchivePage: FC<SectionHero2ArchivePageProps> = ({
             <div className="flex items-center text-base md:text-lg ">
               <i className="text-2xl las la-map-marked"></i>
               <span className="ml-2.5">Amman </span>
-              <span className="mx-5"></span>
               <i className="text-2xl las la-home"></i>
               <span className="ml-2.5">112 Resturants</span>
             </div>

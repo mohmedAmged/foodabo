@@ -48,6 +48,7 @@ import ListingCarDetailPage from "containers/ListingDetailPage/listing-car-detai
 import ListingExperiencesDetailPage from "containers/ListingDetailPage/listing-experiences-detail/ListingExperiencesDetailPage";
 import AllCategories from "containers/AllCategoriesPage/AllCategories";
 import LatestDeals from "containers/LatestDealsPage/LatestDeals";
+import AllMenuItemsPage from "containers/AllMenuItemsPage/AllMenuItems";
 
 export const pages: Page[] = [
   // fodaboo routes
@@ -56,6 +57,7 @@ export const pages: Page[] = [
   { path: '/All-categories' , component: AllCategories },
   { path: '/categories/:categSlug' , component: ListingStayPage },
   { path: '/latest-deals' , component: LatestDeals },
+  { path: "/:resturantName/menu-items", component: AllMenuItemsPage },
 
 
   { path: "/home-1-header-2", exact: true, component: PageHome },

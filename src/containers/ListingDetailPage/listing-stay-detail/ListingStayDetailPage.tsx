@@ -245,9 +245,9 @@ const StayDetailPageContainer: FC<{}> = () => {
       <div className="listingSection__wrap">
         {/* HEADING */}
         <div>
-          <h2 className="text-2xl font-semibold">Room Rates </h2>
+          <h2 className="text-2xl font-semibold">Our Menu </h2>
           <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
-            Prices may increase on weekends or holidays
+            View Our best menu items
           </span>
         </div>
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
@@ -255,28 +255,71 @@ const StayDetailPageContainer: FC<{}> = () => {
         <div className="flow-root">
           <div className="text-sm sm:text-base text-neutral-6000 dark:text-neutral-300 -mb-4">
             <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
-              <span>Monday - Thursday</span>
+              <div>
+                  <Avatar
+                  imgUrl = "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  // hasChecked
+                  hasCheckedClass="w-4 h-4 -top-0.5 right-0.5"
+                  sizeClass="h-14 w-14"
+                  radius="rounded-full"
+                />
+                <span className="ms-2">Cheese Burgre</span>
+              </div>
+
               <span>$199</span>
             </div>
             <div className="p-4  flex justify-between items-center space-x-4 rounded-lg">
-              <span>Monday - Thursday</span>
+            <div>
+                  <Avatar
+                  imgUrl ="https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  // hasChecked
+                  hasCheckedClass="w-4 h-4 -top-0.5 right-0.5"
+                  sizeClass="h-14 w-14"
+                  radius="rounded-full"
+                />
+                <span className="ms-2">Seafood Pizza</span>
+              </div>
               <span>$199</span>
             </div>
             <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
-              <span>Friday - Sunday</span>
-              <span>$219</span>
+            <div>
+                  <Avatar
+                  imgUrl ="https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  // hasChecked
+                  hasCheckedClass="w-4 h-4 -top-0.5 right-0.5"
+                  sizeClass="h-14 w-14"
+                  radius="rounded-full"
+                />
+                <span className="ms-2">kabab</span>
+              </div>
+              <span>$199</span>
             </div>
             <div className="p-4 flex justify-between items-center space-x-4 rounded-lg">
-              <span>Rent by month</span>
-              <span>-8.34 %</span>
+            <div>
+            <Avatar
+                  imgUrl ="https://images.pexels.com/photos/5779368/pexels-photo-5779368.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  // hasChecked
+                  hasCheckedClass="w-4 h-4 -top-0.5 right-0.5"
+                  sizeClass="h-14 w-14"
+                  radius="rounded-full"
+                />
+                <span className="ms-2">Shawerma</span>
             </div>
-            <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
+            <span>$199</span>
+            </div>
+            {/* <div className="p-4 bg-neutral-100 dark:bg-neutral-800 flex justify-between items-center space-x-4 rounded-lg">
               <span>Minimum number of nights</span>
               <span>1 night</span>
-            </div>
-            <div className="p-4 flex justify-between items-center space-x-4 rounded-lg">
+            </div> */}
+            {/* <div className="p-4 flex justify-between items-center space-x-4 rounded-lg">
               <span>Max number of nights</span>
               <span>90 nights</span>
+            </div> */}
+            <div className="w-14 border-b border-neutral-200 dark:border-neutral-700 my-6"></div>
+            <div>
+              <ButtonSecondary onClick={()=>router(`/Beach House in Collingwood/menu-items`)}>
+                View more menu items
+              </ButtonSecondary>
             </div>
           </div>
         </div>
@@ -294,6 +337,7 @@ const StayDetailPageContainer: FC<{}> = () => {
         {/* host */}
         <div className="flex items-center space-x-4">
           <Avatar
+            // imgUrl = ""
             hasChecked
             hasCheckedClass="w-4 h-4 -top-0.5 right-0.5"
             sizeClass="h-14 w-14"
@@ -507,50 +551,91 @@ const StayDetailPageContainer: FC<{}> = () => {
     );
   };
 
+  // const renderSidebar = () => {
+  //   return (
+  //     <div className="listingSectionSidebar__wrap shadow-xl">
+  //       {/* PRICE */}
+  //       <div className="flex justify-between">
+  //         <span className="text-3xl font-semibold">
+  //           $119
+  //           <span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
+  //             /night
+  //           </span>
+  //         </span>
+  //         <StartRating />
+  //       </div>
+
+  //       {/* FORM */}
+  //       <form className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl ">
+  //         <StayDatesRangeInput className="flex-1 z-[11]" />
+  //         <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
+  //         <GuestsInput className="flex-1" />
+  //       </form>
+
+  //       {/* SUM */}
+  //       <div className="flex flex-col space-y-4">
+  //         <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+  //           <span>$119 x 3 night</span>
+  //           <span>$357</span>
+  //         </div>
+  //         <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+  //           <span>Service charge</span>
+  //           <span>$0</span>
+  //         </div>
+  //         <div className="border-b border-neutral-200 dark:border-neutral-700"></div>
+  //         <div className="flex justify-between font-semibold">
+  //           <span>Total</span>
+  //           <span>$199</span>
+  //         </div>
+  //       </div>
+
+  //       {/* SUBMIT */}
+  //       <ButtonPrimary href={"/checkout"}>Reserve</ButtonPrimary>
+  //     </div>
+  //   );
+  // };
+
+
   const renderSidebar = () => {
     return (
       <div className="listingSectionSidebar__wrap shadow-xl">
-        {/* PRICE */}
-        <div className="flex justify-between">
-          <span className="text-3xl font-semibold">
-            $119
-            <span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
-              /night
-            </span>
-          </span>
-          <StartRating />
-        </div>
-
-        {/* FORM */}
-        <form className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl ">
-          <StayDatesRangeInput className="flex-1 z-[11]" />
-          <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
-          <GuestsInput className="flex-1" />
-        </form>
-
-        {/* SUM */}
+        {/* DEALS SECTION */}
         <div className="flex flex-col space-y-4">
-          <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-            <span>$119 x 3 night</span>
-            <span>$357</span>
+          <div className="text-2xl font-semibold">Exclusive deals</div>
+          <p className="text-neutral-6000 dark:text-neutral-300">
+            Select a deal that best fits your needs, purchase the certificate, and present it using our mobile app or a printed copy when you dine. Our deals never expire and are easy to exchange if plans change!
+          </p>
+  
+          {/* $15 OFF DEAL */}
+          <div className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl p-4">
+            <div className="flex justify-between items-center">
+              <span className="text-xl font-semibold">$15 Off Deal</span>
+              <button className="bg-primary-6000 text-white px-4 py-2 rounded-lg">Add to cart</button>
+            </div>
+            <span className="text-neutral-6000 dark:text-neutral-300">Grab this deal for only $7.00 (view terms)</span>
           </div>
-          <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-            <span>Service charge</span>
-            <span>$0</span>
+  
+          {/* $25 OFF DEAL */}
+          <div className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl p-4">
+            <div className="flex justify-between items-center">
+              <span className="text-xl font-semibold">$25 Off Deal</span>
+              <button className="bg-primary-6000 text-white px-4 py-2 rounded-lg">Add to cart</button>
+            </div>
+            <span className="text-neutral-6000 dark:text-neutral-300">Grab this deal for only $10.00 (view terms)</span>
           </div>
-          <div className="border-b border-neutral-200 dark:border-neutral-700"></div>
-          <div className="flex justify-between font-semibold">
-            <span>Total</span>
-            <span>$199</span>
+  
+          {/* DINING DISCOUNT PASS */}
+          <div className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl p-4">
+            <div className="flex justify-between items-center">
+              <span className="text-xl font-semibold">Dining Discount Pass</span>
+              <button className="bg-primary-6000 text-white px-4 py-2 rounded-lg">View Offer</button>
+            </div>
+            <span className="text-neutral-6000 dark:text-neutral-300">Get discounts at over 170,000 restaurants and retailers nationwide.</span>
           </div>
         </div>
-
-        {/* SUBMIT */}
-        <ButtonPrimary href={"/checkout"}>Reserve</ButtonPrimary>
       </div>
     );
   };
-
   return (
     <div className="nc-ListingStayDetailPage">
       {/*  HEADER */}
@@ -612,15 +697,15 @@ const StayDetailPageContainer: FC<{}> = () => {
           {renderSection2()}
           {renderSection3()}
           {renderSection4()}
-          <SectionDateRange />
+          {/* <SectionDateRange /> */}
           {renderSection5()}
-          {renderSection6()}
+          {/* {renderSection6()} */}
           {renderSection7()}
           {renderSection8()}
         </div>
 
         {/* SIDEBAR */}
-        <div className="hidden lg:block flex-grow mt-14 lg:mt-0">
+        <div className="hidden lg:block flex-grow mt-8 lg:mt-0 xl:w-3/5">
           <div className="sticky top-28">{renderSidebar()}</div>
         </div>
       </main>

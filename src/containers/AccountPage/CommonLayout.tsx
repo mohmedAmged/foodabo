@@ -20,7 +20,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
                 }`
               }
             >
-              Account info
+              Profile 
             </NavLink>
             <NavLink
               to="/account-savelists"
@@ -30,7 +30,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
                 }`
               }
             >
-              Save lists
+              Deals
             </NavLink>
             <NavLink
               to="/account-password"
@@ -51,6 +51,26 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
               }
             >
               Change Billing
+            </NavLink>
+            <NavLink
+              to="/account-menu"
+              className={({ isActive }) =>
+                `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
+                  !isActive ? "border-transparent" : "border-primary-500"
+                }`
+              }
+            >
+              Menu
+            </NavLink>
+            <NavLink
+              to="/account-awards"
+              className={({ isActive }) =>
+                `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
+                  !isActive ? "border-transparent" : "border-primary-500"
+                }`
+              }
+            >
+              Awards
             </NavLink>
           </div>
         </div>

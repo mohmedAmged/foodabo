@@ -1,41 +1,40 @@
 import { FC, useState } from "react";
-import { DEMO_CAR_LISTINGS } from "data/listings";
+import { DEMO_CAR_LISTINGS, DEMO_MENU_LISTINGS } from "data/listings";
 import ButtonClose from "shared/ButtonClose/ButtonClose";
 import Pagination from "shared/Pagination/Pagination";
-import TabFilters from "./TabFilters";
+// import TabFilters from "./TabFilters";
 import Heading2 from "components/Heading/Heading2";
 import CarCardH from "components/CarCardH/CarCardH";
 
 import MapContainer from "containers/MapContainer";
 
-const DEMO_CARS = DEMO_CAR_LISTINGS.filter((_, i) => i < 12);
+const DEMO_MENUS = DEMO_MENU_LISTINGS.filter((_, i) => i < 12);
 
 export interface SectionGridHasMapProps {}
 
 const SectionGridHasMap: FC<SectionGridHasMapProps> = () => {
   const [currentHoverID, setCurrentHoverID] = useState<string | number>(-1);
   const [showFullMapFixed, setShowFullMapFixed] = useState(false);
-
   return (
     <div>
       <div className="relative flex min-h-screen">
         {/* CARDSSSS */}
         <div className="min-h-screen w-full xl:w-[780px] 2xl:w-[880px] flex-shrink-0 xl:px-8 ">
           <Heading2
-            heading="Cars in Tokyo"
+            heading="Menu Items"
             subHeading={
               <span className="block text-neutral-500 dark:text-neutral-400 mt-3">
-                233 cars
+                30 Items
                 <span className="mx-2">·</span>
                 Aug 12 - 18
               </span>
             }
           />
-          <div className="mb-8 lg:mb-11">
+          {/* <div className="mb-8 lg:mb-11">
             <TabFilters />
-          </div>
+          </div> */}
           <div className="grid grid-cols-1 gap-8">
-            {DEMO_CARS.map((item) => (
+            {DEMO_MENUS.map((item) => (
               <div
                 key={item.id}
                 onMouseEnter={() => setCurrentHoverID((_) => item.id)}
@@ -74,7 +73,7 @@ const SectionGridHasMap: FC<SectionGridHasMapProps> = () => {
           <div className="fixed xl:sticky top-0 xl:top-[88px] left-0 w-full h-full xl:h-[calc(100vh-88px)] rounded-md overflow-hidden">
             <MapContainer
               currentHoverID={currentHoverID}
-              DEMO_DATA={DEMO_CARS}
+              DEMO_DATA={DEMO_MENUS}
               listingType="car"
             />
           </div>

@@ -13,8 +13,8 @@ import Avatar from "shared/Avatar/Avatar";
 
 const solutions = [
   {
-    name: "Account",
-    href: "/author",
+    name: "Dashboard",
+    href: "/account",
     icon: UserCircleIcon,
   },
   {
@@ -30,6 +30,16 @@ const solutions = [
   {
     name: "Booking",
     href: "##",
+    icon: HomeIcon,
+  },
+  {
+    name: "list your resturant",
+    href: "/add-listing-1",
+    icon: HomeIcon,
+  },
+  {
+    name: "Menu",
+    href: "/add-listing-1",
     icon: HomeIcon,
   },
 ];

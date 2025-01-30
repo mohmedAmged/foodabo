@@ -13,6 +13,7 @@ export interface LocationStates {
   "/categories/:categSlug"?: {}; //new added for fodabo
   "/All-categories"?: {}; //new added for fodabo
   "/latest-deals"?: {}; //new added for fodabo
+  "/:resturantName/menu-items"?: {}; //new added for fodabo
 
   "/listing-stay-map"?: {};
   "/listing-stay-detail"?: {};

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { DEMO_CAR_LISTINGS } from "data/listings";
+import { DEMO_CAR_LISTINGS, DEMO_MENU_LISTINGS } from "data/listings";
 import { CarDataType } from "data/types";
 import StartRating from "components/StartRating/StartRating";
 import { Link } from "react-router-dom";
@@ -14,7 +14,7 @@ export interface CarCardHProps {
   data?: CarDataType;
 }
 
-const DEMO_DATA: CarDataType = DEMO_CAR_LISTINGS[0];
+const DEMO_DATA: CarDataType = DEMO_MENU_LISTINGS[0];
 
 const CarCardH: FC<CarCardHProps> = ({ className = "", data = DEMO_DATA }) => {
   const {
@@ -67,35 +67,41 @@ const CarCardH: FC<CarCardHProps> = ({ className = "", data = DEMO_DATA }) => {
         <div className="hidden sm:block w-14 border-b border-neutral-100 dark:border-neutral-800 my-4"></div>
         {/* SHOW MOBILE */}
         <div className="flex sm:hidden items-center text-sm text-neutral-500 dark:text-neutral-400 space-x-2 mt-4 sm:mt-0">
-          <span>4 seats</span>
+          {/* <span>4 seats</span>
           <span>· </span>
           <span>Auto gearbox</span>
           <span>· </span>
-          <span>4 seats</span>
+          <span>4 seats</span> */}
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, aut vel repudiandae ratione omnis earum ut. Corrupti harum mollitia delectus tempore ipsum. Ad quam provident deserunt sapiente, atque minima sequi.
+          </p>
         </div>
         {/* SHOW DESK */}
         <div className="hidden sm:flex items-center space-x-8">
           {/* --- */}
           <div className="flex items-center space-x-2">
-            <i className="las la-user-friends text-xl"></i>
+            {/* <i className="las la-user-friends text-xl"></i>
             <span className="text-sm text-neutral-500 dark:text-neutral-400">
               4 seats
-            </span>
+            </span> */}
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque consequatur, fugiat facere ullam ratione omnis et atque magni dicta impedit consequuntur ad quos nobis iusto molestias, placeat sit, amet nulla.
+            </p>
           </div>
           {/* --- */}
-          <div className="flex items-center space-x-2">
+          {/* <div className="flex items-center space-x-2">
             <i className="las la-dharmachakra text-xl"></i>
             <span className="text-sm text-neutral-500 dark:text-neutral-400">
               Auto gearbox
             </span>
-          </div>
+          </div> */}
           {/* --- */}
-          <div className="flex items-center space-x-2">
+          {/* <div className="flex items-center space-x-2">
             <i className="las la-suitcase text-xl"></i>
             <span className="text-sm text-neutral-500 dark:text-neutral-400">
               2 bags
             </span>
-          </div>
+          </div> */}
         </div>
 
         <div className="w-14 border-b border-neutral-100 dark:border-neutral-800 my-4"></div>
@@ -103,16 +109,16 @@ const CarCardH: FC<CarCardHProps> = ({ className = "", data = DEMO_DATA }) => {
           <div className="flex items-center space-x-3 text-sm text-neutral-700  dark:text-neutral-300">
             <Avatar imgUrl={author.avatar} userName={author.displayName} />
             <span className="hidden sm:inline-block">
-              <span className="hidden sm:inline">Car owner </span>{" "}
+              <span className="hidden sm:inline">users Review</span>{" "}
               {author.displayName}
             </span>
           </div>
           <span className="text-lg font-semibold text-secondary-700">
             {price}
             {` `}
-            <span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">
+            {/* <span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">
               /day
-            </span>
+            </span> */}
           </span>
         </div>
       </div>

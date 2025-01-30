@@ -36,14 +36,14 @@ const DetailPagetLayout = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <div className="ListingDetailPage">
+    <div className="ListingDetailPage container">
       <ListingImageGallery
         isShowModal={modal === "PHOTO_TOUR_SCROLLABLE"}
         onClose={handleCloseModalImageGallery}
         images={getImageGalleryListing()}
       />
 
-      <div className="container ListingDetailPage__content">{children}</div>
+      <div className="ListingDetailPage__content">{children}</div>
 
       {/* OTHER SECTION */}
       <div className="container py-24 lg:py-32">

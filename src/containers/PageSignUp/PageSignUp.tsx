@@ -83,6 +83,36 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
               </span>
               <Input type="password" className="mt-1" />
             </label>
+            <label className="block">
+              <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
+                Phone Number
+              </span>
+              <Input type="number" className="mt-1" />
+            </label>
+            <label className="block">
+              <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200 mb-2">
+                Select Your Country
+              </span>
+              <select id="countries" className="block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3">
+                <option selected>Choose a country</option>
+                <option value="US">Amman</option>
+                <option value="CA">Riyadh</option>
+                <option value="FR">Dubai</option>
+                <option value="DE">Cairo</option>
+              </select>
+            </label>
+            <label className="block">
+              <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200 mb-2">
+                Select Food Category
+              </span>
+              <select id="countries" className="block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3">
+                <option selected>Choose Category</option>
+                <option value="US">Burger</option>
+                <option value="CA">Pizza</option>
+                <option value="FR">Shawerma</option>
+                <option value="DE">Kabab</option>
+              </select>
+            </label>
             <ButtonPrimary type="submit">Continue</ButtonPrimary>
           </form>
 
