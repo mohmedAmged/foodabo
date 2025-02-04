@@ -72,6 +72,16 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
             >
               Awards
             </NavLink>
+            <NavLink
+              to="/account-awards"
+              className={({ isActive }) =>
+                `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
+                  !isActive ? "border-transparent" : "border-primary-500"
+                }`
+              }
+            >
+              Tags
+            </NavLink>
           </div>
         </div>
       </div>

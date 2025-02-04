@@ -28,7 +28,7 @@ const solutions = [
     icon: HeartIcon,
   },
   {
-    name: "Booking",
+    name: "Cart",
     href: "##",
     icon: HomeIcon,
   },
@@ -38,10 +38,15 @@ const solutions = [
     icon: HomeIcon,
   },
   {
-    name: "Menu",
-    href: "/add-listing-1",
+    name: "list new Deals",
+    href: "/Add-new-deal",
     icon: HomeIcon,
   },
+  // {
+  //   name: "Menu",
+  //   href: "/add-listing-1",
+  //   icon: HomeIcon,
+  // },
 ];
 
 const solutionsFoot = [

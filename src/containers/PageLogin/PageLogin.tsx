@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import facebookSvg from "images/Facebook.svg";
 import twitterSvg from "images/Twitter.svg";
 import googleSvg from "images/Google.svg";
@@ -12,16 +12,16 @@ export interface PageLoginProps {
 }
 
 const loginSocials = [
-  {
-    name: "Continue with Facebook",
-    href: "#",
-    icon: facebookSvg,
-  },
-  {
-    name: "Continue with Twitter",
-    href: "#",
-    icon: twitterSvg,
-  },
+  // {
+  //   name: "Continue with Facebook",
+  //   href: "#",
+  //   icon: facebookSvg,
+  // },
+  // {
+  //   name: "Continue with Twitter",
+  //   href: "#",
+  //   icon: twitterSvg,
+  // },
   {
     name: "Continue with Google",
     href: "#",
@@ -30,6 +30,11 @@ const loginSocials = [
 ];
 
 const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
+  const [isBusiness, setIsBusiness] = useState<boolean>(false);
+  
+    const handleToggleSignUp = (type: "user" | "business") => {
+      setIsBusiness(type === "business");
+    };
   return (
     <div className={`nc-PageLogin ${className}`} data-nc-id="PageLogin">
       <Helmet>
@@ -39,6 +44,23 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
         <h2 className="my-20 flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
           Login
         </h2>
+        {/* User / Business Button Toggle */}
+        <div className="flex justify-center mb-24 space-x-6">
+          <button
+            type="button"
+            className={`px-6 py-2 rounded-lg text-sm font-medium ${!isBusiness ? 'bg-primary-500 text-white' : 'bg-neutral-200 text-neutral-700'}`}
+            onClick={() => handleToggleSignUp("user")}
+          >
+            User
+          </button>
+          <button
+            type="button"
+            className={`px-6 py-2 rounded-lg text-sm font-medium ${isBusiness ? 'bg-primary-500 text-white' : 'bg-neutral-200 text-neutral-700'}`}
+            onClick={() => handleToggleSignUp("business")}
+          >
+            Business
+          </button>
+        </div>
         <div className="max-w-md mx-auto space-y-6">
           <div className="grid gap-3">
             {loginSocials.map((item, index) => (

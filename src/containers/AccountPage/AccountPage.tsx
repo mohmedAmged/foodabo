@@ -47,6 +47,7 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
                   <span className="mt-1 text-xs">Change Image</span>
                 </div>
                 <input
+                  title="profile"
                   type="file"
                   className="absolute inset-0 opacity-0 cursor-pointer"
                 />
@@ -54,11 +55,41 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
             </div>
             <div className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6">
               <div>
-                <Label>Name</Label>
+                <Label>Full Name</Label>
                 <Input className="mt-1.5" defaultValue="Eden Tuan" />
               </div>
               {/* ---- */}
               <div>
+                <Label>Email</Label>
+                <Input className="mt-1.5" defaultValue="example@email.com" />
+              </div>
+             
+              {/* ---- */}
+              <div>
+                <Label>Username</Label>
+                <Input className="mt-1.5" defaultValue="@eden_tuan" />
+              </div>
+              {/* ---- */}
+              <div>
+                <Label>Phone number</Label>
+                <Input className="mt-1.5" defaultValue="003 888 232" />
+              </div>
+              {/* ---- */}
+              {/* <div className="max-w-lg">
+                <Label>Date of birth</Label>
+                <Input
+                  className="mt-1.5"
+                  type="date"
+                  defaultValue="1990-07-22"
+                />
+              </div> */}
+              {/* ---- */}
+              <div>
+                <Label>Location</Label>
+                <Input className="mt-1.5" defaultValue="Amman" />
+              </div>
+               {/* ---- */}
+               <div>
                 <Label>Gender</Label>
                 <Select className="mt-1.5">
                   <option value="Male">Male</option>
@@ -68,38 +99,44 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
               </div>
               {/* ---- */}
               <div>
-                <Label>Username</Label>
-                <Input className="mt-1.5" defaultValue="@eden_tuan" />
+                <Label>Food Category</Label>
+                <Select className="mt-1.5">
+                  <option value="Burger">Burger</option>
+                  <option value="Pizza">Pizza</option>
+                  <option value="Shawarma">Shawarma</option>
+                  <option value="Kabab">Kabab</option>
+                </Select>
+              </div>
+              {/* ---- */}
+              <h2 style={{background:"#600d80", width:"50%", padding:"5px", borderRadius:"4px", paddingLeft:"20px"}}>
+                If Business ??
+              </h2>
+              {/* ---- */}
+                <div>
+                  <Label>Business Name</Label>
+                  <Input className="mt-1.5" defaultValue="Buffalo Burger" />
+                </div>
+              {/* ---- */}
+              <div>
+                <Label>Business Category</Label>
+                <Select className="mt-1.5">
+                  <option value="Burger">Burger</option>
+                  <option value="Pizza">Pizza</option>
+                  <option value="Shawarma">Shawarma</option>
+                  <option value="Kabab">Kabab</option>
+                </Select>
               </div>
               {/* ---- */}
               <div>
-                <Label>Email</Label>
-                <Input className="mt-1.5" defaultValue="example@email.com" />
-              </div>
-              {/* ---- */}
-              <div className="max-w-lg">
-                <Label>Date of birth</Label>
-                <Input
-                  className="mt-1.5"
-                  type="date"
-                  defaultValue="1990-07-22"
-                />
-              </div>
-              {/* ---- */}
-              <div>
-                <Label>Addess</Label>
-                <Input className="mt-1.5" defaultValue="New york, USA" />
-              </div>
-              {/* ---- */}
-              <div>
-                <Label>Phone number</Label>
-                <Input className="mt-1.5" defaultValue="003 888 232" />
+                <Label>Business Location</Label>
+                <Input className="mt-1.5" defaultValue="Amman" />
               </div>
               {/* ---- */}
               <div>
                 <Label>About you</Label>
                 <Textarea className="mt-1.5" defaultValue="..." />
               </div>
+              
               <div className="pt-2">
                 <ButtonPrimary>Update info</ButtonPrimary>
               </div>

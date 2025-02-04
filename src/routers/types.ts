@@ -14,6 +14,7 @@ export interface LocationStates {
   "/All-categories"?: {}; //new added for fodabo
   "/latest-deals"?: {}; //new added for fodabo
   "/:resturantName/menu-items"?: {}; //new added for fodabo
+  "/Add-new-deal"?:{}; //new added for fodabo
 
   "/listing-stay-map"?: {};
   "/listing-stay-detail"?: {};
