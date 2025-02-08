@@ -204,15 +204,15 @@ const SiteHeader = () => {
         : "shadow-sm dark:border-b dark:border-neutral-700";
     }
     switch (headerSelected) {
-      case "Header 1":
-        return <Header className={headerClassName} navType="MainNav1" />;
+      // case "Header 1":
+      //   return <Header className={headerClassName} navType="MainNav1" />;
       case "Header 2":
         return <Header className={headerClassName} navType="MainNav2" />;
-      case "Header 3":
-        return <Header3 className={headerClassName} />;
+      // case "Header 3":
+      //   return <Header3 className={headerClassName} />;
 
       default:
-        return <Header3 className={headerClassName} />;
+        return <Header className={headerClassName} navType="MainNav2" />;
     }
   };
 

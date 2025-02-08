@@ -1,4 +1,5 @@
-import React, { FC } from "react";
+"use client"
+import React, { FC, useEffect, useState } from "react";
 import Logo from "shared/Logo/Logo";
 import MenuBar from "shared/MenuBar/MenuBar";
 import SwitchDarkMode from "shared/SwitchDarkMode/SwitchDarkMode";
@@ -7,14 +8,55 @@ import NotifyDropdown from "./NotifyDropdown";
 import AvatarDropdown from "./AvatarDropdown";
 import CurrencyDropdown from "./CurrencyDropdown";
 import DropdownTravelers from "./DropdownTravelers";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import HeroSearchForm2MobileFactory from "components/HeroSearchForm2Mobile/HeroSearchForm2MobileFactory";
-
+import Cookies from "js-cookie";
+import axios from "axios";
+import { baseURL } from "functions/baseUrl";
+import { toast, ToastContainer } from "react-toastify";
 export interface MainNav2Props {
   className?: string;
 }
 
 const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const token = Cookies.get("auth_token");
+  const ResturantData: any =  Cookies.get("currentRestaurantData");
+  const currResturantData = JSON.parse(ResturantData || '{}')
+  useEffect(() => {
+  const token = Cookies.get("auth_token");
+
+    setIsLoggedIn(!!token); // Set logged in state based on token presence
+  }, []);
+  console.log( currResturantData);
+  const handleLogout = async () => {
+    const token = Cookies.get("auth_token");
+    try {
+      const response = await axios.post(`${baseURL}/restaurant/logout?t=${new Date().getTime()}`,{},  {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        // Clear cookies on successful logout
+        toast.success(response?.data?.message);
+        window.location.reload();
+        Cookies.remove("auth_token");
+        Cookies.remove("currentRestaurantData");
+
+        // Redirect to login page
+        navigate("/");
+      } else {
+        toast.error(response?.data?.message);
+      }
+    } catch (error:any) {
+      const errorMessage = error.response?.data?.message || "An unexpected error occurred";
+      toast.error(errorMessage);
+    }
+  };
   return (
     <div className={`nc-MainNav1 nc-MainNav2 relative z-10 ${className}`}>
       <div className="px-4 lg:container py-4 lg:py-5 relative flex justify-between items-center">
@@ -42,28 +84,37 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
             >
               List your property
             </Link> */}
-            <Link
-              to="/login"
-              className="
-                text-opacity-90
-                group px-4 py-2 border border-neutral-300 hover:border-neutral-400 dark:border-neutral-700 rounded-full inline-flex items-center text-sm text-gray-700 dark:text-neutral-300 font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-            >
-              Login/Signup
-            </Link>
+            {token ? (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="text-opacity-90 group px-4 py-2 border border-red-500 hover:border-red-600 dark:border-red-700 rounded-full inline-flex items-center text-sm text-red-700 dark:text-red-300 font-medium hover:bg-red-600 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="text-opacity-90 group px-4 py-2 border border-neutral-300 hover:border-neutral-400 dark:border-neutral-700 rounded-full inline-flex items-center text-sm text-gray-700 dark:text-neutral-300 font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+              >
+                Login/Signup
+              </Link>
+            )}
             <div></div>
             <SwitchDarkMode />
             <div className="pr-1.5">
               <NotifyDropdown className="-ml-2 xl:-ml-1" />
             </div>
-            <AvatarDropdown />
+            <AvatarDropdown token={token} currentRestaurantData={currResturantData}/>
           </div>
           <div className="flex items-center space-x-2 lg:hidden">
             <NotifyDropdown />
-            <AvatarDropdown />
+            <AvatarDropdown token={token} currentRestaurantData={currResturantData}/>
             <MenuBar />
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

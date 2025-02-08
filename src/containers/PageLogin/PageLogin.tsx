@@ -4,8 +4,12 @@ import twitterSvg from "images/Twitter.svg";
 import googleSvg from "images/Google.svg";
 import { Helmet } from "react-helmet-async";
 import Input from "shared/Input/Input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
+import { toast, ToastContainer } from "react-toastify";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { baseURL } from "functions/baseUrl";
 
 export interface PageLoginProps {
   className?: string;
@@ -31,9 +35,61 @@ const loginSocials = [
 
 const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
   const [isBusiness, setIsBusiness] = useState<boolean>(false);
-  
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
+
     const handleToggleSignUp = (type: "user" | "business") => {
       setIsBusiness(type === "business");
+    };
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { id, value } = event.target;
+      setFormData((prev) => ({ ...prev, [id]: value }));
+    };
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+  
+      if (isBusiness) {
+        // Business login
+        try {
+          const response = await axios.post(`${baseURL}/restaurant/login`, formData);
+  
+          // const { token, data } = response.data;
+        const token = response.data.data.token;
+        const restaurantData = response?.data?.data?.restaurant;
+          if (token) {
+            Cookies.set("auth_token", token, {
+              expires: 7,
+              secure: process.env.NODE_ENV === "production", // Only send secure cookies in production
+              sameSite: "Strict", // Adjust based on your app's cookie policy (Lax/Strict)
+            });
+            Cookies.set("currentRestaurantData", JSON.stringify(restaurantData), { expires: 7 });
+            navigate("/");  
+            toast.success(`${response?.data?.message}`);
+          }else{
+            toast.error(`${response?.data?.message}`);
+          }
+        } catch (error: any) {
+          const errorMessage = error.response?.data?.message || "An unexpected error occurred";
+          toast.error(errorMessage);
+        }
+      } else {
+        // User login (this part will be added later when user API is available)
+        try {
+          // Placeholder for user login API request
+          console.log("User login functionality is not implemented yet.");
+          // For now, just mock the successful login
+          toast.success("User login successful!");
+          navigate("/user-dashboard"); // Change to the appropriate route
+        } catch (error) {
+          toast.error("User login failed. Please try again.");
+        }
+      }
     };
   return (
     <div className={`nc-PageLogin ${className}`} data-nc-id="PageLogin">
@@ -88,13 +144,16 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
             <div className="absolute left-0 w-full top-1/2 transform -translate-y-1/2 border border-neutral-100 dark:border-neutral-800"></div>
           </div>
           {/* FORM */}
-          <form className="grid grid-cols-1 gap-6" action="#" method="post">
+          <form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit}>
             <label className="block">
               <span className="text-neutral-800 dark:text-neutral-200">
                 Email address
               </span>
               <Input
                 type="email"
+                id="email"
+                value={formData.email}
+                onChange={handleChange}
                 placeholder="example@example.com"
                 className="mt-1"
               />
@@ -106,7 +165,13 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
                   Forgot password?
                 </Link>
               </span>
-              <Input type="password" className="mt-1" />
+              <Input 
+              id="password"
+              value={formData.password}
+              onChange={handleChange}
+              type="password" 
+              className="mt-1" 
+              />
             </label>
             <ButtonPrimary type="submit">Continue</ButtonPrimary>
           </form>
@@ -118,6 +183,8 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
           </span>
         </div>
       </div>
+      <ToastContainer />
+
     </div>
   );
 };
