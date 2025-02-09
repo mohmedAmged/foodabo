@@ -49,6 +49,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
     fetchCountries(); 
     fetchCuisines();
   }, [fetchCountries, fetchCuisines]);
+  
   const [formData, setFormData] = useState<{
     applicant_full_name: string;
     name: string;
@@ -120,22 +121,9 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(formData);
-      
-      
       navigate('/');
       toast.success(`${response?.data?.message}`);
-      // if (token) {
-      //   Cookies.set("auth_token", token, { expires: 7 });
-      //   Cookies.set("currentRestaurantData", JSON.stringify(restaurantData), { expires: 7 });
-      //   toast.success("Registration successful!");
-      // } else {
-      //   toast.error("Registration failed. Please try again.");
-      // }
-      console.log(formData);
-
     } catch (err: any) {
-      console.log(formData);
       const errorMessage = err.response?.data?.message || "An unexpected error occurred";
       toast.error(errorMessage);
     }

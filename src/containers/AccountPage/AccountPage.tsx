@@ -1,5 +1,5 @@
 import Label from "components/Label/Label";
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Avatar from "shared/Avatar/Avatar";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import Input from "shared/Input/Input";
@@ -7,12 +7,98 @@ import Select from "shared/Select/Select";
 import Textarea from "shared/Textarea/Textarea";
 import CommonLayout from "./CommonLayout";
 import { Helmet } from "react-helmet-async";
+import useResturantDataStore from "store/ShowResturantData";
+import { Link } from "react-router-dom";
+import { baseURL } from "functions/baseUrl";
+import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 export interface AccountPageProps {
   className?: string;
 }
 
 const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
+   const { resturant, fetchResturant } = useResturantDataStore();
+
+   const [isEditing, setIsEditing] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
+   const [callCenterNumber, setCallCenterNumber] = useState("");
+   const [menuFile, setMenuFile] = useState<File | null>(null);
+   const [logo, setLogo] = useState<File | null>(null);
+   const [previewLogo, setPreviewLogo] = useState<string | null>(null); 
+   useEffect(() => {
+    if (resturant?.call_center_number !== 'N/A') {
+      setCallCenterNumber(resturant?.call_center_number || "");
+    }
+  }, [resturant]);
+  useEffect(() => {
+    if (resturant?.logo !== 'N/A') {
+      setPreviewLogo(resturant?.logo || '');
+    }
+  }, [resturant]);
+  useEffect(() => {
+    fetchResturant()
+  }, [fetchResturant]);
+
+  const handleUpdateClick = () => {
+    setIsEditing(true);
+  };
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, setter: (file: File | null) => void) => {
+  //   if (event.target.files && event.target.files.length > 0) {
+  //     setter(event.target.files[0]);
+  //   }
+  // };
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, setter: (file: File | null) => void, setPreview?: (url: string | null) => void) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      setter(file);
+      if (setPreview) {
+        const fileURL = URL.createObjectURL(file);
+        setPreview(fileURL); // Update preview immediately
+      }
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!logo && !callCenterNumber && !menuFile) {
+      toast.warning("Please update at least one field before submitting.");
+      return;
+    }
+    setIsLoading(true);
+    toast.info("Updating profile, please wait...");
+    const formData = new FormData();
+    
+    if (logo) formData.append("logo", logo);
+    if (callCenterNumber) formData.append("call_center_number", callCenterNumber);
+    if (menuFile) formData.append("menu_file", menuFile);
+
+    try {
+      const response = await fetch(`${baseURL}/restaurant/update-profile`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("auth_token")}`,
+        },
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        toast.success(data?.message || '');
+        setIsEditing(false);
+        fetchResturant(); // Refresh data
+      } else {
+        toast.error(data.message || "Failed to update profile.");
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+     console.log(resturant);
+     
   return (
     <div className={`nc-AccountPage ${className}`} data-nc-id="AccountPage">
       <Helmet>
@@ -26,7 +112,7 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
           <div className="flex flex-col md:flex-row">
             <div className="flex-shrink-0 flex items-start">
               <div className="relative rounded-full overflow-hidden flex">
-                <Avatar sizeClass="w-32 h-32" />
+                <Avatar imgUrl={previewLogo || ''} sizeClass="w-32 h-32" />
                 <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-neutral-50 cursor-pointer">
                   <svg
                     width="30"
@@ -46,99 +132,149 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
 
                   <span className="mt-1 text-xs">Change Image</span>
                 </div>
-                <input
-                  title="profile"
-                  type="file"
-                  className="absolute inset-0 opacity-0 cursor-pointer"
-                />
+                {isEditing && (
+                  <input
+                    title="avatar image"
+                    type="file"
+                    onChange={(e) => handleFileChange(e, setLogo, setPreviewLogo)}
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                  />
+                )}
               </div>
             </div>
             <div className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6">
               <div>
-                <Label>Full Name</Label>
-                <Input className="mt-1.5" defaultValue="Eden Tuan" />
+                <label htmlFor="applicant_full_name">Full Name</label>
+                <input 
+                  disabled
+                  type="text" 
+                  id="applicant_full_name" 
+                  className={`block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3`} 
+                  defaultValue={resturant?.applicant_full_name} 
+                />
               </div>
               {/* ---- */}
               <div>
-                <Label>Email</Label>
-                <Input className="mt-1.5" defaultValue="example@email.com" />
+                <label htmlFor="email">Email</label>
+                <input 
+                  disabled
+                  type="text" 
+                  id="email" 
+                  className={`block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3`} 
+                  defaultValue={resturant?.email} 
+                />
+              </div>
+              {/* ---- */}
+              <div>
+                <label htmlFor="phone">Phone number</label>
+                <input 
+                  disabled
+                  type="text" 
+                  id="phone" 
+                  className={`block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3`} 
+                  defaultValue={resturant?.phone} 
+                />
+              </div>
+              {/* ---- */}
+              <div>
+                <label htmlFor="country">Country</label>
+                <input
+                  disabled
+                  type="text" 
+                  id="country" 
+                  className={`block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3`} 
+                  defaultValue={resturant?.country} 
+                />
+              </div>
+               {/* ---- */}
+              <div>
+                  <label htmlFor="name">Business Name</label>
+                  <input 
+                  disabled
+                  type="text" 
+                  id="name" 
+                  className={`block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3`} 
+                  defaultValue={resturant?.name} 
+                />
+              </div>
+              <div>
+                  <label htmlFor="cuisine">Cuisine</label>
+                  <input 
+                  disabled
+                  type="text" 
+                  id="cuisine" 
+                  className={`block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3`} 
+                  defaultValue={resturant?.cuisine} 
+                />
               </div>
              
               {/* ---- */}
               <div>
-                <Label>Username</Label>
-                <Input className="mt-1.5" defaultValue="@eden_tuan" />
-              </div>
-              {/* ---- */}
-              <div>
-                <Label>Phone number</Label>
-                <Input className="mt-1.5" defaultValue="003 888 232" />
-              </div>
-              {/* ---- */}
-              {/* <div className="max-w-lg">
-                <Label>Date of birth</Label>
-                <Input
-                  className="mt-1.5"
-                  type="date"
-                  defaultValue="1990-07-22"
-                />
-              </div> */}
-              {/* ---- */}
-              <div>
-                <Label>Location</Label>
-                <Input className="mt-1.5" defaultValue="Amman" />
-              </div>
-               {/* ---- */}
-               <div>
-                <Label>Gender</Label>
-                <Select className="mt-1.5">
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </Select>
-              </div>
-              {/* ---- */}
-              <div>
-                <Label>Food Category</Label>
-                <Select className="mt-1.5">
-                  <option value="Burger">Burger</option>
-                  <option value="Pizza">Pizza</option>
-                  <option value="Shawarma">Shawarma</option>
-                  <option value="Kabab">Kabab</option>
-                </Select>
-              </div>
-              {/* ---- */}
-              <h2 style={{background:"#600d80", width:"50%", padding:"5px", borderRadius:"4px", paddingLeft:"20px"}}>
-                If Business ??
-              </h2>
-              {/* ---- */}
-                <div>
-                  <Label>Business Name</Label>
-                  <Input className="mt-1.5" defaultValue="Buffalo Burger" />
+                <Label>Business Documents</Label>
+                <div className="flex items-center gap-2 px-4 py-6">
+                  {
+                    resturant?.documents.map((doc) => (
+                      <div key={doc?.id}>
+                        <div className="flex items-center gap-2">
+                          <img
+                            src={doc.document}
+                            alt="document"
+                            className="w-10 h-10 rounded-full"
+                          />
+                          <span>{doc.type}</span>
+                        </div>
+                      </div>
+                    )) || (
+                      <div className="text-center">No documents uploaded yet.</div>
+                    )
+                  }
                 </div>
-              {/* ---- */}
-              <div>
-                <Label>Business Category</Label>
-                <Select className="mt-1.5">
-                  <option value="Burger">Burger</option>
-                  <option value="Pizza">Pizza</option>
-                  <option value="Shawarma">Shawarma</option>
-                  <option value="Kabab">Kabab</option>
-                </Select>
               </div>
               {/* ---- */}
               <div>
-                <Label>Business Location</Label>
-                <Input className="mt-1.5" defaultValue="Amman" />
+                <label htmlFor="call_center_number">Call Center Number</label>
+                <input 
+                  disabled={!isEditing}
+                  type="text" 
+                  id="call_center_number" 
+                  className={`block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3`} 
+                  value={callCenterNumber} 
+                  onChange={(e) => setCallCenterNumber(e.target.value)}
+                />
               </div>
               {/* ---- */}
               <div>
-                <Label>About you</Label>
-                <Textarea className="mt-1.5" defaultValue="..." />
+              <label htmlFor="menu_file">Menu File</label>
+              {isEditing ? (
+                  <input
+                    type="file"
+                    id="menu_file"
+                    onChange={(e) => handleFileChange(e, setMenuFile)}
+                    className="block w-full border-neutral-200 bg-white dark:border-neutral-700 rounded-2xl text-sm font-normal h-11 px-4 py-3"
+                  />
+                ) : resturant?.menu_file !== "N/A" ? (
+                  <div className="py-4">
+                    <Link className="ps-3" to={resturant?.menu_file || ""} target="_blank">View Menu</Link>
+                  </div>
+                ) : (
+                  <input
+                    title="menu-file"
+                    type="text"
+                    disabled
+                    value="No menu uploaded"
+                    className="block w-full border-neutral-200 bg-white dark:border-neutral-700 rounded-2xl text-sm font-normal h-11 px-4 py-3"
+                  />
+                )}
               </div>
-              
+              {/* ---- */}
               <div className="pt-2">
-                <ButtonPrimary>Update info</ButtonPrimary>
+                {!isEditing ? (
+                  <ButtonPrimary onClick={handleUpdateClick}>Update Info</ButtonPrimary>
+                ) : (
+                  <ButtonPrimary onClick={handleSubmit} disabled={isLoading}> 
+                  {isLoading ? "Saving..." : "Save Changes"}
+                  </ButtonPrimary>
+                )}
               </div>
             </div>
           </div>

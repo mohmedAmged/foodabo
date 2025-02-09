@@ -60,8 +60,11 @@ export const pages: Page[] = [
   { path: '/latest-deals' , component: LatestDeals },
   { path: "/:resturantName/menu-items", component: AllMenuItemsPage },
   { path: "/Add-new-deal", component: AddNewDeal },
-
-
+  { path: "/signup", component: PageSignUp },
+  { path: "/login", component: PageLogin },
+  { path: "/account", component: AccountPage },
+  { path: "/author", component: AuthorPage },
+  
   { path: "/home-1-header-2", exact: true, component: PageHome },
   { path: "/home-2", component: PageHome2 },
   { path: "/home-3", component: PageHome3 },
@@ -95,8 +98,8 @@ export const pages: Page[] = [
   { path: "/checkout", component: CheckOutPage },
   { path: "/pay-done", component: PayPage },
   //
-  { path: "/author", component: AuthorPage },
-  { path: "/account", component: AccountPage },
+  
+  
   { path: "/account-password", component: AccountPass },
   { path: "/account-savelists", component: AccountSavelists },
   { path: "/account-billing", component: AccountBilling },
@@ -117,8 +120,7 @@ export const pages: Page[] = [
   //
   { path: "/contact", component: PageContact },
   { path: "/about", component: PageAbout },
-  { path: "/signup", component: PageSignUp },
-  { path: "/login", component: PageLogin },
+
   { path: "/subscription", component: PageSubcription },
   //
 ];
