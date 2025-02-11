@@ -7,15 +7,22 @@ import {
   DEMO_EXPERIENCES_LISTINGS,
   DEMO_STAY_LISTINGS,
 } from "data/listings";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import ButtonSecondary from "shared/Button/ButtonSecondary";
 import CommonLayout from "./CommonLayout";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
-import { MagnifyingGlassPlusIcon, PencilSquareIcon, PlusCircleIcon, SquaresPlusIcon } from "@heroicons/react/24/outline";
+import {  PencilSquareIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+import { useCategoriesStore } from "store/AllMenuCategories";
+import { useNavigate } from "react-router-dom";
 
 const AccountMenu = () => {
-  let [categories] = useState(["burger", "kabab", "shawerma", "sea food"]);
-//   const plusIcon: any = {MagnifyingGlassPlusIcon};
+  const navigate = useNavigate()
+  const { categories, fetchCategories, currentPage, totalPages } = useCategoriesStore();
+  useEffect(() => {
+    fetchCategories(currentPage);
+  }, [fetchCategories, currentPage]);
+console.log(categories);
+
   const renderSection1 = () => {
     return (
       <div className="space-y-6 sm:space-y-8">
@@ -26,40 +33,29 @@ const AccountMenu = () => {
 
         <div>
             <div className="pt-8 pb-10">
-                <ButtonPrimary href={'/'} className="me-4">
+                <ButtonPrimary href={'/account-menu/create-category'} className="me-4">
                 Create category <PlusCircleIcon aria-hidden="true" className="w-6 h-6 ms-2"/>
                 </ButtonPrimary>
-                <ButtonSecondary href={'/'} className="me-4">
-                Edit Category <PencilSquareIcon aria-hidden="true" className="w-6 h-6 ms-2" />
-                </ButtonSecondary>
             </div>
         </div>
         <div className="pb-10 flex space-x-1 overflow-x-auto">
-        <button
-        type="button"
-        className={`flex-shrink-0 block !leading-none font-medium px-5 py-2.5 text-sm sm:text-base sm:px-6 sm:py-3 capitalize rounded-full focus:outline-none bg-secondary-900 text-secondary-50`}
-        >
-            burger
-        </button>
-        <button
-        type="button"
-        className={`flex-shrink-0 block !leading-none font-medium px-5 py-2.5 text-sm sm:text-base sm:px-6 sm:py-3 capitalize rounded-full focus:outline-none bg-secondary-900 text-secondary-50`}
-        >
-            shawerma
-        </button>
-        <button
-        type="button"
-        className={`flex-shrink-0 block !leading-none font-medium px-5 py-2.5 text-sm sm:text-base sm:px-6 sm:py-3 capitalize rounded-full focus:outline-none bg-secondary-900 text-secondary-50`}
-        >
-            kabab
-        </button>
-        <button
-        type="button"
-        className={`flex-shrink-0 block !leading-none font-medium px-5 py-2.5 text-sm sm:text-base sm:px-6 sm:py-3 capitalize rounded-full focus:outline-none bg-secondary-900 text-secondary-50`}
-        >
-            sea food
-        </button>  
+          {
+            categories.map((category: any)=>(
+              <button
+              key={category?.id}
+              type="button"
+              onClick={()=>(navigate(`/account-menu/edit-category/${category?.id}`))}
+              className={`flex-shrink-0 block !leading-none font-medium px-5 py-2.5 text-sm sm:text-base sm:px-6 sm:py-3 capitalize rounded-full focus:outline-none bg-secondary-900 text-secondary-50 flex items-center space-x-2`} // Added items-center and space-x-2
+            >
+              {category?.name} <PencilSquareIcon aria-hidden="true" className="w-6 h-6 ml-2" />
+            </button>
+            
+            ))
+          }
+          
         </div>
+        
+
       </div>
     );
   };
@@ -79,16 +75,17 @@ const AccountMenu = () => {
           <Tab.Group>
             <Tab.List className="flex space-x-1 overflow-x-auto">
               {categories.map((item) => (
-                <Tab key={item} as={Fragment}>
+                <Tab key={item?.id} as={Fragment}>
                   {({ selected }) => (
                     <button
+                      type="button"
                       className={`flex-shrink-0 block !leading-none font-medium px-5 py-2.5 text-sm sm:text-base sm:px-6 sm:py-3 capitalize rounded-full focus:outline-none ${
                         selected
                           ? "bg-secondary-900 text-secondary-50 "
                           : "text-neutral-500 dark:text-neutral-400 dark:hover:text-neutral-100 hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                       } `}
                     >
-                      {item}
+                      {item?.name}
                     </button>
                   )}
                 </Tab>
