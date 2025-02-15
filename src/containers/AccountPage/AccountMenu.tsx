@@ -1,27 +1,88 @@
 import { Tab } from "@headlessui/react";
-import CarCard from "components/CarCard/CarCard";
-import ExperiencesCard from "components/ExperiencesCard/ExperiencesCard";
-import StayCard from "components/StayCard/StayCard";
-import {
-  DEMO_CAR_LISTINGS,
-  DEMO_EXPERIENCES_LISTINGS,
-  DEMO_STAY_LISTINGS,
-} from "data/listings";
 import React, { Fragment, useEffect, useState } from "react";
 import ButtonSecondary from "shared/Button/ButtonSecondary";
 import CommonLayout from "./CommonLayout";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import {  PencilSquareIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useCategoriesStore } from "store/AllMenuCategories";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import MenuBuisnessCard from "components/MenuBuisnessItemCard/MenuBuisnessCard";
+import { useFilterMenuStore } from "store/FilterMenuItems";
+import { toast } from "react-toastify";
+import { baseURL } from "functions/baseUrl";
+import axios from "axios";
+import Cookies from "js-cookie";
 
+interface MenuItem {
+  id: number;
+  title: string;
+  title_ar: string;
+  title_en: string;
+  description: string;
+  description_ar: string;
+  description_en: string;
+  price: string;
+  image: string;
+  number_of_recommendations: number;
+  category: string;
+  category_id: number;
+}
 const AccountMenu = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [items, setItems] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [meta, setMeta] = useState<any>(null);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+
+  const [currentCategory, setCurrentCategory] = useState<number | undefined>(undefined);
   const { categories, fetchCategories, currentPage, totalPages } = useCategoriesStore();
+  // get all category of menu items
   useEffect(() => {
     fetchCategories(currentPage);
   }, [fetchCategories, currentPage]);
-console.log(categories);
+
+  
+
+    const fetchItems = async (categoryId?: number,  pageNum = 1) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await axios.get(`${baseURL}/restaurant/filter-menu`, {
+          params:{
+            category: categoryId,
+            page: pageNum
+          },
+          headers: {
+            "Content-Type": "application/json",
+             Authorization: `Bearer ${Cookies.get("auth_token")}`,
+             Accept:  "application/json"
+            }
+        });
+        // console.log(response);
+        const newItems = pageNum === 1 ? response.data.data.items : [...items, ...response.data.data.items];
+        setItems(response?.data?.data?.items);
+        setMeta(response.data.data.meta);
+      } catch (err) {
+        // setError('Failed to fetch items');
+        toast.error('Failed to fetch items');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    useEffect(() => {
+      fetchItems(currentCategory, 1);
+      setPage(1);
+    }, [currentCategory]);
+    const handleCategoryClick = (categoryId?: number) => {
+      setCurrentCategory(categoryId);
+    };
+    const loadMoreItems = () => { 
+      const nextPage = page + 1; setPage(nextPage);
+      fetchItems(currentCategory, nextPage); 
+      };
 
   const renderSection1 = () => {
     return (
@@ -61,7 +122,7 @@ console.log(categories);
   };
   const renderSection2 = () => {
     return (
-      <div className="space-y-6 sm:space-y-8">
+      <div className="space-y-10 sm:space-y-8">
         <div>
           <h2 className="text-3xl font-semibold">Menu Items</h2>
         </div>
@@ -74,69 +135,72 @@ console.log(categories);
             
           <Tab.Group>
             <Tab.List className="flex space-x-1 overflow-x-auto">
-              {categories.map((item) => (
-                <Tab key={item?.id} as={Fragment}>
+             
+              <Tab as={Fragment}>
                   {({ selected }) => (
-                    <button
-                      type="button"
-                      className={`flex-shrink-0 block !leading-none font-medium px-5 py-2.5 text-sm sm:text-base sm:px-6 sm:py-3 capitalize rounded-full focus:outline-none ${
-                        selected
-                          ? "bg-secondary-900 text-secondary-50 "
-                          : "text-neutral-500 dark:text-neutral-400 dark:hover:text-neutral-100 hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                      } `}
+                    <button 
+                    type="button"
+                    onClick={() => handleCategoryClick(undefined)}
+                    className={`px-5 py-2.5 text-sm sm:text-base rounded-full ${selected ? "bg-secondary-900 text-secondary-50" : "text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-800"}`}
+                    
                     >
-                      {item?.name}
+                      All Items
                     </button>
                   )}
-                </Tab>
-              ))}
+              </Tab>
+                {categories?.map((item) => (
+                  <Tab key={item?.id} as={Fragment}>
+                    {({ selected }) => (
+                    
+                    
+                    <button
+                        type="button"
+                        onClick={() => handleCategoryClick(item.id)}
+                        className={`flex-shrink-0 block !leading-none font-medium px-5 py-2.5 text-sm sm:text-base sm:px-6 sm:py-3 capitalize rounded-full focus:outline-none ${
+                          selected
+                            ? "bg-secondary-900 text-secondary-50 "
+                            : "text-neutral-500 dark:text-neutral-400 dark:hover:text-neutral-100 hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                        } `}
+                      >
+                        {item?.name}
+                      </button>
+                      
+                      
+                    )}
+                  </Tab>
+                ))}
             </Tab.List>
-            <Tab.Panels>
-              <Tab.Panel className="mt-8">
-                <div className="grid grid-cols-1 gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                  {DEMO_STAY_LISTINGS.filter((_, i) => i < 8).map((stay) => (
-                    <StayCard key={stay.id} data={stay} />
-                  ))}
-                </div>
-                <div className="flex mt-11 justify-center items-center">
-                  <ButtonSecondary>Show me more</ButtonSecondary>
-                </div>
-              </Tab.Panel>
-              <Tab.Panel className="mt-8">
-                <div className="grid grid-cols-1 gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                  {DEMO_EXPERIENCES_LISTINGS.filter((_, i) => i < 8).map(
-                    (stay) => (
-                      <ExperiencesCard key={stay.id} data={stay} />
-                    )
-                  )}
-                </div>
-                <div className="flex mt-11 justify-center items-center">
-                  <ButtonSecondary>Show me more</ButtonSecondary>
-                </div>
-              </Tab.Panel>
-              <Tab.Panel className="mt-8">
-                <div className="grid grid-cols-1 gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                  {DEMO_CAR_LISTINGS.filter((_, i) => i < 8).map((stay) => (
-                    <CarCard key={stay.id} data={stay} />
-                  ))}
-                </div>
-                <div className="flex mt-11 justify-center items-center">
-                  <ButtonSecondary>Show me more</ButtonSecondary>
-                </div>
-              </Tab.Panel>
-            </Tab.Panels>
+            <div>
+                  <div>
+                    {loading ? <p>Loading...</p> : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {items.map(item => (
+                          <MenuBuisnessCard
+                            key={item.id}
+                            data={item}
+                          />
+                      ))}
+                  </div>
+                    )}
+                      {
+                      meta && meta.current_page < meta.last_page && (<div className="flex mt-11 justify-center items-center"><ButtonSecondary onClick={loadMoreItems}>Show me more</ButtonSecondary></div>)
+                      }
+                  </div>
+            </div>
           </Tab.Group>
         </div>
       </div>
     );
   };
+console.log(items?.length);
 
   return (
     <div>
       <CommonLayout>
-        
-            {renderSection1()}
-            {renderSection2()}
+      
+      {renderSection1()}
+      {renderSection2()}
+
         
       </CommonLayout>
     </div>

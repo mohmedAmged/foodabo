@@ -29,7 +29,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
 
     setIsLoggedIn(!!token); // Set logged in state based on token presence
   }, []);
-  console.log( currResturantData);
+  // console.log( currResturantData);
   const handleLogout = async () => {
     const token = Cookies.get("auth_token");
     try {
