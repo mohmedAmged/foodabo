@@ -5,9 +5,8 @@ import CommonLayout from "./CommonLayout";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import {  PencilSquareIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useCategoriesStore } from "store/AllMenuCategories";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MenuBuisnessCard from "components/MenuBuisnessItemCard/MenuBuisnessCard";
-import { useFilterMenuStore } from "store/FilterMenuItems";
 import { toast } from "react-toastify";
 import { baseURL } from "functions/baseUrl";
 import axios from "axios";
@@ -29,7 +28,6 @@ interface MenuItem {
 }
 const AccountMenu = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [items, setItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [meta, setMeta] = useState<any>(null);
@@ -129,7 +127,7 @@ const AccountMenu = () => {
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
 
         <div>
-            <div className="py-10">
+            <div  className="py-10">
                 <ButtonPrimary href={'/account-menu/add-items'}>Add menu Item  <PlusCircleIcon aria-hidden="true" className="w-6 h-6 ms-2"/></ButtonPrimary>
             </div>
             
@@ -181,6 +179,7 @@ const AccountMenu = () => {
                           />
                       ))}
                   </div>
+                  
                     )}
                       {
                       meta && meta.current_page < meta.last_page && (<div className="flex mt-11 justify-center items-center"><ButtonSecondary onClick={loadMoreItems}>Show me more</ButtonSecondary></div>)

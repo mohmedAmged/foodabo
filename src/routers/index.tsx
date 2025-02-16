@@ -53,6 +53,7 @@ import AddNewDeal from "containers/PageAddListing1/AddNewDeal";
 import AccountMenu from "containers/AccountPage/AccountMenu";
 import AddNewMenuItem from "containers/AccountPage/AddNewMenuItem";
 import CreateMenuCategory from "containers/AccountPage/CreateMenuCategory";
+import AccountDeals from "containers/AccountPage/AccountDeals";
 
 export const pages: Page[] = [
   // fodaboo routes
@@ -71,6 +72,7 @@ export const pages: Page[] = [
   { path: "/account-menu/add-items", component: AddNewMenuItem },
   { path: "/account-menu/create-category", component: CreateMenuCategory },
   { path: "/account-menu/edit-category/:categID", component: CreateMenuCategory },
+  { path: "/account-deals", component: AccountDeals },
   
   { path: "/home-1-header-2", exact: true, component: PageHome },
   { path: "/home-2", component: PageHome2 },
