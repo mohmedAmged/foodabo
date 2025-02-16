@@ -54,6 +54,7 @@ import AccountMenu from "containers/AccountPage/AccountMenu";
 import AddNewMenuItem from "containers/AccountPage/AddNewMenuItem";
 import CreateMenuCategory from "containers/AccountPage/CreateMenuCategory";
 import AccountDeals from "containers/AccountPage/AccountDeals";
+import { ToastContainer } from "react-toastify";
 
 export const pages: Page[] = [
   // fodaboo routes
@@ -155,6 +156,7 @@ const MyRoutes = () => {
 
       {WIN_WIDTH < 768 && <FooterNav />}
       <Footer />
+      <ToastContainer />
     </BrowserRouter>
   );
 };

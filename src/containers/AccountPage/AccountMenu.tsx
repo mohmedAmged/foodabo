@@ -7,7 +7,7 @@ import {  PencilSquareIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useCategoriesStore } from "store/AllMenuCategories";
 import { useNavigate } from "react-router-dom";
 import MenuBuisnessCard from "components/MenuBuisnessItemCard/MenuBuisnessCard";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { baseURL } from "functions/baseUrl";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -47,7 +47,7 @@ const AccountMenu = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(`${baseURL}/restaurant/filter-menu`, {
+        const response = await axios.get(`${baseURL}/restaurant/filter-menu?t=${new Date().getTime()}`, {
           params:{
             category: categoryId,
             page: pageNum
@@ -82,6 +82,11 @@ const AccountMenu = () => {
       fetchItems(currentCategory, nextPage); 
       };
 
+      const handleDelete = (id: number) => {
+        setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+
+      };
+    
   const renderSection1 = () => {
     return (
       <div className="space-y-6 sm:space-y-8">
@@ -128,7 +133,8 @@ const AccountMenu = () => {
 
         <div>
             <div  className="py-10">
-                <ButtonPrimary href={'/account-menu/add-items'}>Add menu Item  <PlusCircleIcon aria-hidden="true" className="w-6 h-6 ms-2"/></ButtonPrimary>
+                <ButtonPrimary href={'/account-menu/add-items'}>Add menu Item  <PlusCircleIcon aria-hidden="true" className="w-6 h-6 ms-2"/>
+                </ButtonPrimary>
             </div>
             
           <Tab.Group>
@@ -176,6 +182,7 @@ const AccountMenu = () => {
                           <MenuBuisnessCard
                             key={item.id}
                             data={item}
+                            onDelete={handleDelete} 
                           />
                       ))}
                   </div>
@@ -202,6 +209,7 @@ console.log(items?.length);
 
         
       </CommonLayout>
+      <ToastContainer />
     </div>
   );
 };
