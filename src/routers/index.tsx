@@ -55,6 +55,7 @@ import AddNewMenuItem from "containers/AccountPage/AddNewMenuItem";
 import CreateMenuCategory from "containers/AccountPage/CreateMenuCategory";
 import AccountDeals from "containers/AccountPage/AccountDeals";
 import { ToastContainer } from "react-toastify";
+import PayFailed from "containers/PayFailed/PayFailed";
 
 export const pages: Page[] = [
   // fodaboo routes
@@ -74,6 +75,8 @@ export const pages: Page[] = [
   { path: "/account-menu/create-category", component: CreateMenuCategory },
   { path: "/account-menu/edit-category/:categID", component: CreateMenuCategory },
   { path: "/account-deals", component: AccountDeals },
+  { path: "/pay-failed", component: PayFailed },
+
   
   { path: "/home-1-header-2", exact: true, component: PageHome },
   { path: "/home-2", component: PageHome2 },

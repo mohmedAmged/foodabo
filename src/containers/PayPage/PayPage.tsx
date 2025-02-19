@@ -18,7 +18,7 @@ const PayPage: FC<PayPageProps> = ({ className = "" }) => {
         <div className="border-b border-neutral-200 dark:border-neutral-700"></div>
 
         {/* ------------------------ */}
-        <div className="space-y-6">
+        {/* <div className="space-y-6">
           <h3 className="text-2xl font-semibold">Your booking</h3>
           <div className="flex flex-col sm:flex-row sm:items-center">
             <div className="flex-shrink-0 w-full sm:w-40">
@@ -88,10 +88,10 @@ const PayPage: FC<PayPageProps> = ({ className = "" }) => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* ------------------------ */}
-        <div className="space-y-6">
+        {/* <div className="space-y-6">
           <h3 className="text-2xl font-semibold">Booking detail</h3>
           <div className="flex flex-col space-y-4">
             <div className="flex text-neutral-6000 dark:text-neutral-300">
@@ -122,7 +122,7 @@ const PayPage: FC<PayPageProps> = ({ className = "" }) => {
         </div>
         <div>
           <ButtonPrimary href="/">Explore more stays</ButtonPrimary>
-        </div>
+        </div> */}
       </div>
     );
   };

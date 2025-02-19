@@ -20,6 +20,7 @@ export interface LocationStates {
   "/account-menu/create-category"?:{}; //new added for fodabo
   "/account-menu/edit-category/:categID"?:{}; //new added for fodabo
   "/account-deals"?:{}; //new added for fodabo
+  "/pay-failed"?:{}; //new added for fodabo
 
 
   "/listing-stay-map"?: {};
