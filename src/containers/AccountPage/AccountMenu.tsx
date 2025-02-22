@@ -198,7 +198,6 @@ const AccountMenu = () => {
       </div>
     );
   };
-console.log(items?.length);
 
   return (
     <div>

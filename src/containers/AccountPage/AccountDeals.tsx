@@ -1,15 +1,28 @@
 import { Tab } from "@headlessui/react";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import CommonLayout from "./CommonLayout";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import MenuBuisnessCard from "components/MenuBuisnessItemCard/MenuBuisnessCard";
+import { useDealsStore } from "store/AllResturantDeals";
+import ResturantDealsCard from "components/ResturantDealsCard/ResturantDealsCard";
+import ButtonClose from "shared/ButtonClose/ButtonClose";
 
 
 
 const AccountDeals = () => {
-    const [loading, setLoading] = useState(false);
-  
+  const { deals, fetchDeals } = useDealsStore();
+console.log(deals);
 
+  useEffect(() => {
+    fetchDeals();
+  }, [fetchDeals]);
+    const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState([]);
+  const handleDelete = (id: number) => {
+    setItems((prevItems) => prevItems.filter((item: any) => item.id !== id));
+
+  };
   const renderSection2 = () => {
     return (
       <div className="space-y-10 sm:space-y-8">
@@ -62,12 +75,13 @@ const AccountDeals = () => {
                   <div>
                     {loading ? <p>Loading...</p> : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {/* {items.map(item => (
-                          <MenuBuisnessCard
-                            key={item.id}
-                            data={item}
+                        {deals?.map(deal => (
+                          <ResturantDealsCard
+                            key={deal.id}
+                            data={deal}
+                            onDelete={handleDelete} 
                           />
-                      ))} */}
+                      ))}
                   </div>
                   
                     )}

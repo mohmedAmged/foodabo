@@ -1,62 +1,57 @@
-import axios from "axios";
-import { baseURL } from "functions/baseUrl";
-import Cookies from "js-cookie";
-import { toast } from "react-toastify";
-import { create } from "zustand";
+import axios from 'axios';
+import { baseURL } from 'functions/baseUrl';
+import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
+import { create } from 'zustand';
 
-interface MenuItem {
+// Define the interface for the API response directly in the store
+interface Item {
   id: number;
   title: string;
-  description: string;
-  price: string;
-  image: string;
-  category: string;
-  category_id: number;
 }
 
-interface MenuState {
-  menuItems: MenuItem[];
-  currentPage: number;
-  totalPages: number;
+interface Category {
+  id: number;
+  name: string;
+  items: Item[];
+}
+
+interface ApiResponse {
+  data: {
+    category_items: Category[];
+  };
+  message: string;
+  errors: string[];
+  status: number;
+}
+
+interface StoreState {
+  categories: Category[];
   loading: boolean;
-  error: string | null;
-  fetchMenuItems: (page: number) => void;
+  fetchItems: () => Promise<void>;
+  setLoading: (loading: boolean) => void;
 }
 
-const useAllMenuItemsStore = create<MenuState>((set) => ({
-  menuItems: [],
-  currentPage: 1,
-  totalPages: 1,
+export const useAllMenuItemsStore = create<StoreState>((set) => ({
+  categories: [],
   loading: false,
-  error: null,
-  fetchMenuItems: async (page: number) => {
-    set({ loading: true, error: null });
+  setLoading: (loading) => set({ loading }),
+  fetchItems: async () => {
+    set({ loading: true });
     try {
-      const response = await axios.get(
-        `${baseURL}/restaurant/show-menu?page=${page}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${Cookies.get("auth_token")}`,
-            Accept: "application/json",
-          },
-        }
-      );
-
-      const { items, meta } = response.data.data;
-      set({
-        menuItems: items,
-        currentPage: page,
-        totalPages: meta.last_page,
-        loading: false,
-      });
-
-      toast.success("Menu loaded successfully!");
+      const response = await axios.get<ApiResponse>(`${baseURL}/restaurant/all-items`, {
+              headers: 
+              {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${Cookies.get("auth_token")}`,
+              }
+                        },); // Replace {{url}} with the actual URL
+      set({ categories: response.data.data.category_items });
+      toast.success("Items fetched successfully!");
     } catch (error) {
-      set({ loading: false, error: "Failed to fetch menu items." });
-      toast.error("Failed to load menu.");
+      toast.error("Failed to fetch items!");
+    } finally {
+      set({ loading: false });
     }
   },
 }));
-
-export default useAllMenuItemsStore;
