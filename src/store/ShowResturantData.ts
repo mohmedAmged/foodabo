@@ -20,6 +20,8 @@ interface SingleResturant {
     documents: DocumentItem[];
     remaining_documents: number;
     menu_file: string;
+    package: number;
+    package_status: string;
 }
 
 interface ResturantState {

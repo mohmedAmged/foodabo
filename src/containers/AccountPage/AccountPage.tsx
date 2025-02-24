@@ -2,9 +2,6 @@ import Label from "components/Label/Label";
 import React, { FC, useEffect, useState } from "react";
 import Avatar from "shared/Avatar/Avatar";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
-import Input from "shared/Input/Input";
-import Select from "shared/Select/Select";
-import Textarea from "shared/Textarea/Textarea";
 import CommonLayout from "./CommonLayout";
 import { Helmet } from "react-helmet-async";
 import useResturantDataStore from "store/ShowResturantData";
@@ -43,18 +40,14 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
   const handleUpdateClick = () => {
     setIsEditing(true);
   };
-  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, setter: (file: File | null) => void) => {
-  //   if (event.target.files && event.target.files.length > 0) {
-  //     setter(event.target.files[0]);
-  //   }
-  // };
+  
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, setter: (file: File | null) => void, setPreview?: (url: string | null) => void) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       setter(file);
       if (setPreview) {
         const fileURL = URL.createObjectURL(file);
-        setPreview(fileURL); // Update preview immediately
+        setPreview(fileURL); 
       }
     }
   };
@@ -73,7 +66,7 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
     if (menuFile) formData.append("menu_file", menuFile);
 
     try {
-      const response = await fetch(`${baseURL}/restaurant/update-profile`, {
+      const response: any = await fetch(`${baseURL}/restaurant/update-profile`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${Cookies.get("auth_token")}`,
@@ -81,16 +74,16 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
         body: formData,
       });
 
-      const data = await response.json();
+      const data: any = await response.json();
       if (response.ok) {
-        toast.success(data?.message || '');
+        toast.success(data?.data?.message || '');
         setIsEditing(false);
         fetchResturant(); // Refresh data
       } else {
-        toast.error(data.message || "Failed to update profile.");
+        toast.error(data?.message  || "Failed to update profile.");
       }
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(error?.message);
     } finally {
       setIsLoading(false);
     }

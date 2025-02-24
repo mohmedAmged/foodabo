@@ -23,6 +23,16 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
               Profile 
             </NavLink>
             <NavLink
+              to="/account-packages"
+              className={({ isActive }) =>
+                `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
+                  !isActive ? "border-transparent" : "border-primary-500"
+                }`
+              }
+            >
+              Packages
+            </NavLink>
+            <NavLink
               to="/account-deals"
               className={({ isActive }) =>
                 `block py-5 md:py-8 border-b-2 flex-shrink-0 ${

@@ -3,11 +3,8 @@ import React, { Fragment, useEffect, useState } from "react";
 import CommonLayout from "./CommonLayout";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import MenuBuisnessCard from "components/MenuBuisnessItemCard/MenuBuisnessCard";
 import { useDealsStore } from "store/AllResturantDeals";
 import ResturantDealsCard from "components/ResturantDealsCard/ResturantDealsCard";
-import ButtonClose from "shared/ButtonClose/ButtonClose";
-
 
 
 const AccountDeals = () => {
