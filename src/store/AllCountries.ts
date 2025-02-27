@@ -6,6 +6,7 @@ interface Country {
   id: number;
   name: string;
   flag: string;
+  phone_code: string;
 }
 
 interface CountriesState {

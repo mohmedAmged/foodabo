@@ -22,6 +22,7 @@ export interface LocationStates {
   "/account-deals"?:{}; //new added for fodabo
   "/pay-failed"?:{}; //new added for fodabo
   "/account-packages"?:{}; //new added for fodabo
+  "/verify-account"?:{}; //new added for fodabo
 
 
   "/listing-stay-map"?: {};

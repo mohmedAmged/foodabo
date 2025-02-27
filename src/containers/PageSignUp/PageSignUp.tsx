@@ -39,28 +39,20 @@ const loginSocials = [
 const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
   const [isBusiness, setIsBusiness] = useState<boolean>(false);
 
-  const handleToggleSignUp = (type: "user" | "business") => {
-    setIsBusiness(type === "business");
-  };
+  // const handleToggleSignUp = (type: "user" | "business") => {
+  //   setIsBusiness(type === "business");
+  // };
   const { countries, fetchCountries } = useCountriesStore();
   const { cuisines, fetchCuisines } = useCuisinesStore();
-  const navigate = useNavigate()
+  const [cities, setCities] = useState<{ id: number; name: string }[]>([]);
+  const [selectedCuisines, setSelectedCuisines] = useState<{ id: number; name: string }[]>([]);
+  const navigate = useNavigate();
   useEffect(() => {
     fetchCountries(); 
     fetchCuisines();
   }, [fetchCountries, fetchCuisines]);
   
-  const [formData, setFormData] = useState<{
-    applicant_full_name: string;
-    name: string;
-    email: string;
-    phone: string;
-    country_id: string;
-    cuisine_id: string;
-    password: string;
-    documents: File[];
-    logo: File | null;
-  }>({
+  const [formData, setFormData] = useState<any>({
     applicant_full_name: "",
     name: "",
     email: "",
@@ -70,65 +62,129 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
     password: "",
     documents: [],
     logo: null,
+    username: "",
+    phone_code:'',
+    password_confirmation: '',
+    city_id: '',
+    cuisines: [],
+    image: null
   });
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { id, value } = event.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
+    setFormData((prev: any) => ({ ...prev, [id]: value }));
+    if (id === "country_id") {
+      fetchCities(value);
+    }
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, files } = event.target;
     if (files && files.length > 0) {
-      setFormData((prev) => ({
+      setFormData((prev: any) => ({
         ...prev,
         [id]: id === "documents" ? Array.from(files) : files[0],
       }));
     }
   };
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formToSubmit = new FormData();
 
-    formToSubmit.append("applicant_full_name", formData.applicant_full_name);
-    formToSubmit.append("name", formData.name);
-    formToSubmit.append("email", formData.email);
-    formToSubmit.append("phone", formData.phone);
-    formToSubmit.append("password", formData.password);
-    formToSubmit.append("country_id", formData.country_id);
-    formToSubmit.append("cuisine_id", formData.cuisine_id);
-
-    if (formData.logo instanceof File) {
-      formToSubmit.append("logo", formData.logo);
-    } else {
-      toast.error("The Logo field is required.");
-      return;
-    }
-
-    if (Array.isArray(formData.documents) && formData.documents.length > 0) {
-      formData.documents.forEach((file) => {
-        formToSubmit.append("documents[]", file);
-      });
-    } else {
-      toast.error("The Documents field is required.");
-      return;
-    }
-    try {
-      const response = await axios.post(`${baseURL}/restaurant/register`, formToSubmit, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      navigate('/');
-      toast.success(`${response?.data?.message}`);
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "An unexpected error occurred";
-      toast.error(errorMessage);
+  const handleCuisineChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCuisine = cuisines.find((cuisine) => cuisine.id.toString() === event.target.value);
+    if (selectedCuisine && !selectedCuisines.some((c) => c.id === selectedCuisine.id)) {
+      setSelectedCuisines([...selectedCuisines, selectedCuisine]);
+      setFormData((prev: any) => ({ ...prev, cuisines: [...prev.cuisines, event.target.value] }));
     }
   };
 
+  const removeCuisine = (id: number) => {
+    setSelectedCuisines(selectedCuisines.filter((c) => c.id !== id));
+    setFormData((prev: any) => ({ ...prev, cuisines: prev.cuisines.filter((c: string) => c !== id.toString()) }));
+  };
+
+  const fetchCities = async (countryId: string) => {
+    try {
+      const response = await axios.get(`${baseURL}/show-country/${countryId}`);
+      setCities(response.data.data.cities || []);
+    } catch (error) {
+      console.error("Error fetching cities", error);
+    }
+  };
+
+  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   const formToSubmit = new FormData();
+
+  //   formToSubmit.append("applicant_full_name", formData.applicant_full_name);
+  //   formToSubmit.append("name", formData.name);
+  //   formToSubmit.append("email", formData.email);
+  //   formToSubmit.append("phone", formData.phone);
+  //   formToSubmit.append("password", formData.password);
+  //   formToSubmit.append("country_id", formData.country_id);
+  //   formToSubmit.append("cuisine_id", formData.cuisine_id);
+
+  //   if (formData.logo instanceof File) {
+  //     formToSubmit.append("logo", formData.logo);
+  //   } else {
+  //     toast.error("The Logo field is required.");
+  //     return;
+  //   }
+
+  //   if (Array.isArray(formData.documents) && formData.documents.length > 0) {
+  //     formData.documents.forEach((file) => {
+  //       formToSubmit.append("documents[]", file);
+  //     });
+  //   } else {
+  //     toast.error("The Documents field is required.");
+  //     return;
+  //   }
+  //   try {
+  //     const response = await axios.post(`${baseURL}/restaurant/register`, formToSubmit, {
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+  //     navigate('/');
+  //     toast.success(`${response?.data?.message}`);
+  //   } catch (err: any) {
+  //     const errorMessage = err.response?.data?.message || "An unexpected error occurred";
+  //     toast.error(errorMessage);
+  //   }
+  // };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formToSubmit = new FormData();
+    
+    for (const key in formData) {
+      if (Array.isArray(formData[key])) {
+        formData[key].forEach((item: any) => formToSubmit.append(`${key}[]`, item));
+      } else if (formData[key]) {
+        formToSubmit.append(key, formData[key]);
+      }
+    }
+    
+    try {
+      const endpoint = isBusiness ? "/restaurant/register" : "/user/user-register";
+      const response = await axios.post(`${baseURL}${endpoint}`, formToSubmit, {
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success(`${response?.data?.message}`);
+      if (!isBusiness) {
+        Cookies.set("auth_token", response.data.data.token, { expires: 7 });
+         Cookies.set("currentRestaurantData", JSON.stringify(response?.data?.data?.user), { expires: 7 });
+        navigate("/verify-account");
+      } else {
+        navigate("/");
+      }
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "An unexpected error occurred");
+    }
+  };
 
   return (
     <div className={`nc-PageSignUp  ${className}`} data-nc-id="PageSignUp">
@@ -144,14 +200,14 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
           <button
             type="button"
             className={`px-6 py-2 rounded-lg text-sm font-medium ${!isBusiness ? 'bg-primary-500 text-white' : 'bg-neutral-200 text-neutral-700'}`}
-            onClick={() => handleToggleSignUp("user")}
+            onClick={() => setIsBusiness(false)}
           >
             User
           </button>
           <button
             type="button"
             className={`px-6 py-2 rounded-lg text-sm font-medium ${isBusiness ? 'bg-primary-500 text-white' : 'bg-neutral-200 text-neutral-700'}`}
-            onClick={() => handleToggleSignUp("business")}
+            onClick={() => setIsBusiness(true)}
           >
             Business
           </button>
@@ -197,7 +253,8 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
                 className="mt-1"
               />
             </label>
-            <label className="block">
+            { isBusiness &&
+              <label className="block">
               <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200 mb-2">
                 Full Name
               </span>
@@ -209,6 +266,36 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
               onChange={handleChange}
               />
             </label>
+            }
+            { !isBusiness &&
+              <label className="block">
+              <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200 mb-2">
+                Full Name
+              </span>
+              <Input 
+              type="text" 
+              className="mt-1" 
+              id="name"
+              value={formData?.name}
+              onChange={handleChange}
+              />
+            </label>
+            }
+            {
+              !isBusiness &&
+              <label className="block">
+              <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200 mb-2">
+                User Name
+              </span>
+              <Input 
+              type="text" 
+              className="mt-1" 
+              id="username"
+              value={formData?.username}
+              onChange={handleChange}
+              />
+            </label>
+            }
             <label className="block">
               <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
                 Password
@@ -221,7 +308,22 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
               onChange={handleChange}
               />
             </label>
-            <label className="block">
+            { !isBusiness &&
+              <label className="block">
+              <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
+              Password Confirmation
+              </span>
+              <Input 
+              type="password" 
+              className="mt-1" 
+              id="password_confirmation"
+              value={formData?.password_confirmation}
+              onChange={handleChange}
+              />
+            </label>
+            }
+            { isBusiness &&
+              <label className="block">
               <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
                 Phone Number
               </span>
@@ -233,7 +335,48 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
               onChange={handleChange}
               />
             </label>
-            
+            }
+            {
+              !isBusiness && (
+                <div className="flex space-x-2">
+            <select
+            title="phone_code"
+             id="phone_code" 
+             name="phone_code"
+             value={formData.phone_code} 
+             onChange={handleChange} 
+             className="p-2 border rounded-lg">
+               {countries?.map((country: any) => (
+                <option key={country?.id} value={country?.phone_code}>
+                ({country?.name}) {country?.phone_code}
+                </option>
+              ))}
+              
+              
+            </select>
+            <Input type="text" id="phone" value={formData.phone} onChange={handleChange} placeholder="Phone" className="w-full p-2 border rounded-lg" />
+          </div>
+              )
+
+            }
+            <label className="block">
+                  <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200 mb-2">
+                    Select Country
+                  </span>
+                  <select
+                    id="country_id"
+                    value={formData?.country_id}
+                    onChange={handleChange}
+                    className="block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3"
+                  >
+                    <option selected>Choose a country</option>
+                    {countries?.map((country: { id: number; name: string }) => (
+                      <option key={country.id} value={country.id}>
+                      {country.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
             {isBusiness ? (
               <>
                 <label className="block">
@@ -262,24 +405,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
                     <option value="Cafe">Cafe</option>
                   </select>
                 </label> */}
-                <label className="block">
-                  <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200 mb-2">
-                    Select Business Location
-                  </span>
-                  <select
-                    id="country_id"
-                    value={formData?.country_id}
-                    onChange={handleChange}
-                    className="block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3"
-                  >
-                    <option selected>Choose a country</option>
-                    {countries?.map((country: { id: number; name: string }) => (
-                      <option key={country.id} value={country.id}>
-                      {country.name}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                
                 <label className="block">
                   <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200 mb-2">
                     Select Business cuisines
@@ -325,49 +451,61 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
               </>
             ) : (
               <>
-                {/* <label className="block">
-                  <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200 mb-2">
-                    Select Your Gender
-                  </span>
-                  <select
-                    id="gender"
-                    className="block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3"
-                  >
-                    <option selected>Choose a gender</option>
-                    <option value="male">male</option>
-                    <option value="female">female</option>
-                    
-                  </select>
-                </label> */}
                 <label className="block">
                   <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200 mb-2">
-                    Select Your Country
+                    Select Your City
                   </span>
                   <select
-                    id="countries"
+                    id="city_id"
+                    value={formData?.city_id}
+                    onChange={handleChange}
                     className="block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3"
                   >
                     <option selected>Choose a country</option>
-                    <option value="US">Amman</option>
-                    <option value="CA">Riyadh</option>
-                    <option value="FR">Dubai</option>
-                    <option value="DE">Cairo</option>
+                    {cities?.map((city: any) => (
+                      <option key={city.id} value={city.id}>
+                      {city.name}
+                      </option>
+                    ))}
                   </select>
                 </label>
                 <label className="block">
                   <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200 mb-2">
-                    Select Food Category
+                    Select cuisines
                   </span>
                   <select
-                    id="foodCategory"
+                    id="cuisines"
+                    // value={formData?.cuisines}
+                    onChange={handleCuisineChange}
                     className="block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3"
                   >
-                    <option selected>Choose Category</option>
-                    <option value="US">Burger</option>
-                    <option value="CA">Pizza</option>
-                    <option value="FR">Shawarma</option>
-                    <option value="DE">Kabab</option>
+                    <option selected>Select Business cuisines</option>
+                    {cuisines?.map((cuisine: { id: number; name: string }) => (
+                      <option key={cuisine.id} value={cuisine.id}>
+                      {cuisine.name}
+                      </option>
+                    ))}
                   </select>
+                  <div className="mt-2 space-y-1">
+                    {selectedCuisines.map((cuisine) => (
+                      <div key={cuisine.id} className="flex justify-between items-center p-2  rounded-lg">
+                        <span>{cuisine.name}</span>
+                        <button type="button" onClick={() => removeCuisine(cuisine.id)} className="text-red-500">Remove</button>
+                      </div>
+                    ))}
+                </div>
+                </label>
+                <label className="block">
+                  <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200 mb-2">
+                    Image
+                  </span>
+                  <input
+                    id="image"
+                    type="file"
+                    onChange={handleFileChange}
+                    className="block w-full text-sm text-neutral-700 dark:text-neutral-300 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-2xl h-11 px-4 py-3"
+                    accept="image/*"
+                  />
                 </label>
               </>
             )}

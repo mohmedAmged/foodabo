@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logoImg from "../../images/fodaboo images/logoDark.png";
-import logoLightImg from "../../images/fodaboo images/logoDark.png";
+import logoImg from "../../images/logos/logoPurple.svg";
+import logoLightImg from "../../images/logos/Logo.svg";
 import LogoSvgLight from "./LogoSvgLight";
 import LogoSvg from "./LogoSvg";
 

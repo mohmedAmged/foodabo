@@ -79,7 +79,7 @@ export default function AvatarDropdown({
             <Popover.Button
               className={`inline-flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
             >
-              <Avatar imgUrl={currentRestaurantData?.logo} sizeClass="w-8 h-8 sm:w-9 sm:h-9" />
+              <Avatar imgUrl={currentRestaurantData?.logo || currentRestaurantData?.image} sizeClass="w-8 h-8 sm:w-9 sm:h-9" />
             </Popover.Button>
             <Transition
               as={Fragment}
