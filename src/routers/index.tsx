@@ -58,6 +58,7 @@ import { ToastContainer } from "react-toastify";
 import PayFailed from "containers/PayFailed/PayFailed";
 import AccountPackages from "containers/AccountPage/AccountPackages";
 import VerifyUserAccount from "containers/AccountPage/VerifyUserAccount";
+import AccountUserPage from "containers/AccountPage/AccountUserPage";
 
 export const pages: Page[] = [
   // fodaboo routes
@@ -71,6 +72,7 @@ export const pages: Page[] = [
   { path: "/signup", component: PageSignUp },
   { path: "/login", component: PageLogin },
   { path: "/account", component: AccountPage },
+  { path: "/user-account", component: AccountUserPage },
   { path: "/author", component: AuthorPage },
   { path: "/account-menu", component: AccountMenu },
   { path: "/account-menu/add-items", component: AddNewMenuItem },

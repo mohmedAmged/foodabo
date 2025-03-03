@@ -23,6 +23,7 @@ export interface LocationStates {
   "/pay-failed"?:{}; //new added for fodabo
   "/account-packages"?:{}; //new added for fodabo
   "/verify-account"?:{}; //new added for fodabo
+  "/user-account"?:{}; //new added for fodabo
 
 
   "/listing-stay-map"?: {};

@@ -38,10 +38,6 @@ const loginSocials = [
 
 const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
   const [isBusiness, setIsBusiness] = useState<boolean>(false);
-
-  // const handleToggleSignUp = (type: "user" | "business") => {
-  //   setIsBusiness(type === "business");
-  // };
   const { countries, fetchCountries } = useCountriesStore();
   const { cuisines, fetchCuisines } = useCuisinesStore();
   const [cities, setCities] = useState<{ id: number; name: string }[]>([]);
@@ -110,6 +106,8 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
       console.error("Error fetching cities", error);
     }
   };
+  const currLoginType = isBusiness ? 'business' : 'user';
+
 
   // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   //   event.preventDefault();
@@ -176,7 +174,9 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
       toast.success(`${response?.data?.message}`);
       if (!isBusiness) {
         Cookies.set("auth_token", response.data.data.token, { expires: 7 });
-         Cookies.set("currentRestaurantData", JSON.stringify(response?.data?.data?.user), { expires: 7 });
+        Cookies.set("logInData", JSON.stringify(response?.data?.data?.user), { expires: 7 });
+        Cookies.set("loginType", currLoginType, { expires: 7 });
+         
         navigate("/verify-account");
       } else {
         navigate("/");
@@ -355,7 +355,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
               
             </select>
             <Input type="text" id="phone" value={formData.phone} onChange={handleChange} placeholder="Phone" className="w-full p-2 border rounded-lg" />
-          </div>
+                </div>
               )
 
             }

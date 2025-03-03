@@ -11,43 +11,7 @@ import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import Avatar from "shared/Avatar/Avatar";
 
-const solutions = [
-  {
-    name: "Dashboard",
-    href: "/account",
-    icon: UserCircleIcon,
-  },
-  {
-    name: "Messages",
-    href: "##",
-    icon: ChatBubbleBottomCenterTextIcon,
-  },
-  {
-    name: "Wishlists",
-    href: "/account-savelists",
-    icon: HeartIcon,
-  },
-  {
-    name: "Cart",
-    href: "##",
-    icon: HomeIcon,
-  },
-  {
-    name: "list your resturant",
-    href: "/add-listing-1",
-    icon: HomeIcon,
-  },
-  {
-    name: "list new Deals",
-    href: "/Add-new-deal",
-    icon: HomeIcon,
-  },
-  // {
-  //   name: "Menu",
-  //   href: "/add-listing-1",
-  //   icon: HomeIcon,
-  // },
-];
+
 
 const solutionsFoot = [
   {
@@ -65,12 +29,51 @@ const solutionsFoot = [
 interface AvatarDropdownProps {
   token?: string ;
   currentRestaurantData?: any;
+  loginType?: string;
 }
 
 export default function AvatarDropdown({
   token,
   currentRestaurantData,
+  loginType
 }: AvatarDropdownProps) {
+  const solutions = [
+    {
+      name: "Dashboard",
+      href: loginType === 'business' ? '/account' : '/user-account',
+      icon: UserCircleIcon,
+    },
+    {
+      name: "Messages",
+      href: "##",
+      icon: ChatBubbleBottomCenterTextIcon,
+    },
+    {
+      name: "Wishlists",
+      href: "/account-savelists",
+      icon: HeartIcon,
+    },
+    {
+      name: "Cart",
+      href: "##",
+      icon: HomeIcon,
+    },
+    {
+      name: "list your resturant",
+      href: "/add-listing-1",
+      icon: HomeIcon,
+    },
+    {
+      name: "list new Deals",
+      href: "/Add-new-deal",
+      icon: HomeIcon,
+    },
+    // {
+    //   name: "Menu",
+    //   href: "/add-listing-1",
+    //   icon: HomeIcon,
+    // },
+  ];
   return (
     <div className="AvatarDropdown">
       <Popover className="relative">

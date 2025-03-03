@@ -22,18 +22,19 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const token = Cookies.get("auth_token");
-  const ResturantData: any =  Cookies.get("currentRestaurantData");
+  const loginType = Cookies.get("loginType");
+  const ResturantData: any =  Cookies.get("logInData");
   const currResturantData = JSON.parse(ResturantData || '{}')
   useEffect(() => {
   const token = Cookies.get("auth_token");
-
-    setIsLoggedIn(!!token); // Set logged in state based on token presence
+    setIsLoggedIn(!!token); 
   }, []);
   console.log( currResturantData);
   const handleLogout = async () => {
     const token = Cookies.get("auth_token");
     try {
-      const response = await axios.post(`${baseURL}/restaurant/logout?t=${new Date().getTime()}`,{},  {
+      const endPoint = loginType === 'business' ? '/restaurant/logout' : '/user/user-logout'
+      const response = await axios.post(`${baseURL}${endPoint}?t=${new Date().getTime()}`,{},  {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -41,13 +42,11 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
         },
       });
       if (response.status === 200) {
-        // Clear cookies on successful logout
         toast.success(response?.data?.message);
         window.location.reload();
         Cookies.remove("auth_token");
-        Cookies.remove("currentRestaurantData");
-
-        // Redirect to login page
+        Cookies.remove("logInData");
+        Cookies.remove("loginType");
         navigate("/");
       } else {
         toast.error(response?.data?.message);
@@ -105,11 +104,11 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
             <div className="pr-1.5">
               <NotifyDropdown className="-ml-2 xl:-ml-1" />
             </div>
-            <AvatarDropdown token={token} currentRestaurantData={currResturantData}/>
+            <AvatarDropdown loginType={loginType} token={token} currentRestaurantData={currResturantData}/>
           </div>
           <div className="flex items-center space-x-2 lg:hidden">
             <NotifyDropdown />
-            <AvatarDropdown token={token} currentRestaurantData={currResturantData}/>
+            <AvatarDropdown loginType={loginType} token={token} currentRestaurantData={currResturantData}/>
             <MenuBar />
           </div>
         </div>

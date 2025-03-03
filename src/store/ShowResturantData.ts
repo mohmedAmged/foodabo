@@ -45,7 +45,6 @@ const useResturantDataStore = create<ResturantState>((set) => ({
         const data = await response.json();
 
         if (data.data && data.data.restaurant) {
-            // Ensure type safety and data availability
             set({ resturant: data.data.restaurant });
             toast.success('resturant data loaded successfully')
         } else {

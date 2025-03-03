@@ -42,9 +42,9 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
   });
   const navigate = useNavigate();
 
-    const handleToggleSignUp = (type: "user" | "business") => {
-      setIsBusiness(type === "business");
-    };
+  const currLoginType = isBusiness ? 'business' : 'user';
+console.log(currLoginType);
+
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const { id, value } = event.target;
@@ -54,21 +54,24 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
   
-      if (isBusiness) {
         // Business login
         try {
-          const response = await axios.post(`${baseURL}/restaurant/login`, formData);
+          const endpoint = isBusiness ? "/restaurant/login" : "/user/user-login";
+          const response = await axios.post(`${baseURL}${endpoint}`, formData);
   
-          // const { token, data } = response.data;
         const token = response.data.data.token;
-        const restaurantData = response?.data?.data?.restaurant;
+        const loginData = isBusiness ? response?.data?.data?.restaurant : response?.data?.data?.user;
           if (token) {
             Cookies.set("auth_token", token, {
               expires: 7,
-              secure: process.env.NODE_ENV === "production", // Only send secure cookies in production
-              sameSite: "Strict", // Adjust based on your app's cookie policy (Lax/Strict)
+              secure: process.env.NODE_ENV === "production", 
+              sameSite: "Strict", 
             });
-            Cookies.set("currentRestaurantData", JSON.stringify(restaurantData), { expires: 7 });
+            Cookies.set("logInData", JSON.stringify(loginData), { expires: 7 });
+            Cookies.set("loginType", currLoginType, { expires: 7 });
+            if (!isBusiness && !loginData?.is_verified ) {
+              navigate("/verify-account");  
+            }
             navigate("/");  
             toast.success(`${response?.data?.message}`);
           }else{
@@ -78,18 +81,7 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
           const errorMessage = error.response?.data?.message || "An unexpected error occurred";
           toast.error(errorMessage);
         }
-      } else {
-        // User login (this part will be added later when user API is available)
-        try {
-          // Placeholder for user login API request
-          console.log("User login functionality is not implemented yet.");
-          // For now, just mock the successful login
-          toast.success("User login successful!");
-          navigate("/user-dashboard"); // Change to the appropriate route
-        } catch (error) {
-          toast.error("User login failed. Please try again.");
-        }
-      }
+     
     };
   return (
     <div className={`nc-PageLogin ${className}`} data-nc-id="PageLogin">
@@ -105,14 +97,14 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
           <button
             type="button"
             className={`px-6 py-2 rounded-lg text-sm font-medium ${!isBusiness ? 'bg-primary-500 text-white' : 'bg-neutral-200 text-neutral-700'}`}
-            onClick={() => handleToggleSignUp("user")}
+            onClick={() => setIsBusiness(false)}
           >
             User
           </button>
           <button
             type="button"
             className={`px-6 py-2 rounded-lg text-sm font-medium ${isBusiness ? 'bg-primary-500 text-white' : 'bg-neutral-200 text-neutral-700'}`}
-            onClick={() => handleToggleSignUp("business")}
+            onClick={() => setIsBusiness(true)}
           >
             Business
           </button>

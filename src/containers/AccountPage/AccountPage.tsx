@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { baseURL } from "functions/baseUrl";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import useUserDataStore from "store/ShowUserData";
 
 export interface AccountPageProps {
   className?: string;
@@ -16,6 +17,8 @@ export interface AccountPageProps {
 
 const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
    const { resturant, fetchResturant } = useResturantDataStore();
+   const { userData, fetchUserData } = useUserDataStore();
+console.log(userData);
 
    const [isEditing, setIsEditing] = useState(false);
    const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +37,8 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
     }
   }, [resturant]);
   useEffect(() => {
-    fetchResturant()
+    fetchResturant();
+    fetchUserData()
   }, [fetchResturant]);
 
   const handleUpdateClick = () => {
