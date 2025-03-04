@@ -108,49 +108,6 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
   };
   const currLoginType = isBusiness ? 'business' : 'user';
 
-
-  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const formToSubmit = new FormData();
-
-  //   formToSubmit.append("applicant_full_name", formData.applicant_full_name);
-  //   formToSubmit.append("name", formData.name);
-  //   formToSubmit.append("email", formData.email);
-  //   formToSubmit.append("phone", formData.phone);
-  //   formToSubmit.append("password", formData.password);
-  //   formToSubmit.append("country_id", formData.country_id);
-  //   formToSubmit.append("cuisine_id", formData.cuisine_id);
-
-  //   if (formData.logo instanceof File) {
-  //     formToSubmit.append("logo", formData.logo);
-  //   } else {
-  //     toast.error("The Logo field is required.");
-  //     return;
-  //   }
-
-  //   if (Array.isArray(formData.documents) && formData.documents.length > 0) {
-  //     formData.documents.forEach((file) => {
-  //       formToSubmit.append("documents[]", file);
-  //     });
-  //   } else {
-  //     toast.error("The Documents field is required.");
-  //     return;
-  //   }
-  //   try {
-  //     const response = await axios.post(`${baseURL}/restaurant/register`, formToSubmit, {
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     });
-  //     navigate('/');
-  //     toast.success(`${response?.data?.message}`);
-  //   } catch (err: any) {
-  //     const errorMessage = err.response?.data?.message || "An unexpected error occurred";
-  //     toast.error(errorMessage);
-  //   }
-  // };
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formToSubmit = new FormData();
@@ -162,7 +119,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
         formToSubmit.append(key, formData[key]);
       }
     }
-    
+    const toastId = toast.loading("Submitting...");
     try {
       const endpoint = isBusiness ? "/restaurant/register" : "/user/user-register";
       const response = await axios.post(`${baseURL}${endpoint}`, formToSubmit, {
@@ -171,7 +128,13 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
           "Content-Type": "multipart/form-data",
         },
       });
-      toast.success(`${response?.data?.message}`);
+      // toast.success(`${response?.data?.message}`);
+      toast.update(toastId, { 
+        render: response?.data?.message, 
+        type: "success", 
+        isLoading: false, 
+        autoClose: 3000 
+      });
       if (!isBusiness) {
         Cookies.set("auth_token", response.data.data.token, { expires: 7 });
         Cookies.set("logInData", JSON.stringify(response?.data?.data?.user), { expires: 7 });
@@ -182,7 +145,26 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
         navigate("/");
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "An unexpected error occurred");
+      if (err.response?.status === 422 && err.response?.data?.errors) {
+        const errors = err.response.data.errors as Record<string, string[]>; 
+        const firstError = Object.values(errors)?.[0]?.[0] || "Validation Error";
+        toast.update(toastId, { 
+          render: firstError, 
+          type: "error", 
+          isLoading: false, 
+          autoClose: 5000 
+        });
+        Object.values(errors).forEach((errorMessages) => {
+          errorMessages.forEach((message) => toast.error(message));
+        });
+      } else {
+        toast.update(toastId, { 
+          render: err.response?.data?.message || "An unexpected error occurred", 
+          type: "error", 
+          isLoading: false, 
+          autoClose: 5000 
+        });
+      }
     }
   };
 
@@ -391,20 +373,6 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
                   onChange={handleChange}
                   />
                 </label>
-                {/* <label className="block">
-                  <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200 mb-2">
-                    Business Type
-                  </span>
-                  <select
-                    id="businessType"
-                    className="block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3"
-                  >
-                    <option selected>Choose Business Type</option>
-                    <option value="Restaurant">Restaurant</option>
-                    <option value="Store">Store</option>
-                    <option value="Cafe">Cafe</option>
-                  </select>
-                </label> */}
                 
                 <label className="block">
                   <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200 mb-2">

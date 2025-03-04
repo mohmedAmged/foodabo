@@ -10,6 +10,7 @@ import { baseURL } from "functions/baseUrl";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import useUserDataStore from "store/ShowUserData";
+import axios from "axios";
 
 export interface AccountPageProps {
   className?: string;
@@ -56,13 +57,15 @@ console.log(userData);
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async () => { 
     if (!logo && !callCenterNumber && !menuFile) {
       toast.warning("Please update at least one field before submitting.");
       return;
     }
     setIsLoading(true);
-    toast.info("Updating profile, please wait...");
+
+    const toastId = toast.loading("Updating profile, please wait...");
+
     const formData = new FormData();
     
     if (logo) formData.append("logo", logo);
@@ -70,29 +73,40 @@ console.log(userData);
     if (menuFile) formData.append("menu_file", menuFile);
 
     try {
-      const response: any = await fetch(`${baseURL}/restaurant/update-profile`, {
-        method: "POST",
+      const response = await axios.post(`${baseURL}/restaurant/update-profile`, formData, {
         headers: {
           Authorization: `Bearer ${Cookies.get("auth_token")}`,
+          "Accept": "application/json",
         },
-        body: formData,
       });
 
-      const data: any = await response.json();
-      if (response.ok) {
-        toast.success(data?.data?.message || '');
-        setIsEditing(false);
-        fetchResturant(); // Refresh data
-      } else {
-        toast.error(data?.message  || "Failed to update profile.");
-      }
+      toast.update(toastId, { 
+        render: response.data?.message || "Profile updated successfully!", 
+        type: "success", 
+        isLoading: false, 
+        autoClose: 3000 
+      });
+
+      setIsEditing(false);
+      fetchResturant();
     } catch (error: any) {
-      toast.error(error?.message);
+      const errorMessage = error.response?.data?.message || "Failed to update profile.";
+      const validationErrors = error.response?.data?.errors;
+      toast.update(toastId, { 
+        render: errorMessage, 
+        type: "error", 
+        isLoading: false, 
+        autoClose: 5000 
+      });
+      if (validationErrors && Object.keys(validationErrors).length > 0) {
+        Object.values(validationErrors).forEach((errorMessages: any) => {
+          errorMessages.forEach((msg: string) => toast.error(msg));
+        });
+      }
     } finally {
       setIsLoading(false);
     }
   };
-
 
      console.log(resturant);
      

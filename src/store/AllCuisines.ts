@@ -1,4 +1,3 @@
-// src/store/useCountriesStore.ts
 import { baseURL } from 'functions/baseUrl';
 import {create} from 'zustand';
 

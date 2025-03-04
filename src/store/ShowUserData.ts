@@ -37,6 +37,10 @@ interface UserState {
 const useUserDataStore = create<UserState>((set) => ({
     userData: null,
     fetchUserData: async () => {
+        const loginType = Cookies.get("loginType");
+        if (loginType !== 'user') {
+            return;
+        }
         try {
         const response = await fetch(`${baseURL}/user/user-show-profile?t=${new Date().getTime()}`,
             {
@@ -51,9 +55,6 @@ const useUserDataStore = create<UserState>((set) => ({
 
         if (data.data && data.data.user) {
             set({ userData: data.data.user });
-            toast.success('user data loaded successfully')
-        } else {
-            toast.error('user data not found')
         }
         } catch (error: any) {
             toast.error(error.response.data.message || 'Error fetching user data');

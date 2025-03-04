@@ -53,12 +53,11 @@ console.log(currLoginType);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-  
-        // Business login
+        const toastId = toast.loading("Login...");
         try {
           const endpoint = isBusiness ? "/restaurant/login" : "/user/user-login";
           const response = await axios.post(`${baseURL}${endpoint}`, formData);
-  
+          
         const token = response.data.data.token;
         const loginData = isBusiness ? response?.data?.data?.restaurant : response?.data?.data?.user;
           if (token) {
@@ -73,14 +72,35 @@ console.log(currLoginType);
               navigate("/verify-account");  
             }
             navigate("/");  
-            toast.success(`${response?.data?.message}`);
-          }else{
-            toast.error(`${response?.data?.message}`);
+            toast.update(toastId, { 
+              render: response?.data?.message, 
+              type: "success", 
+              isLoading: false, 
+              autoClose: 3000 
+            });
           }
-        } catch (error: any) {
-          const errorMessage = error.response?.data?.message || "An unexpected error occurred";
-          toast.error(errorMessage);
-        }
+        } catch (err: any) {
+            if (err.response?.status === 422 && err.response?.data?.errors) {
+              const errors = err.response.data.errors as Record<string, string[]>; 
+              const firstError = Object.values(errors)?.[0]?.[0] || "Validation Error";
+              toast.update(toastId, { 
+                render: firstError, 
+                type: "error", 
+                isLoading: false, 
+                autoClose: 5000 
+              });
+              Object.values(errors).forEach((errorMessages) => {
+                errorMessages.forEach((message) => toast.error(message));
+              });
+            } else {
+              toast.update(toastId, { 
+                render: err.response?.data?.message || "An unexpected error occurred", 
+                type: "error", 
+                isLoading: false, 
+                autoClose: 5000 
+              });
+            }
+            }
      
     };
   return (

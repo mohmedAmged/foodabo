@@ -32,6 +32,10 @@ interface ResturantState {
 const useResturantDataStore = create<ResturantState>((set) => ({
         resturant: null,
         fetchResturant: async () => {
+        const loginType = Cookies.get("loginType");
+        if (loginType !== 'business') {
+            return;
+        }
         try {
         const response = await fetch(`${baseURL}/restaurant/show-profile?t=${new Date().getTime()}`,
             {
@@ -46,14 +50,9 @@ const useResturantDataStore = create<ResturantState>((set) => ({
 
         if (data.data && data.data.restaurant) {
             set({ resturant: data.data.restaurant });
-            toast.success('resturant data loaded successfully')
-        } else {
-            toast.error('resturant data not found')
         }
         } catch (error: any) {
             toast.error(error.response.data.message)
-
-        console.error("Error fetching resturant data:", error);
         }
     },
 }));
