@@ -7,7 +7,7 @@ import Badge from "shared/Badge/Badge";
 import LikeSaveBtns from "components/LikeSaveBtns";
 import SectionDateRange from "../SectionDateRange";
 import StayDatesRangeInput from "./StayDatesRangeInput";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Amenities_demos, PHOTOS } from "./constant";
 import { Dialog, Transition } from "@headlessui/react";
 import { ArrowRightIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
@@ -18,7 +18,36 @@ import Input from "shared/Input/Input";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import DetailPagetLayout from "../Layout";
 import GuestsInput from "./GuestsInput";
-
+interface gallerry_interface{
+  id?: number;
+  img?:string;
+}
+const GALLERY_IMAGES: gallerry_interface[] = [
+  {
+      id: 1,
+      img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg'
+  },
+  {
+      id: 2,
+      img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg'
+  },
+  {
+      id: 3,
+      img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg'
+  },
+  {
+      id: 4,
+      img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg'
+  },
+  {
+      id: 5,
+      img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg'
+  },
+  {
+      id: 6,
+      img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg'
+  },
+]
 const StayDetailPageContainer: FC<{}> = () => {
   //
 
@@ -135,7 +164,35 @@ const StayDetailPageContainer: FC<{}> = () => {
       </div>
     );
   };
+  const renderGallerySection = () => {
+    return (
+      <div className="listingSection__wrap">
+        <div>
+          <h2 className="text-2xl font-semibold">Gallery</h2>
+          <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
+            {` About the property's amenities and services`}
+          </span>
+        </div>
+        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
+        {/* 6 */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm text-neutral-700 dark:text-neutral-300 ">
+          {GALLERY_IMAGES?.map((item) => (
+            <div key={item?.id} className="flex items-center space-x-3">
+              <img className="h-auto max-w-full rounded-lg" src={item?.img} alt="" />
+            </div>
+          ))}
+        </div>
 
+        {/* ----- */}
+        <div className="w-14 border-b border-neutral-200"></div>
+        <div>
+          <Link to={'/explore'} className=" relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6  ttnc-ButtonSecondary font-medium border bg-white border-neutral-200 text-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0">
+            Explore more gallery items
+          </Link>
+        </div>
+      </div>
+    );
+  };
   const renderSection3 = () => {
     return (
       <div className="listingSection__wrap">
@@ -695,6 +752,7 @@ const StayDetailPageContainer: FC<{}> = () => {
         <div className="w-full lg:w-3/5 xl:w-2/3 space-y-8 lg:space-y-10 lg:pr-10">
           {renderSection1()}
           {renderSection2()}
+          {renderGallerySection()}
           {renderSection3()}
           {renderSection4()}
           {/* <SectionDateRange /> */}

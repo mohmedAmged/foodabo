@@ -24,7 +24,7 @@ export interface LocationStates {
   "/account-packages"?:{}; //new added for fodabo
   "/verify-account"?:{}; //new added for fodabo
   "/user-account"?:{}; //new added for fodabo
-
+  "/explore"?:{}; //new added for fodabo
 
   "/listing-stay-map"?: {};
   "/listing-stay-detail"?: {};

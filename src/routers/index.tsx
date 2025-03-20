@@ -59,6 +59,7 @@ import PayFailed from "containers/PayFailed/PayFailed";
 import AccountPackages from "containers/AccountPage/AccountPackages";
 import VerifyUserAccount from "containers/AccountPage/VerifyUserAccount";
 import AccountUserPage from "containers/AccountPage/AccountUserPage";
+import ExploreGeneral from "containers/ExploreGeneralPage/ExploreGeneral";
 
 export const pages: Page[] = [
   // fodaboo routes
@@ -82,7 +83,7 @@ export const pages: Page[] = [
   { path: "/account-packages", component: AccountPackages },
   { path: "/pay-failed", component: PayFailed },
   { path: "/verify-account", component: VerifyUserAccount },
-
+  { path: "/explore", component: ExploreGeneral },
   
   { path: "/home-1-header-2", exact: true, component: PageHome },
   { path: "/home-2", component: PageHome2 },
