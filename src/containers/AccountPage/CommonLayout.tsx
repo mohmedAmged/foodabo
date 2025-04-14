@@ -1,3 +1,4 @@
+import { withRegion } from "functions/withRegionRoute";
 import Cookies from "js-cookie";
 import React from "react";
 import { FC } from "react";
@@ -16,7 +17,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
         <div className="container">
           <div className="flex space-x-8 md:space-x-14 overflow-x-auto hiddenScrollbar">
             <NavLink
-              to={loginType === 'business' ? '/account' : '/user-account'}
+              to={loginType === 'business' ? `${withRegion('account')}` : `${withRegion('/user-account')}`}
               className={({ isActive }) =>
                 `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
                   !isActive ? "border-transparent" : "border-primary-500"
@@ -26,7 +27,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
               Profile 
             </NavLink>
             <NavLink
-              to="/account-packages"
+              to={withRegion('/account-packages')}
               className={({ isActive }) =>
                 `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
                   !isActive ? "border-transparent" : "border-primary-500"
@@ -36,7 +37,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
               Packages
             </NavLink>
             <NavLink
-              to="/account-deals"
+              to={withRegion('/account-deals')}
               className={({ isActive }) =>
                 `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
                   !isActive ? "border-transparent" : "border-primary-500"
@@ -46,7 +47,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
               Deals
             </NavLink>
             <NavLink
-              to="/account-password"
+              to={withRegion('/account-password')}
               className={({ isActive }) =>
                 `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
                   !isActive ? "border-transparent" : "border-primary-500"
@@ -56,7 +57,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
               Change password
             </NavLink>
             <NavLink
-              to="/account-billing"
+              to={withRegion('/account-billing')}
               className={({ isActive }) =>
                 `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
                   !isActive ? "border-transparent" : "border-primary-500"
@@ -66,7 +67,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
               Change Billing
             </NavLink>
             <NavLink
-              to="/account-menu"
+              to={withRegion('/account-menu')}
               className={({ isActive }) =>
                 `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
                   !isActive ? "border-transparent" : "border-primary-500"
@@ -76,7 +77,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
               Menu
             </NavLink>
             <NavLink
-              to="/account-awards"
+              to={withRegion('/account-awards')}
               className={({ isActive }) =>
                 `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
                   !isActive ? "border-transparent" : "border-primary-500"
@@ -86,7 +87,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
               Awards
             </NavLink>
             <NavLink
-              to="/account-awards"
+              to={withRegion('/account-awards')}
               className={({ isActive }) =>
                 `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
                   !isActive ? "border-transparent" : "border-primary-500"

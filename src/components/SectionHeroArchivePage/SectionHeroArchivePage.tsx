@@ -12,6 +12,7 @@ export interface SectionHeroArchivePageProps {
   currentTab: SearchTab;
   rightImage?: string;
   currentSlug?: string;
+  countryName?:string;
 }
 
 const SectionHeroArchivePage: FC<SectionHeroArchivePageProps> = ({
@@ -20,7 +21,8 @@ const SectionHeroArchivePage: FC<SectionHeroArchivePageProps> = ({
   currentPage,
   currentTab,
   rightImage = imagePng,
-  currentSlug
+  currentSlug,
+  countryName
 }) => {
   return (
     <div
@@ -34,7 +36,7 @@ const SectionHeroArchivePage: FC<SectionHeroArchivePageProps> = ({
           </h2>
           <div className="flex items-center text-base md:text-lg text-neutral-500 dark:text-neutral-400">
             <i className="text-2xl las la-map-marked"></i>
-            <span className="ml-2.5">Amman </span>
+            <span className="ml-2.5">{countryName ? countryName : 'Amman'} </span>
             <span className="mx-5"></span>
             {listingType ? (
               listingType

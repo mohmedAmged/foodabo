@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Page } from "./types";
 import ScrollToTop from "./ScrollToTop";
 import Footer from "shared/Footer/Footer";
@@ -60,12 +60,16 @@ import AccountPackages from "containers/AccountPage/AccountPackages";
 import VerifyUserAccount from "containers/AccountPage/VerifyUserAccount";
 import AccountUserPage from "containers/AccountPage/AccountUserPage";
 import ExploreGeneral from "containers/ExploreGeneralPage/ExploreGeneral";
+import { useDefaultCountryStore } from "store/DefaultCountry";
+import Cookies from "js-cookie";
+import SingleResturantDetails from "containers/ListingDetailPage/listing-stay-detail/SingleResturantDetails";
 
-export const pages: Page[] = [
+export const pages = [
   // fodaboo routes
-  { path: "/", exact: true, component: PageHome3 },
+  { path: '/', exact: true, component: PageHome3 },
   { path: "/#", exact: true, component: PageHome3 },
   { path: '/All-categories' , component: AllCategories },
+  { path: '/:singleResturant' , component: SingleResturantDetails },
   { path: '/categories/:categSlug' , component: ListingStayPage },
   { path: '/latest-deals' , component: LatestDeals },
   { path: "/:resturantName/menu-items", component: AllMenuItemsPage },
@@ -144,6 +148,48 @@ export const pages: Page[] = [
   { path: "/subscription", component: PageSubcription },
   //
 ];
+const CountryCodeRedirect = ({ children }: { children: JSX.Element }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { countryCode } = useParams<{ countryCode: string }>();
+  const { fetchDefaultCountry } = useDefaultCountryStore();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const init = async () => {
+      let code = Cookies.get("region");
+
+      if (!code) {
+        await fetchDefaultCountry();
+
+        const state = useDefaultCountryStore.getState();
+        const defaultCountry = state.defaultCountry;
+
+        if (defaultCountry && defaultCountry.code) {
+          code = defaultCountry.code;
+          Cookies.set("region", code);
+        }
+      }
+
+      // Extract the first segment of the path
+      const pathParts = location.pathname.split("/").filter(Boolean);
+
+      // If first part is not a country code (e.g., longer than 3 chars), redirect
+      if (!pathParts[0] || pathParts[0].length > 3) {
+        const newPath = `/${code}${location.pathname}`;
+        navigate(newPath, { replace: true });
+      } else {
+        setLoading(false);
+      }
+    };
+
+    init();
+  }, [location.pathname, fetchDefaultCountry, navigate]);
+
+  if (loading) return null;
+  return children;
+};
+
 
 const MyRoutes = () => {
   let WIN_WIDTH = useWindowSize().width;
@@ -154,18 +200,22 @@ const MyRoutes = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <SiteHeader />
+      <CountryCodeRedirect>
+      <>
+        <SiteHeader />
+        <Routes>
+          {pages.map(({ component, path }) => {
+            const Component = component;
+            return <Route key={path} element={<Component />} 
+            path={`/:countryCode${path === '/' ? '' : path}`} />;
+          })}
+          <Route element={<Page404 />} />
+        </Routes>
 
-      <Routes>
-        {pages.map(({ component, path }) => {
-          const Component = component;
-          return <Route key={path} element={<Component />} path={path} />;
-        })}
-        <Route element={<Page404 />} />
-      </Routes>
-
-      {WIN_WIDTH < 768 && <FooterNav />}
-      <Footer />
+        {WIN_WIDTH < 768 && <FooterNav />}
+        <Footer />
+      </>
+      </CountryCodeRedirect>
     </BrowserRouter>
   );
 };

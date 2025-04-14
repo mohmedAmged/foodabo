@@ -11,6 +11,7 @@ import SectionHero3 from "components/SectionHero/SectionHero3";
 import CardCategory6 from "components/CardCategory6/CardCategory6";
 import ButtonSecondary from "shared/Button/ButtonSecondary";
 import { Link } from "react-router-dom";
+import ResturantSection from "./ResturantsSection";
 
 const DEMO_CATS_2: TaxonomyType[] = [
   {
@@ -119,7 +120,7 @@ function PageHome3() {
         {/* SECTION */}
         <div className="relative py-16">
           <BackgroundSection />
-          <SectionGridFeaturePlaces />
+          <ResturantSection />
         </div>
 
         {/* SECTION */}

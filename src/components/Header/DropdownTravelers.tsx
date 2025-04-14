@@ -1,46 +1,55 @@
 import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { Fragment } from "react";
-import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import { Fragment, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { PathName } from "routers/types";
+import { useCountriesHasDataStore } from "store/CountriesHasData";
+import { useDefaultCountryStore } from "store/DefaultCountry";
 
-interface SolutionItem {
-  name: string;
-  description: string;
-  href: PathName;
-  icon: any;
-  active?: boolean;
-}
+// interface SolutionItem {
+//   name: string;
+//   href: PathName;
+//   icon: any;
+//   active?: boolean;
+// }
 
-const solutions: SolutionItem[] = [
-  {
-    name: "Amman",
-    description: "Stays rental description ",
-    href: "/listing-stay",
-    icon: IconFour,
-    active: true,
-  },
-  {
-    name: "Riyadh",
-    description: "Flights description",
-    href: "/listing-flights",
-    icon: IconTwo,
-  },
-  {
-    name: "Dubai",
-    description: "Tour and experiences",
-    href: "/listing-experiences",
-    icon: IconOne,
-  },
-  {
-    name: "Cairo",
-    description: "Car rental description",
-    href: "/listing-car",
-    icon: IconThree,
-  },
-];
+// const solutions: SolutionItem[] = [
+//   {
+//     name: "Amman",
+//     href: "/",
+//     icon: IconFour,
+//     active: true,
+//   },
+//   {
+//     name: "Riyadh",
+//     href: "/",
+//     icon: IconTwo,
+//   },
+//   {
+//     name: "Dubai",
+//     href: "/",
+//     icon: IconOne,
+//   },
+//   {
+//     name: "Cairo",
+//     href: "/",
+//     icon: IconThree,
+//   },
+// ];
 
 export default function DropdownTravelers() {
+  const { countriesHasData, fetchCountriesHasData } = useCountriesHasDataStore();
+  const { defaultCountry, fetchDefaultCountry } = useDefaultCountryStore();
+  const navigate = useNavigate()
+  const region = Cookies.get("region");
+  const selectedCountry = region ? region : defaultCountry?.code;
+  useEffect(() => {
+    fetchCountriesHasData();
+    fetchDefaultCountry();
+  }, [fetchCountriesHasData, fetchDefaultCountry]);
+  console.log(defaultCountry);
+  
   return (
     <div className="DropdownTravelers">
       <Popover className="relative">
@@ -51,7 +60,7 @@ export default function DropdownTravelers() {
                 group py-2 rounded-md text-sm sm:text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
             >
               <div className={` inline-flex items-center `} role="button">
-                <span>Amman</span>
+                <span>{`${selectedCountry}`}</span>
                 <ChevronDownIcon
                   className={`${open ? "-rotate-180" : "text-opacity-70 "}
                   ml-2 h-5 w-5 text-neutral-700 group-hover:text-opacity-80 transition ease-in-out duration-150 `}
@@ -71,25 +80,32 @@ export default function DropdownTravelers() {
               <Popover.Panel className="absolute z-40 w-screen max-w-xs px-4 mt-4 transform -translate-x-1/2 left-1/2 sm:px-0">
                 <div className="overflow-hidden rounded-2xl shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative grid grid-cols-1 gap-8 bg-white dark:bg-neutral-800 p-7 ">
-                    {solutions.map((item, index) => (
+                    {countriesHasData?.map((item, index) => (
                       <Link
                         key={index}
-                        to={item.href}
-                        onClick={() => close()}
-                        className={`flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 ${
-                          item.active
+                        to={'/'}
+                        onClick={() => {
+                          Cookies.set("region", item?.code);
+                          navigate('/')
+                          close();
+                        }}
+                        className={`flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 
+                           ${
+                          item.code === selectedCountry 
                             ? "bg-neutral-100 dark:bg-neutral-700"
                             : ""
-                        }`}
+                        }
+                        `
+                      }
                       >
                         <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 bg-primary-50 rounded-md text-primary-500 sm:h-12 sm:w-12">
-                          <item.icon aria-hidden="true" />
+                        <img src={item?.flag} alt={`${item?.name} flag`} width={30} />
                         </div>
                         <div className="ml-4 space-y-0.5">
-                          <p className="text-sm font-medium ">{item.name}</p>
-                          <p className="text-xs text-neutral-500 dark:text-neutral-300">
+                          <p className="text-sm font-medium ">{item?.name} ({item?.code})</p>
+                          {/* <p className="text-xs text-neutral-500 dark:text-neutral-300">
                             {item.description}
-                          </p>
+                          </p> */}
                         </div>
                       </Link>
                     ))}

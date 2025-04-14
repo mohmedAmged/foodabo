@@ -2,7 +2,7 @@ import React, { FC } from "react";
 
 export interface SaleOffBadgeProps {
   className?: string;
-  desc?: string;
+  desc?: any;
 }
 
 const SaleOffBadge: FC<SaleOffBadgeProps> = ({

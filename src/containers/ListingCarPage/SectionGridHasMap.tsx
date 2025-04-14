@@ -7,15 +7,32 @@ import Heading2 from "components/Heading/Heading2";
 import CarCardH from "components/CarCardH/CarCardH";
 
 import MapContainer from "containers/MapContainer";
+import { Deal, DealsData, Item, ItemsData } from "store/SingleResturantStore";
+import TabFilters from "./TabFilters";
+import MenuItemCard from "components/MenuItemCard/MenuItemCard";
 
 const DEMO_MENUS = DEMO_MENU_LISTINGS.filter((_, i) => i < 12);
 
-export interface SectionGridHasMapProps {}
+export interface SectionGridHasMapProps {
+  menuItems?: Item[];
+  dealsItems?: Deal[]; 
+  countryName?: string;
+  ownerImage?: string;
+  OwnerName?:string;
+}
 
-const SectionGridHasMap: FC<SectionGridHasMapProps> = () => {
+const SectionGridHasMap: FC<SectionGridHasMapProps> = ({
+  menuItems,
+  dealsItems, 
+  countryName,
+  ownerImage,
+  OwnerName
+}) => {
   const [currentHoverID, setCurrentHoverID] = useState<string | number>(-1);
   const [showFullMapFixed, setShowFullMapFixed] = useState(false);
   const [showDealsFixed, setShowDealsFixed] = useState(false);
+  // console.log(menuItems);
+  
   return (
     <div>
       <div className="relative flex min-h-screen">
@@ -25,9 +42,9 @@ const SectionGridHasMap: FC<SectionGridHasMapProps> = () => {
             heading="Menu Items"
             subHeading={
               <span className="block text-neutral-500 dark:text-neutral-400 mt-3">
-                30 Items
-                <span className="mx-2">·</span>
-                Aug 12 - 18
+                {menuItems ? menuItems.length : '30'} Items
+                {/* <span className="mx-2">·</span>
+                Aug 12 - 18 */}
               </span>
             }
           />
@@ -35,7 +52,18 @@ const SectionGridHasMap: FC<SectionGridHasMapProps> = () => {
             <TabFilters />
           </div> */}
           <div className="grid grid-cols-1 gap-8">
-            {DEMO_MENUS.map((item) => (
+            { menuItems ?
+            menuItems.map((item)=>(
+              <div
+                key={item.id}
+                onMouseEnter={() => setCurrentHoverID((_) => item.id)}
+                onMouseLeave={() => setCurrentHoverID((_) => -1)}
+              >
+                <MenuItemCard ownerImage={ownerImage} ownerName={OwnerName} countryName={countryName} MenuItem={item} />
+              </div>
+            ))
+            :
+            DEMO_MENUS.map((item) => (
               <div
                 key={item.id}
                 onMouseEnter={() => setCurrentHoverID((_) => item.id)}
@@ -43,7 +71,8 @@ const SectionGridHasMap: FC<SectionGridHasMapProps> = () => {
               >
                 <CarCardH data={item} />
               </div>
-            ))}
+            ))
+            }
           </div>
           <div className="flex mt-16 justify-center items-center">
             <Pagination />
@@ -109,31 +138,35 @@ const SectionGridHasMap: FC<SectionGridHasMapProps> = () => {
                 </p>
 
                 {/* $15 OFF DEAL */}
-                <div className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl p-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xl font-semibold">$15 Off Deal</span>
-                    <button className="bg-primary-6000 text-white px-4 py-2 rounded-lg">Add to cart</button>
-                  </div>
-                  <span className="text-neutral-6000 dark:text-neutral-300">Grab this deal for only $7.00 (view terms)</span>
+                {
+                dealsItems?.map((deal)=>(
+                <div key={deal?.id} className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl p-4">
+                    <div className="flex justify-between items-center">
+                    <span className="text-xl font-semibold">{deal?.deal_type_translated} for {deal?.discount_value}</span>
+                    <button className="bg-primary-6000 text-white px-4 py-2 rounded-lg">Claim</button>
+                    </div>
+                    <span className="text-neutral-6000 dark:text-neutral-300">you can use in {deal?.used_in} (view terms)</span>
                 </div>
+              ))
+            }
 
                 {/* $25 OFF DEAL */}
-                <div className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl p-4">
+                {/* <div className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl p-4">
                   <div className="flex justify-between items-center">
                     <span className="text-xl font-semibold">$25 Off Deal</span>
                     <button className="bg-primary-6000 text-white px-4 py-2 rounded-lg">Add to cart</button>
                   </div>
                   <span className="text-neutral-6000 dark:text-neutral-300">Grab this deal for only $10.00 (view terms)</span>
-                </div>
+                </div> */}
 
                 {/* DINING DISCOUNT PASS */}
-                <div className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl p-4">
+                {/* <div className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl p-4">
                   <div className="flex justify-between items-center">
                     <span className="text-xl font-semibold">Dining Discount Pass</span>
                     <button className="bg-primary-6000 text-white px-4 py-2 rounded-lg">View Offer</button>
                   </div>
                   <span className="text-neutral-6000 dark:text-neutral-300">Get discounts at over 170,000 restaurants and retailers nationwide.</span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

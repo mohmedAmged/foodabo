@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import BackgroundSection from "components/BackgroundSection/BackgroundSection";
 import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 import SectionGridAuthorBox from "components/SectionGridAuthorBox/SectionGridAuthorBox";
@@ -10,6 +10,7 @@ import { Helmet } from "react-helmet-async";
 import heroRightImage from "images/fodaboo images/collage2.png";
 import SectionGridHasMap from "containers/ListingCarPage/SectionGridHasMap";
 import { useParams } from "react-router-dom";
+import { useSingleRestaurantStore } from "store/SingleResturantStore";
 
 export interface ListingCarMapPageProps {
   className?: string;
@@ -17,7 +18,22 @@ export interface ListingCarMapPageProps {
 
 const AllMenuItemsPage: FC<ListingCarMapPageProps> = ({ className = "" }) => {
 const {resturantName} =useParams()
+const {
+    restaurant,
+    items,
+    deals,
+    loading,
+    error,
+    getRestaurant,
+  } = useSingleRestaurantStore();
 
+  useEffect(() => {
+    if (resturantName) {
+      getRestaurant(resturantName);
+    }
+  }, [resturantName, getRestaurant]);
+  // console.log(items);
+  
   return (
     <div
       className={`nc-ListingCarMapPage relative ${className}`}
@@ -31,14 +47,15 @@ const {resturantName} =useParams()
       {/* SECTION HERO */}
       <div className="container pt-10 pb-24 lg:pt-16 lg:pb-28">
         <SectionHeroArchivePage
-        currentSlug={resturantName}
+        currentSlug={restaurant?.name}
           rightImage={heroRightImage}
           currentPage="Cars"
           currentTab="Cars"
+          countryName={restaurant?.country_name}
           listingType={
             <>
-              <i className="text-2xl las la-car"></i>
-              <span className="ml-2.5">30 Items</span>
+              <i className="text-2xl las la-utensils"></i>
+              <span className="ml-2.5">{items?.length} Items</span>
             </>
           }
         />
@@ -46,7 +63,7 @@ const {resturantName} =useParams()
 
       {/* SECTION */}
       <div className="container pb-24 lg:pb-28 2xl:pl-10 xl:pr-0 xl:max-w-none">
-        <SectionGridHasMap />
+        <SectionGridHasMap ownerImage={restaurant?.logo} OwnerName={restaurant?.applicant_full_name} countryName={restaurant?.country_name} menuItems={items} dealsItems={deals}/>
       </div>
 
       <div className="container overflow-hidden">

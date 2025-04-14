@@ -1,10 +1,12 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode, useEffect } from "react";
 import { DEMO_STAY_LISTINGS } from "data/listings";
 import { StayDataType } from "data/types";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import HeaderFilter from "./HeaderFilter";
 import StayCard from "components/StayCard/StayCard";
 import { Link, useNavigate } from "react-router-dom";
+import { UseHomeResturantsAndCuisinesStore } from "store/UseHomeResturantsAndCuisinesStore";
+import HomeResturantCard from "components/HomeResturantCardSec/HomeResturantCard";
 
 // OTHER DEMO WILL PASS PROPS
 const DEMO_DATA: StayDataType[] = DEMO_STAY_LISTINGS.filter((_, i) => i < 8);
@@ -30,6 +32,22 @@ const SectionGridFeaturePlaces: FC<SectionGridFeaturePlacesProps> = ({
   const renderCard = (stay: StayDataType) => {
     return <StayCard key={stay.id} data={stay} />;
   };
+  const {
+    restaurants,
+    cuisines,
+    restaurantMeta,
+    cuisineMeta,
+    loading,
+    fetchRestaurants,
+    fetchCuisines,
+  } = UseHomeResturantsAndCuisinesStore();
+
+  useEffect(() => {
+    fetchRestaurants();
+    fetchCuisines();
+  }, [fetchRestaurants, fetchCuisines]);
+  // console.log(cuisines);
+  
   return (
     <div className="nc-SectionGridFeaturePlaces relative">
       <HeaderFilter
@@ -49,13 +67,16 @@ const SectionGridFeaturePlaces: FC<SectionGridFeaturePlacesProps> = ({
             stayListings?.map((stay) => renderCard(stay))
           :
             DEMO_DATA.map((stay) => renderCard(stay))
+          // restaurants?.map((el)=>(
+          //   <HomeResturantCard key={el?.id} data={el}/>
+          // ))
         }
       </div>
-      {/* <div className="flex mt-16 justify-center items-center">
+      <div className="flex mt-16 justify-center items-center">
         <Link to={'/latest-deals'}>
           <ButtonPrimary loading>Show me more</ButtonPrimary>
         </Link>
-      </div> */}
+      </div>
     </div>
   );
 };
