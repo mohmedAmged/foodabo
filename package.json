@@ -2,7 +2,6 @@
   "name": "chisfis",
   "version": "4.1.0",
   "private": true,
-  "homepage": ".",
   "dependencies": {
     "@glidejs/glide": "^3.6.0",
     "@headlessui/react": "^1.7.17",
