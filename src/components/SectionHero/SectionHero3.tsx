@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 // import imagePng from "images/travelhero2.png";
-import cover from 'images/cover.jpg'
+import cover from '../../../public/cover.jpg'
 export interface SectionHero3Props {
   className?: string;
 }
@@ -30,7 +30,7 @@ const SectionHero3: FC<SectionHero3Props> = ({ className = "" }) => {
         <img
           className="absolute inset-0 object-cover rounded-xl"
           src={cover}
-          alt="hero"
+          alt="cover"
         />
       </div>
     </div>
