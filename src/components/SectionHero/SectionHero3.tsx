@@ -1,11 +1,16 @@
 import React, { FC } from "react";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import imagePng from "images/travelhero2.png";
-// import cover from '../../../public/cover.jpg'
+import cover from 'images/cover.jpg'
 export interface SectionHero3Props {
   className?: string;
 }
-
+interface ImageType {
+  img?: string;
+}
+const homeAssets :ImageType = {
+  img: cover,
+}
 const SectionHero3: FC<SectionHero3Props> = ({ className = "" }) => {
   return (
     <div
@@ -29,7 +34,7 @@ const SectionHero3: FC<SectionHero3Props> = ({ className = "" }) => {
       <div className="relative aspect-w-1 aspect-h-1 sm:aspect-w-4 sm:aspect-h-3 lg:aspect-w-16 lg:aspect-h-9 xl:aspect-h-8 ">
         <img
           className="absolute inset-0 object-cover rounded-xl"
-          src='/public/images/cover.jpg'
+          src={homeAssets?.img}
           alt="cover"
         />
       </div>
