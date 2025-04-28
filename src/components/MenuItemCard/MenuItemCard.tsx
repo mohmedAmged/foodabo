@@ -36,7 +36,7 @@ console.log(MenuItem);
           <NcImage className="w-full" src={MenuItem?.image} />
         </div>
         {/* <BtnLikeIcon isLiked={like} className="absolute right-3 top-3" /> */}
-        {/* {saleOff && <SaleOffBadge className="absolute left-3 top-3" />} */}
+        {MenuItem?.discount_value !== null && <SaleOffBadge desc={MenuItem?.discount_value} className="absolute left-3 top-3" />}
       </div>
     );
   };
@@ -111,12 +111,22 @@ console.log(MenuItem);
               {author.displayName}
             </span> */}
           </div>
-          <span className="text-lg font-semibold text-secondary-700">
+          {/* <span className="text-lg font-semibold text-secondary-700">
             {MenuItem?.price_with_currency}
-            {` `}
-            {/* <span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">
-              /day
-            </span> */}
+          </span> */}
+          <span className="text-lg font-semibold text-secondary-700">
+            {MenuItem?.discount_value !== null ? (
+              <>
+                <span className="line-through text-gray-500 ml-3">
+                  {MenuItem?.price_with_currency}
+                </span>
+                <span className="text-primary-600">
+                  {MenuItem?.price_after_discount}
+                </span>
+              </>
+            ) : (
+              MenuItem?.price_with_currency
+            )}
           </span>
         </div>
       </div>

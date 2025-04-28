@@ -37,10 +37,13 @@ export interface Item {
   description: string;
   price: string;
   price_with_currency: string;
+  price_after_discount: string;
   category_id: number;
   category_name: string;
   number_of_recommendations: number;
   image: string;
+  discount_value: string | null;
+  discount_type: string | null;
 }
 
 export interface PaginationMeta {

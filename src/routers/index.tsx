@@ -63,6 +63,8 @@ import ExploreGeneral from "containers/ExploreGeneralPage/ExploreGeneral";
 import { useDefaultCountryStore } from "store/DefaultCountry";
 import Cookies from "js-cookie";
 import SingleResturantDetails from "containers/ListingDetailPage/listing-stay-detail/SingleResturantDetails";
+import MyClaimedDeals from "containers/AccountPage/MyClaimedDeals";
+import MySingleClaimedDealInfo from "containers/AccountPage/MySingleClaimedDealInfo";
 
 export const pages = [
   // fodaboo routes
@@ -78,6 +80,8 @@ export const pages = [
   { path: "/login", component: PageLogin },
   { path: "/account", component: AccountPage },
   { path: "/user-account", component: AccountUserPage },
+  { path: "/my-claimed-deals", component: MyClaimedDeals },
+  { path: "/my-claimed-deals/:singleDeal", component: MySingleClaimedDealInfo },
   { path: "/author", component: AuthorPage },
   { path: "/account-menu", component: AccountMenu },
   { path: "/account-menu/add-items", component: AddNewMenuItem },

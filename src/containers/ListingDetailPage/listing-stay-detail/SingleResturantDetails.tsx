@@ -19,6 +19,7 @@ import ButtonPrimary from "shared/Button/ButtonPrimary";
 import DetailPagetLayout from "../Layout";
 import GuestsInput from "./GuestsInput";
 import { useSingleRestaurantStore } from "store/SingleResturantStore";
+import { useClaimDealStore } from "store/useClaimDealStore";
 interface gallerry_interface{
   id?: number;
   img?:string;
@@ -68,6 +69,7 @@ const {
     }
   }, [singleResturant, getRestaurant]);
 console.log(deals);
+const { claimDeal, isLoading } = useClaimDealStore();
 
   let [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false);
 
@@ -624,7 +626,9 @@ console.log(deals);
             <div key={deal?.id} className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl p-4">
                 <div className="flex justify-between items-center">
                 <span className="text-xl font-semibold">{deal?.deal_type_translated} for {deal?.discount_value}</span>
-                <button className="bg-primary-6000 text-white px-4 py-2 rounded-lg">Claim</button>
+                <button
+                 onClick={() => claimDeal(`${deal?.id}`)}
+                 className="bg-primary-6000 text-white px-4 py-2 rounded-lg">Claim</button>
                 </div>
                 <span className="text-neutral-6000 dark:text-neutral-300">you can use in {deal?.used_in} (view terms)</span>
             </div>

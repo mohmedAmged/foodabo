@@ -39,7 +39,7 @@ export const useAllMenuItemsStore = create<StoreState>((set) => ({
   fetchItems: async () => {
     set({ loading: true });
     try {
-      const response = await axios.get<ApiResponse>(`${baseURL}/restaurant/all-items`, {
+      const response = await axios.get<ApiResponse>(`${baseURL}/restaurant/all-items?t=${new Date().getTime()}`, {
               headers: 
               {
                     "Content-Type": "application/json",

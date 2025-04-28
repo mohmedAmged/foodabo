@@ -9,6 +9,8 @@ import axios from "axios";
 import { baseURL } from "functions/baseUrl";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import { withRegion } from "functions/withRegionRoute";
 
 type FormItem = {
   category_id: string;
@@ -24,6 +26,7 @@ type FormItem = {
 
 const AddNewMenuItem = () => {
   const { categories, fetchCategories, currentPage } = useCategoriesStore();
+  const navigate = useNavigate()
   const [formData, setFormData] = useState<{
     menu: FormItem[];
   }>({
@@ -133,8 +136,6 @@ const AddNewMenuItem = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Check if the menu array has items
     if (formData.menu.length === 0) {
       toast.error('The menu is required.');
       return;
@@ -144,12 +145,9 @@ const AddNewMenuItem = () => {
       const submissionData = new FormData();
 
       formData.menu.forEach((menu, menuIndex) => {
-        // Only append category_id if it's a new category (not adding to an existing category)
         if (menu.category_id && formData.menu[menuIndex].items[0].title_en) {
           submissionData.append(`menu[${menuIndex}][category_id]`, menu.category_id);
         }
-
-        // Dynamically iterate over items in each menu
         menu.items.forEach((menuItem, itemIndex) => {
           submissionData.append(`menu[${menuIndex}][items][${itemIndex}][title_en]`, menuItem.title_en);
           submissionData.append(`menu[${menuIndex}][items][${itemIndex}][title_ar]`, menuItem.title_ar);
@@ -157,23 +155,31 @@ const AddNewMenuItem = () => {
           submissionData.append(`menu[${menuIndex}][items][${itemIndex}][description_ar]`, menuItem.description_ar);
           submissionData.append(`menu[${menuIndex}][items][${itemIndex}][price]`, menuItem.price);
           if (menuItem.image) {
-            submissionData.append(`menu[${menuIndex}][items][${itemIndex}][image]`, menuItem.image);  // Assuming image is a file object
+            submissionData.append(`menu[${menuIndex}][items][${itemIndex}][image]`, menuItem.image);
           }
         });
       });
 
-      console.log('Submission Data:', submissionData);  // Check the data structure in the console
-
-      // Send the data to the backend using FormData
+      console.log('Submission Data:', submissionData);  
       const response = await axios.post(`${baseURL}/restaurant/create-menu`, submissionData, {
         headers: {
           Accept: "application/json",
-          "Content-Type": "multipart/form-data", // Ensure the correct content type for FormData
+          "Content-Type": "multipart/form-data", 
           Authorization: `Bearer ${Cookies.get("auth_token")}`,
         },
       });
-
-      toast.success(response.data.message);
+      if (response.status === 200) {
+       
+        
+        setTimeout(() => {
+          navigate(withRegion('account-menu')); 
+        }, 2000);
+        toast.success(response.data.message || 'Menu items created successfully');
+        
+      } else {
+        toast.error('Unexpected response status');
+      }
+      // toast.success(response.data.message || 'menu Items created successufuly');
     } catch (error: any) {
       console.error('Error:', error);
       toast.error(error.response?.data.message || 'Something went wrong');
@@ -224,9 +230,9 @@ const AddNewMenuItem = () => {
                           onChange={(e) => handleItemChange(menuIndex, itemIndex, 'title_en', e.target.value)}
                         />
                       </div>
-
                       <div>
                         <label>Item Name (Ar)</label>
+                        
                         <Input
                           type="text"
                           value={item.title_ar}

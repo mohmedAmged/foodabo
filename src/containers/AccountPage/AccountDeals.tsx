@@ -5,6 +5,7 @@ import ButtonPrimary from "shared/Button/ButtonPrimary";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useDealsStore } from "store/AllResturantDeals";
 import ResturantDealsCard from "components/ResturantDealsCard/ResturantDealsCard";
+import { withRegion } from "functions/withRegionRoute";
 
 
 const AccountDeals = () => {
@@ -30,7 +31,10 @@ console.log(deals);
 
         <div>
             <div  className="py-10">
-                <ButtonPrimary href={'/Add-new-deal'}>Create New Deal  <PlusCircleIcon aria-hidden="true" className="w-6 h-6 ms-2"/></ButtonPrimary>
+                <ButtonPrimary 
+                // href={'/Add-new-deal'}
+                href={`${withRegion('Add-new-deal')}`}
+                >Create New Deal  <PlusCircleIcon aria-hidden="true" className="w-6 h-6 ms-2"/></ButtonPrimary>
             </div>
             
           <Tab.Group>

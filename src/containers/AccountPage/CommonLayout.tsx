@@ -26,7 +26,8 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
             >
               Profile 
             </NavLink>
-            <NavLink
+            {loginType !== 'user' &&
+              <NavLink
               to={withRegion('/account-packages')}
               className={({ isActive }) =>
                 `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
@@ -36,15 +37,16 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
             >
               Packages
             </NavLink>
+            }
             <NavLink
-              to={withRegion('/account-deals')}
+              to={loginType !== 'user' ? withRegion('/account-deals') : withRegion('/my-claimed-deals')}
               className={({ isActive }) =>
                 `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
                   !isActive ? "border-transparent" : "border-primary-500"
                 }`
               }
             >
-              Deals
+              {loginType !== 'user' ? 'Deals' : 'Claimed Deals'}
             </NavLink>
             <NavLink
               to={withRegion('/account-password')}
@@ -66,7 +68,8 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
             >
               Change Billing
             </NavLink>
-            <NavLink
+            { loginType !== 'user' &&
+              <NavLink
               to={withRegion('/account-menu')}
               className={({ isActive }) =>
                 `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
@@ -75,7 +78,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
               }
             >
               Menu
-            </NavLink>
+            </NavLink>}
             <NavLink
               to={withRegion('/account-awards')}
               className={({ isActive }) =>

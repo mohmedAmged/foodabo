@@ -11,6 +11,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { baseURL } from "functions/baseUrl";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { withRegion } from "functions/withRegionRoute";
 
 interface MenuItem {
   id: number;
@@ -97,7 +98,10 @@ const AccountMenu = () => {
 
         <div>
             <div className="pt-8 pb-10">
-                <ButtonPrimary href={'/account-menu/create-category'} className="me-4">
+                <ButtonPrimary 
+                // href={'/account-menu/create-category'} 
+                href={`${withRegion('account-menu/create-category')}`}
+                className="me-4">
                 Create category <PlusCircleIcon aria-hidden="true" className="w-6 h-6 ms-2"/>
                 </ButtonPrimary>
             </div>
@@ -108,7 +112,7 @@ const AccountMenu = () => {
               <button
               key={category?.id}
               type="button"
-              onClick={()=>(navigate(`/account-menu/edit-category/${category?.id}`))}
+              onClick={()=>(navigate(`${withRegion(`account-menu/edit-category/${category?.id}`)}`))}
               className={`flex-shrink-0 block !leading-none font-medium px-5 py-2.5 text-sm sm:text-base sm:px-6 sm:py-3 capitalize rounded-full focus:outline-none bg-secondary-900 text-secondary-50 flex items-center space-x-2`} // Added items-center and space-x-2
             >
               {category?.name} <PencilSquareIcon aria-hidden="true" className="w-6 h-6 ml-2" />
@@ -133,7 +137,12 @@ const AccountMenu = () => {
 
         <div>
             <div  className="py-10">
-                <ButtonPrimary href={'/account-menu/add-items'}>Add menu Item  <PlusCircleIcon aria-hidden="true" className="w-6 h-6 ms-2"/>
+                <ButtonPrimary 
+                // href={'/account-menu/add-items'}
+                href={`${withRegion('account-menu/add-items')}`}
+                >
+                  Add menu Item  
+                <PlusCircleIcon aria-hidden="true" className="w-6 h-6 ms-2"/>
                 </ButtonPrimary>
             </div>
             
