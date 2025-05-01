@@ -65,6 +65,8 @@ import Cookies from "js-cookie";
 import SingleResturantDetails from "containers/ListingDetailPage/listing-stay-detail/SingleResturantDetails";
 import MyClaimedDeals from "containers/AccountPage/MyClaimedDeals";
 import MySingleClaimedDealInfo from "containers/AccountPage/MySingleClaimedDealInfo";
+import UserAccountTags from "containers/AccountPage/UserAccountTags";
+import AddNewTag from "containers/AccountPage/AddNewTag";
 
 export const pages = [
   // fodaboo routes
@@ -82,6 +84,8 @@ export const pages = [
   { path: "/user-account", component: AccountUserPage },
   { path: "/my-claimed-deals", component: MyClaimedDeals },
   { path: "/my-claimed-deals/:singleDeal", component: MySingleClaimedDealInfo },
+  { path: "/user-tags", component: UserAccountTags },
+  { path: "/user-tags/add-new-tag", component: AddNewTag },
   { path: "/author", component: AuthorPage },
   { path: "/account-menu", component: AccountMenu },
   { path: "/account-menu/add-items", component: AddNewMenuItem },

@@ -9,7 +9,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 const CreateMenuCategory = () => {
     const {categID} = useParams()
-    console.log(categID);
     
 const [formData, setFormData] = useState({
     name_en: "",
@@ -18,7 +17,6 @@ const [formData, setFormData] = useState({
 const [errors, setErrors] = useState<any>({});
 const [isLoading, setIsLoading] = useState(false);
 const navigate = useNavigate();
-  // Fetch the category data when the component mounts or when categoryID changes
   useEffect(() => {
     const fetchCategory = async () => {
       if (categID) {
@@ -28,7 +26,7 @@ const navigate = useNavigate();
             {
                 headers: {
                     Accept: "application/json",
-                    "Content-Type": "application/json", // Adjust based on your API requirements
+                    "Content-Type": "application/json", 
                     Authorization: `Bearer ${Cookies.get("auth_token")}`,
                 },
             }
@@ -57,19 +55,19 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 
     const loadingToast = toast.loading("Submitting...");
 
-    setIsLoading(true); // Set loading state
+    setIsLoading(true); 
 
     try {
         let response;
         if (categID) {
-        // If categoryID exists, it's an update request
+        
         response = await axios.post(
             `${baseURL}/restaurant/update-category/${categID}`,
             formData,
             {
             headers: {
                 Accept: "application/json",
-                "Content-Type": "application/json", // Adjust based on your API requirements
+                "Content-Type": "application/json", 
                  Authorization: `Bearer ${Cookies.get("auth_token")}`,
             },
             }
@@ -81,14 +79,14 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
             autoClose: 3000,
         });
         } else {
-        // If categoryID doesn't exist, it's a create request
+       
         response = await axios.post(
             `${baseURL}/restaurant/create-category`,
             formData,
             {
             headers: {
                 Accept: "application/json",
-                "Content-Type": "application/json", // Adjust based on your API requirements
+                "Content-Type": "application/json", 
                  Authorization: `Bearer ${Cookies.get("auth_token")}`,
             },
             }
@@ -101,17 +99,13 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         });
         }
 
-        // Navigate after the success toast disappears
         setTimeout(() => {
         navigate("/account-menu");
         }, 3000);
     } catch (error: any) {
-        // Check if there are validation errors
         if (error.response?.data?.errors) {
         const errorMessages = error.response.data.errors;
-        setErrors(errorMessages); // Set the validation errors
-
-        // Display error messages in toast
+        setErrors(errorMessages); 
         const errorToastMessages = Object.values(errorMessages)
             .flat()
             .join(" ");
@@ -130,7 +124,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         });
         }
     } finally {
-        setIsLoading(false); // Disable loading state for the button
+        setIsLoading(false); 
     }
   };
   return (

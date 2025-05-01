@@ -89,8 +89,9 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
             >
               Awards
             </NavLink>
-            <NavLink
-              to={withRegion('/account-awards')}
+            { loginType === 'user' &&
+              <NavLink
+              to={withRegion('/user-tags')}
               className={({ isActive }) =>
                 `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
                   !isActive ? "border-transparent" : "border-primary-500"
@@ -98,7 +99,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
               }
             >
               Tags
-            </NavLink>
+            </NavLink>}
           </div>
         </div>
       </div>
