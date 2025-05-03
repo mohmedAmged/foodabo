@@ -67,6 +67,7 @@ import MyClaimedDeals from "containers/AccountPage/MyClaimedDeals";
 import MySingleClaimedDealInfo from "containers/AccountPage/MySingleClaimedDealInfo";
 import UserAccountTags from "containers/AccountPage/UserAccountTags";
 import AddNewTag from "containers/AccountPage/AddNewTag";
+import AddTagForImage from "containers/AccountPage/AddTagForImage";
 
 export const pages = [
   // fodaboo routes
@@ -86,6 +87,7 @@ export const pages = [
   { path: "/my-claimed-deals/:singleDeal", component: MySingleClaimedDealInfo },
   { path: "/user-tags", component: UserAccountTags },
   { path: "/user-tags/add-new-tag", component: AddNewTag },
+  { path: "/user-tags/add-tag-for/:tagID", component: AddTagForImage },
   { path: "/author", component: AuthorPage },
   { path: "/account-menu", component: AccountMenu },
   { path: "/account-menu/add-items", component: AddNewMenuItem },

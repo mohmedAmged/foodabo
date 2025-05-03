@@ -3,15 +3,34 @@ import React, { Fragment, useEffect, useState } from "react";
 import CommonLayout from "./CommonLayout";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { useDealsStore } from "store/AllResturantDeals";
-import ResturantDealsCard from "components/ResturantDealsCard/ResturantDealsCard";
 import { withRegion } from "functions/withRegionRoute";
 import Cookies from "js-cookie";
+import { useUserImagesStore } from "store/UseUserShotsStore";
+import UserShotCard from "components/UserShotCard/UserShotCard";
+import { useRemoveTagStore } from "store/UseRemoveTagShot";
+import { useDeleteImageTagStore } from "store/UseDeleteFullShot";
+import { useNavigate } from "react-router-dom";
 
 
 const UserAccountTags = () => {
      const loginData = Cookies.get("logInData");
+     const navigate = useNavigate()
  console.log(loginData);
+ const { tags, isLoading, error, fetchUserImages } = useUserImagesStore();
+ const { removeTag, success } = useRemoveTagStore();
+ const { deleteImageTag, loading } = useDeleteImageTagStore();
+ useEffect(() => {
+   fetchUserImages();
+ }, []);
+ const handleRemove = (tagId:number) => {
+  removeTag(tagId);
+  navigate(withRegion(`/user-tags`));
+};
+const handleDeleteShot = async (tagId:number) => {
+  await deleteImageTag(tagId);
+  navigate(withRegion(`/user-tags`))
+};
+ console.log(tags);
  
   const renderSection2 = () => {
     return (
@@ -24,7 +43,6 @@ const UserAccountTags = () => {
         <div>
             <div  className="py-10">
                 <ButtonPrimary 
-                // href={'/Add-new-deal'}
                 href={`${withRegion('/user-tags/add-new-tag')}`}
                 >Add New Tag  <PlusCircleIcon aria-hidden="true" className="w-6 h-6 ms-2"/></ButtonPrimary>
             </div>
@@ -46,15 +64,16 @@ const UserAccountTags = () => {
               </Tab>
                
             </Tab.List>
-            {/* <div>
+            <div className="mt-4">
                   <div>
-                    {loading ? <p>Loading...</p> : (
+                    {isLoading ? <p>Loading...</p> : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {deals?.map(deal => (
-                          <ResturantDealsCard
-                            key={deal.id}
-                            data={deal}
-                            onDelete={handleDelete} 
+                        {tags?.map(tag => (
+                          <UserShotCard
+                            key={tag?.id}
+                            data={tag}
+                            removeTag={()=>handleRemove(tag?.id)}
+                            deleteShot={()=> handleDeleteShot(tag?.id)}
                           />
                       ))}
                   </div>
@@ -62,7 +81,7 @@ const UserAccountTags = () => {
                     )}
                       
                   </div>
-            </div> */}
+            </div>
           </Tab.Group>
         </div>
       </div>
