@@ -13,7 +13,29 @@ export interface Cuisine {
   name: string;
   image: string;
 }
-
+export interface TagUser {
+  name: string;
+  username: string;
+  image: string;
+}
+export interface TagItem {
+  id: number;
+  title: string;
+  image: string;
+  number_of_tags: number;
+}
+export interface Tag {
+  id: number;
+  user: TagUser;
+  item: TagItem | null;
+  image: string;
+}
+export interface TagsData {
+  tags: Tag[];
+  meta: PaginationMeta;
+  links: PaginationLinks;
+  pages: string[];
+}
 export interface Restaurant {
   id: number;
   name: string;
@@ -29,6 +51,7 @@ export interface Restaurant {
   images: RestaurantImage[];
   followed: boolean;
   cuisines: Cuisine[];
+  number_of_tags: number;
 }
 
 export interface Item {
@@ -105,6 +128,7 @@ interface RestaurantApiResponse {
     restaurant: Restaurant;
     items: ItemsData;
     deals: DealsData;
+    tags: TagsData;
   };
   message: string;
   errors: string[];
@@ -117,6 +141,7 @@ interface SingleRestaurantStore {
   restaurant: Restaurant | null;
   items: Item[];
   deals: Deal[];
+  tags: Tag[];
   loading: boolean;
   error: string | null;
   getRestaurant: (slug: string) => Promise<void>;
@@ -126,6 +151,7 @@ export const useSingleRestaurantStore = create<SingleRestaurantStore>((set) => (
   restaurant: null,
   items: [],
   deals: [],
+  tags: [],
   loading: false,
   error: null,
 
@@ -133,12 +159,13 @@ export const useSingleRestaurantStore = create<SingleRestaurantStore>((set) => (
     set({ loading: true, error: null });
     try {
       const response = await axios.get<RestaurantApiResponse>(`${baseURL}/show-restaurant/${slug}?t=${new Date().getTime()}`);
-      const { restaurant, items, deals } = response.data.data;
+      const { restaurant, items, deals, tags } = response.data.data;
 
       set({
         restaurant,
         items: items.items,
         deals: deals.deals,
+        tags: tags.tags,
         loading: false,
         error: null,
       });

@@ -156,7 +156,7 @@ console.log(data);
       data-nc-id="StayCard"
     >
       {renderSliderGallery()}
-      <Link to={`${data?.slug}`}>{renderContent()}</Link>
+      <Link to={`/${data?.slug}`}>{renderContent()}</Link>
     </div>
   );
 };

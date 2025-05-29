@@ -5,13 +5,17 @@ import HeroRealEstateSearchForm from "components/HeroSearchForm/(real-estate-sea
 export interface SectionHero2ArchivePageProps {
   className?: string;
   children?: React.ReactNode;
-  headText?:string
+  headText?:string;
+  countryName?: string;
+  dealsCount?: number;
 }
 
 const SectionHero2ArchivePage: FC<SectionHero2ArchivePageProps> = ({
   className = "",
   children,
-  headText
+  headText,
+  countryName,
+  dealsCount
 }) => {
   return (
     <div
@@ -30,19 +34,19 @@ const SectionHero2ArchivePage: FC<SectionHero2ArchivePageProps> = ({
           <div className="w-screen right-10 md:right-32 inset-y-0 absolute bg-primary-500"></div>
           <div className="relative max-w-3xl inline-flex flex-shrink-0 flex-col items-start py-16 sm:py-20 space-y-8 sm:space-y-10 text-white">
             <h2 className="font-medium text-4xl md:text-5xl xl:text-7xl leading-[110%]">
-              {headText ? `${headText}, Amman` : 'Tokyo, Jappan'}
+              {headText ? `${headText}, ${countryName ? countryName :'Amman'}` : 'Tokyo, Jappan'}
             </h2>
             <div className="flex items-center text-base md:text-lg ">
               <i className="text-2xl las la-map-marked"></i>
-              <span className="ml-2.5">Amman </span>
+              <span className="ml-2.5">{countryName ? countryName :'Amman'} </span>
               <i className="text-2xl las la-home"></i>
-              <span className="ml-2.5">112 Resturants</span>
+              <span className="ml-2.5">{dealsCount? dealsCount :'112 Resturants'}</span>
             </div>
           </div>
         </div>
-        <div className="hidden lg:block mt-10 w-full">
+        {/* <div className="hidden lg:block mt-10 w-full">
           <HeroRealEstateSearchForm />
-        </div>
+        </div> */}
       </div>
     </div>
   );

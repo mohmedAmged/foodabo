@@ -7,8 +7,8 @@ import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 export interface HeaderFilterProps {
-  tabActive: string;
-  tabs: string[];
+  tabActive?: string;
+  tabs?: string[];
   heading: ReactNode;
   subHeading?: ReactNode;
   onClickTab: (item: string) => void;
@@ -42,7 +42,7 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
           className="sm:space-x-2"
           containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base hiddenScrollbar"
         >
-          {tabs.map((item, index) => (
+          {tabs?.map((item, index) => (
             <NavItem
               key={index}
               isActive={tabActiveState === item}
@@ -52,14 +52,15 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
             </NavItem>
           ))}
         </Nav>
-        <span className="hidden sm:block flex-shrink-0">
+        {tabs &&
+          <span className="hidden sm:block flex-shrink-0">
           <Link to={allItemsLink ? `${allItemsLink}` : ''} >
           <ButtonSecondary className="!leading-none">
             <span>View all</span>
             <i className="ml-3 las la-arrow-right text-xl"></i>
           </ButtonSecondary>
           </Link>
-        </span>
+        </span>}
       </div>
     </div>
   );

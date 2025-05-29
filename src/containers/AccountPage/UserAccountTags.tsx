@@ -13,25 +13,22 @@ import { useNavigate } from "react-router-dom";
 
 
 const UserAccountTags = () => {
-     const loginData = Cookies.get("logInData");
-     const navigate = useNavigate()
- console.log(loginData);
- const { tags, isLoading, error, fetchUserImages } = useUserImagesStore();
- const { removeTag, success } = useRemoveTagStore();
- const { deleteImageTag, loading } = useDeleteImageTagStore();
- useEffect(() => {
-   fetchUserImages();
- }, []);
- const handleRemove = (tagId:number) => {
-  removeTag(tagId);
-  navigate(withRegion(`/user-tags`));
-};
-const handleDeleteShot = async (tagId:number) => {
-  await deleteImageTag(tagId);
-  navigate(withRegion(`/user-tags`))
-};
- console.log(tags);
- 
+    const loginData = Cookies.get("logInData");
+    const navigate = useNavigate();
+    const { tags, isLoading, error, fetchUserImages } = useUserImagesStore();
+    const { removeTag, success } = useRemoveTagStore();
+    const { deleteImageTag, loading } = useDeleteImageTagStore();
+    useEffect(() => {
+      fetchUserImages();
+    }, []);
+    const handleRemove = (tagId:number) => {
+      removeTag(tagId);
+      navigate(withRegion(`/user-tags`));
+    };
+    const handleDeleteShot = async (tagId:number) => {
+      await deleteImageTag(tagId);
+      navigate(withRegion(`/user-tags`))
+    };
   const renderSection2 = () => {
     return (
       <div className="space-y-10 sm:space-y-8">
@@ -70,6 +67,7 @@ const handleDeleteShot = async (tagId:number) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {tags?.map(tag => (
                           <UserShotCard
+                            isDashboard={true}
                             key={tag?.id}
                             data={tag}
                             removeTag={()=>handleRemove(tag?.id)}

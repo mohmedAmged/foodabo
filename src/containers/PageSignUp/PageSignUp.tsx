@@ -37,7 +37,7 @@ const loginSocials = [
 ];
 
 const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
-  const [isBusiness, setIsBusiness] = useState<boolean>(false);
+  const [isBusiness, setIsBusiness] = useState<boolean>(true);
   const { countries, fetchCountries } = useCountriesStore();
   const { cuisines, fetchCuisines } = useCuisinesStore();
   const [cities, setCities] = useState<{ id: number; name: string }[]>([]);

@@ -13,6 +13,7 @@ export interface SectionHeroArchivePageProps {
   rightImage?: string;
   currentSlug?: string;
   countryName?:string;
+  resturantsCount?: number;
 }
 
 const SectionHeroArchivePage: FC<SectionHeroArchivePageProps> = ({
@@ -22,7 +23,8 @@ const SectionHeroArchivePage: FC<SectionHeroArchivePageProps> = ({
   currentTab,
   rightImage = imagePng,
   currentSlug,
-  countryName
+  countryName,
+  resturantsCount,
 }) => {
   return (
     <div
@@ -43,7 +45,7 @@ const SectionHeroArchivePage: FC<SectionHeroArchivePageProps> = ({
             ) : (
               <>
                 <i className="text-2xl las la-home"></i>
-                <span className="ml-2.5">112 Restaurants</span>
+                <span className="ml-2.5">{resturantsCount ? resturantsCount : '112'} Restaurants</span>
               </>
             )}
           </div>

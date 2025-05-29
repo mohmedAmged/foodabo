@@ -4,6 +4,8 @@ import Heading from "components/Heading/Heading";
 import ItemHomeCard from "components/ItemHomeCard/ItemHomeCard";
 import { DEMO_AUTHORS } from "data/authors";
 import { AuthorType } from "data/types";
+import { withRegion } from "functions/withRegionRoute";
+import Cookies from "js-cookie";
 import React, { FC, useEffect } from "react";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import ButtonSecondary from "shared/Button/ButtonSecondary";
@@ -34,7 +36,7 @@ const ItemsHomeSection: FC<SectionGridAuthorBoxProps> = ({
             fetchRankedItems();
         }, [fetchRankedItems]);
       console.log(rankedItems);
-      
+            const token = Cookies.get("auth_token");
   return (
     <div
       className={`nc-SectionGridAuthorBox relative ${className}`}
@@ -62,8 +64,10 @@ const ItemsHomeSection: FC<SectionGridAuthorBoxProps> = ({
         }
       </div>
       <div className="mt-16 flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-5">
-        <ButtonSecondary>Show me more </ButtonSecondary>
-        <ButtonPrimary>Become a host</ButtonPrimary>
+        {/* <ButtonSecondary>Show me more </ButtonSecondary> */}
+        { !token &&
+          <ButtonPrimary href={withRegion('/signup')}>Add your restaurant</ButtonPrimary>
+        }
       </div>
     </div>
   );

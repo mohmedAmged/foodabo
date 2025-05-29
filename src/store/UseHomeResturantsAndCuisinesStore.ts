@@ -22,7 +22,7 @@ export interface Restaurant {
     discount: number;
 }
 
-interface Cuisine {
+export interface Cuisine {
     id: number;
     name: string;
     image: string;
@@ -42,8 +42,8 @@ interface State {
     cuisineMeta: Meta | null;
     loading: boolean;
     error: string | null;
-    fetchRestaurants: (page?: number) => Promise<void>;
-    fetchCuisines: (page?: number) => Promise<void>;
+    fetchRestaurants: (page?: number, cuisine?: any) => Promise<void>;
+    fetchCuisines: (page?: number, cuisine?: any) => Promise<void>;
 }
 
 export const UseHomeResturantsAndCuisinesStore = create<State>((set) => ({
@@ -54,45 +54,111 @@ export const UseHomeResturantsAndCuisinesStore = create<State>((set) => ({
     loading: false,
     error: null,
 
-    fetchRestaurants: async (page = 1) => {
-        try {
-        set({ loading: true, error: null });
-        const region = Cookies.get("region");
-        const response = await axios.get(`${baseURL}/home-restaurants?restaurants_page=${page}?t=${new Date().getTime()}`, {
-            headers: {
-                country: region || "",
-            },
-        });
-        const { restaurants } = response.data.data;
+    // fetchRestaurants: async (page = 1, cuisineID) => {
+    //     try {
+    //     set({ loading: true, error: null });
+    //     const region = Cookies.get("region");
+    //     const response = await axios.get(`${baseURL}/home-restaurants?restaurants_page=${page}?cuisine=${cuisineID}?t=${new Date().getTime()}`, {
+    //         headers: {
+    //             country: region || "",
+    //         },
+    //     });
+    //     const { restaurants } = response.data.data;
 
-        set({
-            restaurants: restaurants.restaurants,
-            restaurantMeta: restaurants.meta,
-            loading: false,
-        });
+    //     set({
+    //         restaurants: restaurants.restaurants,
+    //         restaurantMeta: restaurants.meta,
+    //         loading: false,
+    //     });
+    //     } catch (error) {
+    //     set({ error: 'Failed to fetch restaurants', loading: false });
+    //     }
+    // },
+
+    fetchRestaurants: async (page = 1, cuisineID) => {
+        try {
+            set({ loading: true, error: null });
+            const region = Cookies.get("region");
+    
+            // Build query params
+            const params: Record<string, any> = {
+                restaurants_page: page,
+                t: new Date().getTime(),
+            };
+            if (cuisineID) {
+                params.cuisine = cuisineID;
+            }
+    
+            const response = await axios.get(`${baseURL}/home-restaurants`, {
+                headers: {
+                    country: region || "",
+                },
+                params,
+            });
+    
+            const { restaurants } = response.data.data;
+    
+            set({
+                restaurants: restaurants.restaurants,
+                restaurantMeta: restaurants.meta,
+                loading: false,
+            });
         } catch (error) {
-        set({ error: 'Failed to fetch restaurants', loading: false });
+            set({ error: 'Failed to fetch restaurants', loading: false });
         }
     },
 
-    fetchCuisines: async (page = 1) => {
-        try {
-        set({ loading: true, error: null });
-        const region = Cookies.get("region");
-        const response = await axios.get(`${baseURL}/home-restaurants?cuisines_page=${page}`,{
-            headers: {
-                country: region || "",
-            },
-        });
-        const { cuisines } = response.data.data;
+    // fetchCuisines: async (page = 1, cuisineID) => {
+    //     try {
+    //     set({ loading: true, error: null });
+    //     const region = Cookies.get("region");
+    //     const response = await axios.get(`${baseURL}/home-restaurants?cuisines_page=${page}?cuisine=${cuisineID}`,{
+    //         headers: {
+    //             country: region || "",
+    //         },
+            
+    //     });
+    //     const { cuisines } = response.data.data;
 
-        set({
-            cuisines: cuisines.cuisines,
-            cuisineMeta: cuisines.meta,
-            loading: false,
-        });
+    //     set({
+    //         cuisines: cuisines.cuisines,
+    //         cuisineMeta: cuisines.meta,
+    //         loading: false,
+    //     });
+    //     } catch (error) {
+    //     set({ error: 'Failed to fetch cuisines', loading: false });
+    //     }
+    // },
+    fetchCuisines: async (page = 1, cuisineID) => {
+        try {
+            set({ loading: true, error: null });
+            const region = Cookies.get("region");
+    
+            // Build query params
+            const params: Record<string, any> = {
+                cuisines_page: page,
+                t: new Date().getTime(),
+            };
+            if (cuisineID) {
+                params.cuisine = cuisineID;
+            }
+    
+            const response = await axios.get(`${baseURL}/home-restaurants`, {
+                headers: {
+                    country: region || "",
+                },
+                params,
+            });
+    
+            const { cuisines } = response.data.data;
+    
+            set({
+                cuisines: cuisines.cuisines,
+                cuisineMeta: cuisines.meta,
+                loading: false,
+            });
         } catch (error) {
-        set({ error: 'Failed to fetch cuisines', loading: false });
+            set({ error: 'Failed to fetch cuisines', loading: false });
         }
     },
 }));

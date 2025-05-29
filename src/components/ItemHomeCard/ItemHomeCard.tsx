@@ -20,6 +20,8 @@ const ItemHomeCard: FC<CardRankedItemProps> = ({
   rankedItem,
 }) => {
       const region = Cookies.get("region");
+      console.log(rankedItem);
+      
   return (
     <Link
       to={'href'}
@@ -83,7 +85,7 @@ const ItemHomeCard: FC<CardRankedItemProps> = ({
           <span
             className={`block mt-1 text-sm text-neutral-500 dark:text-neutral-400`}
           >
-            {rankedItem?.country_name}
+            {rankedItem?.restaurant_name}
           </span>
         </div>
       </div>

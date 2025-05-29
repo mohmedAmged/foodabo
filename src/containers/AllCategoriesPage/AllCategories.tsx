@@ -6,114 +6,42 @@ import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
 import SectionHeroArchivePage from "components/SectionHeroArchivePage/SectionHeroArchivePage";
 // import SectionSliderNewCategories from "components/SectionSliderNewCategories/SectionSliderNewCategories";
 import SectionSubscribe2 from "components/SectionSubscribe2/SectionSubscribe2";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 // import SectionGridFilterCard from "./SectionGridFilterCard";
 import { Helmet } from "react-helmet-async";
 import Heading from "components/Heading/Heading";
 import { TaxonomyType } from "data/types";
+import CuisineCardBox from "components/CuisineCardBox/CuisineCardBox";
+import { UseHomeResturantsAndCuisinesStore } from "store/UseHomeResturantsAndCuisinesStore";
 
 
 export interface ListingStayPageProps {
     className?: string;
-    categoryCardType?: "card1";
-    categories?: TaxonomyType[];
     headingCenter?: boolean;
     gridClassName?: string;
 
 }
-const DEMO_CATS: TaxonomyType[] = [
-{
-    id: "1",
-    href: "#",
-    name: "Burgers",
-    taxonomy: "category",
-    count: 1882,
-    thumbnail:
-    "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-{
-    id: "2",
-    href: "#",
-    name: "Pizza",
-    taxonomy: "category",
-    count: 8288,
-    thumbnail:
-    "https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-{
-    id: "3",
-    href: "#",
-    name: "Shawerma",
-    taxonomy: "category",
-    count: 1288,
-    thumbnail:
-    "https://images.pexels.com/photos/5779368/pexels-photo-5779368.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-{
-    id: "4",
-    href: "#",
-    name: "kabab",
-    taxonomy: "category",
-    count: 112,
-    thumbnail:
-    "https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-{
-    id: "5",
-    href: "#",
-    name: "Burgers",
-    taxonomy: "category",
-    count: 1882,
-    thumbnail:
-        "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-{
-    id: "6",
-    href: "#",
-    name: "Pizza",
-    taxonomy: "category",
-    count: 8288,
-    thumbnail:
-        "https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-{
-    id: "7",
-    href: "#",
-    name: "Shawerma",
-    taxonomy: "category",
-    count: 1288,
-    thumbnail:
-        "https://images.pexels.com/photos/5779368/pexels-photo-5779368.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-{
-    id: "8",
-    href: "#",
-    name: "kabab",
-    taxonomy: "category",
-    count: 112,
-    thumbnail:
-        "https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-];
 const AllCategories: FC<ListingStayPageProps> = (
     { 
         className = "" ,
-        categories = DEMO_CATS,
-        categoryCardType = "card1",
         headingCenter = true,
         gridClassName = "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
     }
 ) => {
-    let CardComponentName = CardCategoryBox1;
-    switch (categoryCardType) {
-      case "card1":
-        CardComponentName = CardCategoryBox1;
-        break;
+   const {
+      cuisines,
+      restaurants,
+      cuisineMeta,
+      loading,
+      fetchRestaurants,
+      fetchCuisines,
+    } = UseHomeResturantsAndCuisinesStore();
   
-      default:
-        CardComponentName = CardCategoryBox1;
-    }
-  
+      useEffect(() => {
+        fetchRestaurants();
+        fetchCuisines();
+      }, [fetchCuisines]);
+      console.log(cuisines);
   return (
         <div
         className={`nc-ListingStayPage relative overflow-hidden ${className}`}
@@ -127,6 +55,8 @@ const AllCategories: FC<ListingStayPageProps> = (
             <div className="container relative overflow-hidden">
                 {/* SECTION HERO */}
                 <SectionHeroArchivePage
+                resturantsCount={restaurants?.length}
+                countryName={restaurants[0]?.country_name}
                 currentPage="Stays"
                 currentTab="Stays"
                 currentSlug= 'All Categories'
@@ -142,9 +72,9 @@ const AllCategories: FC<ListingStayPageProps> = (
                         Find The Best
                     </Heading>
                     <div className={`grid ${gridClassName} gap-5 sm:gap-6 md:gap-8`}>
-                        {categories.map((item, i) => (
-                        <CardComponentName key={i} taxonomy={item} />
-                        ))}
+                    {cuisines?.map((item) => (
+          <CuisineCardBox key={item?.id} data={item} />
+        ))}
                     </div>
                 </div>
                 

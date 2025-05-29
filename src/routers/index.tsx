@@ -68,14 +68,19 @@ import MySingleClaimedDealInfo from "containers/AccountPage/MySingleClaimedDealI
 import UserAccountTags from "containers/AccountPage/UserAccountTags";
 import AddNewTag from "containers/AccountPage/AddNewTag";
 import AddTagForImage from "containers/AccountPage/AddTagForImage";
+import SingleUserPage from "containers/SingleUserPage/SingleUserPage";
+import CuisineSinglePage from "containers/CuisineSinglePage/CuisineSinglePage";
+import AllDealsPage from "containers/AllDealsPage/AllDealsPage";
 
 export const pages = [
   // fodaboo routes
   { path: '/', exact: true, component: PageHome3 },
   { path: "/#", exact: true, component: PageHome3 },
   { path: '/All-categories' , component: AllCategories },
+  { path: '/All-deals' , component: AllDealsPage },
   { path: '/:singleResturant' , component: SingleResturantDetails },
   { path: '/categories/:categSlug' , component: ListingStayPage },
+  { path: '/cuisine/:cuisineID' , component: CuisineSinglePage },
   { path: '/latest-deals' , component: LatestDeals },
   { path: "/:resturantName/menu-items", component: AllMenuItemsPage },
   { path: "/Add-new-deal", component: AddNewDeal },
@@ -88,6 +93,7 @@ export const pages = [
   { path: "/user-tags", component: UserAccountTags },
   { path: "/user-tags/add-new-tag", component: AddNewTag },
   { path: "/user-tags/add-tag-for/:tagID", component: AddTagForImage },
+  { path: "/show-user/:userID", component: SingleUserPage },
   { path: "/author", component: AuthorPage },
   { path: "/account-menu", component: AccountMenu },
   { path: "/account-menu/add-items", component: AddNewMenuItem },
@@ -208,25 +214,52 @@ const MyRoutes = () => {
   }
 
   return (
+    // <BrowserRouter>
+    //   <ScrollToTop />
+    //   <CountryCodeRedirect>
+    //   <>
+    //     <SiteHeader />
+    //     <Routes>
+    //       {pages.map(({ component, path }) => {
+    //         const Component = component;
+    //         return <Route key={path} element={<Component />} 
+    //         path={`/:countryCode${path === '/' ? '' : path}`} />;
+    //       })}
+    //       <Route element={<Page404 />} />
+    //     </Routes>
+
+    //     {WIN_WIDTH < 768 && <FooterNav />}
+    //     <Footer />
+    //   </>
+    //   </CountryCodeRedirect>
+    // </BrowserRouter>
     <BrowserRouter>
-      <ScrollToTop />
-      <CountryCodeRedirect>
-      <>
+    <ScrollToTop />
+    <CountryCodeRedirect>
+      <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900">
         <SiteHeader />
-        <Routes>
-          {pages.map(({ component, path }) => {
-            const Component = component;
-            return <Route key={path} element={<Component />} 
-            path={`/:countryCode${path === '/' ? '' : path}`} />;
-          })}
-          <Route element={<Page404 />} />
-        </Routes>
+        
+        <div className="flex-1">
+          <Routes>
+            {pages.map(({ component, path }) => {
+              const Component = component;
+              return (
+                <Route
+                  key={path}
+                  element={<Component />}
+                  path={`/:countryCode${path === '/' ? '' : path}`}
+                />
+              );
+            })}
+            <Route element={<Page404 />} />
+          </Routes>
+        </div>
 
         {WIN_WIDTH < 768 && <FooterNav />}
         <Footer />
-      </>
-      </CountryCodeRedirect>
-    </BrowserRouter>
+      </div>
+    </CountryCodeRedirect>
+  </BrowserRouter>
   );
 };
 

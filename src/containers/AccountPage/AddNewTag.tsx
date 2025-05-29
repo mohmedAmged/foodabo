@@ -4,17 +4,24 @@ import CommonLayout from "./CommonLayout";
 import { useRestaurantItemsToTagStore } from "store/UseRestaurantItemsToTagStore";
 import { useTagRestaurantStore } from "store/UseTagRestaurantStore";
 import { toast } from "react-toastify";
+import { useAllRestaurantsToTagStore } from "store/AllResturantInTags";
+import { withRegion } from "functions/withRegionRoute";
+import { useNavigate } from "react-router-dom";
 // import useAllMenuItemsStore from "store/AllMenuItems";
 
 
 const AddNewTag  = () => {
+      const navigate = useNavigate();
     const [selectedRestaurant, setSelectedRestaurant] = useState("");
     const [selectedItem, setSelectedItem] = useState("");
     const [imageFile, setImageFile] = useState<File | null>(null);
 
     const { items, fetchRestaurantItems, isLoading: itemsLoading } = useRestaurantItemsToTagStore();
+    const { restaurants, fetchAllRestaurants } = useAllRestaurantsToTagStore();
     const { tagRestaurant, isLoading: submitting } = useTagRestaurantStore();
-
+    useEffect(() => {
+      fetchAllRestaurants()
+      }, [fetchAllRestaurants]);
     useEffect(() => {
     if (selectedRestaurant) {
         fetchRestaurantItems(selectedRestaurant);
@@ -39,6 +46,7 @@ const AddNewTag  = () => {
         setSelectedRestaurant("");
         setSelectedItem("");
         setImageFile(null);
+        navigate(withRegion('/user-tags'));
     };
   return (
     <CommonLayout>
@@ -76,8 +84,10 @@ const AddNewTag  = () => {
               className="block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 rounded-2xl text-sm font-normal h-11 px-4 py-3"
             >
                <option value="">Select Restaurant</option>
-                <option value="restaurant-1">restaurant</option>
-                <option value="buffalo-burger-12">buffalo burger</option>
+                { restaurants?.map((el)=>(
+                  <option value={el?.slug}>{el?.name}</option>
+                ))
+                }
             </select>
           </FormItem>
           <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>

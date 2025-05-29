@@ -7,7 +7,7 @@ import Badge from "shared/Badge/Badge";
 import LikeSaveBtns from "components/LikeSaveBtns";
 import SectionDateRange from "../SectionDateRange";
 import StayDatesRangeInput from "./StayDatesRangeInput";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Amenities_demos, PHOTOS } from "./constant";
 import { Dialog, Transition } from "@headlessui/react";
 import { ArrowRightIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
@@ -20,6 +20,7 @@ import DetailPagetLayout from "../Layout";
 import GuestsInput from "./GuestsInput";
 import { useSingleRestaurantStore } from "store/SingleResturantStore";
 import { useClaimDealStore } from "store/useClaimDealStore";
+import { withRegion } from "functions/withRegionRoute";
 interface gallerry_interface{
   id?: number;
   img?:string;
@@ -58,6 +59,7 @@ const {
     restaurant,
     items,
     deals,
+    tags,
     loading,
     error,
     getRestaurant,
@@ -68,7 +70,7 @@ const {
       getRestaurant(singleResturant);
     }
   }, [singleResturant, getRestaurant]);
-console.log(deals);
+console.log(tags);
 const { claimDeal, isLoading } = useClaimDealStore();
 
   let [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false);
@@ -104,7 +106,7 @@ const { claimDeal, isLoading } = useClaimDealStore();
 
         {/* 3 */}
         <div className="flex items-center space-x-4">
-          <StartRating />
+          <StartRating point={restaurant?.number_of_tags} reviewCount="Tags"/>
           <span>·</span>
           <span>
             <i className="las la-map-marker-alt"></i>
@@ -163,7 +165,7 @@ const { claimDeal, isLoading } = useClaimDealStore();
     return (
       <div className="listingSection__wrap">
         <div>
-          <h2 className="text-2xl font-semibold">Gallery</h2>
+          <h2 className="text-2xl font-semibold">Gallery Tags</h2>
           <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
             {` About the resturant's Items and services`}
           </span>
@@ -171,9 +173,26 @@ const { claimDeal, isLoading } = useClaimDealStore();
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
         {/* 6 */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm text-neutral-700 dark:text-neutral-300 ">
-          {restaurant?.images?.map((item, index) => (
+          {tags?.map((tag, index) => (
             <div key={index} className="flex items-center space-x-3">
-              <img className="h-auto max-w-full rounded-lg" src={item?.image} alt="" />
+              <div>
+              <img className="h-auto max-w-full rounded-lg" src={tag?.image} alt="" />
+                
+                
+                <div className="flex items-center mt-2">
+                <NavLink to={withRegion(`/show-user/1`)} className={'nav-link'}>
+                  <Avatar imgUrl={tag?.user?.image} hasChecked sizeClass="h-10 w-10" radius="rounded-full" />
+                </NavLink>
+                  <span className="ml-2.5 text-neutral-500 dark:text-neutral-400">
+                    take by{" "}
+                    <span className="text-neutral-900 dark:text-neutral-200 font-medium">
+                      <NavLink to={withRegion(`/show-user/1`)}>
+                      {tag?.user?.name}
+                      </NavLink>
+                    </span>
+                  </span>
+                </div>
+              </div>
             </div>
           ))}
         </div>

@@ -1,170 +1,75 @@
-
-import CardCategoryBox1 from "components/CardCategoryBox1/CardCategoryBox1";
-
 import BgGlassmorphism from "components/BgGlassmorphism/BgGlassmorphism";
-import React, { FC } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { TaxonomyType } from "data/types";
 import { FunnelIcon } from "@heroicons/react/24/outline";
+import { useAllGeneralImageStore } from "store/UseAllGeneralImages";
 
 
 export interface ListingStayPageProps {
     className?: string;
     categoryCardType?: "card1";
-    categories?: TaxonomyType[];
+    // categories?: TaxonomyType[];
     headingCenter?: boolean;
     gridClassName?: string;
 
 }
-interface gallerry_interface{
-    id?: number;
-    img?:string;
-}
-const DEMO_CATS: TaxonomyType[] = [
-{
-    id: "1",
-    href: "#",
-    name: "Burgers",
-    taxonomy: "category",
-    count: 1882,
-    thumbnail:
-    "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-{
-    id: "2",
-    href: "#",
-    name: "Pizza",
-    taxonomy: "category",
-    count: 8288,
-    thumbnail:
-    "https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-{
-    id: "3",
-    href: "#",
-    name: "Shawerma",
-    taxonomy: "category",
-    count: 1288,
-    thumbnail:
-    "https://images.pexels.com/photos/5779368/pexels-photo-5779368.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-{
-    id: "4",
-    href: "#",
-    name: "kabab",
-    taxonomy: "category",
-    count: 112,
-    thumbnail:
-    "https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-{
-    id: "5",
-    href: "#",
-    name: "Burgers",
-    taxonomy: "category",
-    count: 1882,
-    thumbnail:
-        "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-{
-    id: "6",
-    href: "#",
-    name: "Pizza",
-    taxonomy: "category",
-    count: 8288,
-    thumbnail:
-        "https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-{
-    id: "7",
-    href: "#",
-    name: "Shawerma",
-    taxonomy: "category",
-    count: 1288,
-    thumbnail:
-        "https://images.pexels.com/photos/5779368/pexels-photo-5779368.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-{
-    id: "8",
-    href: "#",
-    name: "kabab",
-    taxonomy: "category",
-    count: 112,
-    thumbnail:
-        "https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-},
-];
-const GALLERY_IMAGES: gallerry_interface[] = [
-    {
-        id: 1,
-        img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg'
-    },
-    {
-        id: 2,
-        img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg'
-    },
-    {
-        id: 3,
-        img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg'
-    },
-    {
-        id: 4,
-        img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg'
-    },
-    {
-        id: 5,
-        img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg'
-    },
-    {
-        id: 6,
-        img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg'
-    },
-    {
-        id: 7,
-        img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg'
-    },
-    {
-        id: 8,
-        img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg'
-    },
-]
-const SPONSORED_GALLERY_IMAGES: gallerry_interface[] = [
-    {
-        id: 2,
-        img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg'
-    },
-    {
-        id: 3,
-        img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg'
-    },
-    {
-        id: 4,
-        img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg'
-    },
-    {
-        id: 5,
-        img: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg'
-    },
-   
-]
+
 const ExploreGeneral: FC<ListingStayPageProps> = (
     { 
         className = "" ,
-        categories = DEMO_CATS,
+        // categories ,
         categoryCardType = "card1",
         headingCenter = true,
         gridClassName = "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
     }
 ) => {
-        let CardComponentName = CardCategoryBox1;
-        switch (categoryCardType) {
-        case "card1":
-            CardComponentName = CardCategoryBox1;
-            break;
-    
-        default:
-            CardComponentName = CardCategoryBox1;
+        const {
+        tags,
+        cuisines,
+        restaurants,
+        meta,
+        fetchImages,
+        isLoading,
+    } = useAllGeneralImageStore();
+
+    const [showFilter, setShowFilter] = useState(false);
+    const filterRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+        if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+            setShowFilter(false);
         }
+        };
+
+        if (showFilter) {
+        document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [showFilter]);
+    const [selectedCuisine, setSelectedCuisine] = useState<number | null>(null);
+    const [selectedRestaurant, setSelectedRestaurant] = useState<string | null>(null);
+
+    // fetch page 1 on mount
+    useEffect(() => {
+        fetchImages({ page: 1 });
+    }, [])
+
+    const handleFilterChange = (type: "cuisine" | "restaurant", value: number | string | null) => {
+        if (type === "cuisine") {
+        setSelectedCuisine(value as number | null);
+        } else {
+        setSelectedRestaurant(value as string | null);
+        }
+
+        fetchImages({
+        page: 1,
+        cuisine: type === "cuisine" ? (value as number) : selectedCuisine ?? undefined,
+        restaurant: type === "restaurant" ? (value as string) : selectedRestaurant ?? undefined,
+        });
+    };
   return (
         <div
         className={`nc-ListingStayPage relative overflow-hidden ${className}`}
@@ -175,31 +80,82 @@ const ExploreGeneral: FC<ListingStayPageProps> = (
             </Helmet>
             <BgGlassmorphism />
             <div className="container my-5 px-5 relative overflow-hidden">
-                {/* SECTION HERO */}
-                <div className="grid mb-4 grid-cols-2 gap-4">
-                    <div>
-                        <img className="h-auto w-full rounded-lg" src='https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg' alt="" />
-                    </div>
-                    <div className="grid grid-cols-2  gap-4">
-                        {
-                            SPONSORED_GALLERY_IMAGES?.map((el)=>(
-                        <div>
-                            <img key={el?.id} className="h-auto w-full rounded-lg" src={el?.img} alt="" />
+                {showFilter && (
+                    <div  ref={filterRef} className="absolute top-1/4 right-1/2 translate-x-1/2 bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg shadow-lg p-6 z-50 w-full max-w-md">
+                        <div className="mb-8">
+                            <label htmlFor="filterCuisine" className="block mb-1 text-sm font-semibold" >Filter by Cuisine</label>
+                            <select
+                                id="filterCuisine"
+                                className="w-full p-2 border rounded"
+                                value={selectedCuisine ?? ""}
+                                onChange={(e) =>
+                                handleFilterChange("cuisine", e.target.value ? Number(e.target.value) : null)
+                                }
+                            >
+                                <option value="">All</option>
+                                {cuisines.map((cuisine) => (
+                                <option key={cuisine.id} value={cuisine.id}>
+                                    {cuisine.name}
+                                </option>
+                                ))}
+                            </select>
                         </div>
-                            ))
-                        }
+                        <div>
+                        <label htmlFor="filterResturant" className="block mb-1 text-sm font-semibold">Filter by Restaurant</label>
+                        <select
+                            id="filterResturant"
+                            className="w-full p-2 border rounded"
+                            value={selectedRestaurant ?? ""}
+                            onChange={(e) =>
+                            handleFilterChange("restaurant", e.target.value || null)
+                            }
+                        >
+                            <option value="">All</option>
+                            {restaurants.map((rest) => (
+                            <option key={rest.slug} value={rest.slug}>
+                                {rest.name}
+                            </option>
+                            ))}
+                        </select>
+                        </div>
                     </div>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {
+                )}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {/* {
                         GALLERY_IMAGES?.map((el)=>(
                         <div key={el?.id}>
                             <img className="h-auto max-w-full rounded-lg" src={el?.img} alt=""/>
                         </div>
                         ))
-                    }
+                    } */}
+                    {tags.map((tag) => (
+                        <div key={tag.id} className="h-full w-full">
+                        <img className="h-full w-full rounded-lg object-cover" src={tag.image} alt="tag" />
+                        </div>
+                    ))}
                 </div>
-                <div  className="fixed bottom-16 right-5 bg-gray-600 text-white p-3 rounded-lg opacity-80 shadow-lg z-50 cursor-pointer hover:bg-gray-700">
+                
+                {meta && meta.current_page < meta.last_page && (
+                    <div className="text-center mt-6">
+                        <button
+                        type="button"
+                        className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded"
+                        disabled={isLoading}
+                        onClick={() =>
+                            fetchImages({
+                            page: meta.current_page + 1,
+                            cuisine: selectedCuisine ?? undefined,
+                            restaurant: selectedRestaurant ?? undefined,
+                            })
+                        }
+                        >
+                        {isLoading ? "Loading..." : "Load More"}
+                        </button>
+                    </div>
+                )}
+                <div  className="fixed bottom-16 right-5 bg-gray-600 text-white p-3 rounded-lg opacity-80 shadow-lg z-50 cursor-pointer hover:bg-gray-700"
+                onClick={() => setShowFilter(!showFilter)}
+                >
                     <FunnelIcon aria-hidden="true" className="w-7 h-7"/>
                  </div>
             </div>

@@ -5,22 +5,27 @@ import { useRestaurantItemsToTagStore } from "store/UseRestaurantItemsToTagStore
 import { useTagRestaurantStore } from "store/UseTagRestaurantStore";
 import { toast } from "react-toastify";
 import { useTagRestaurantOrItemForImage } from "store/UseTagResurantOrItemForImage";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAllRestaurantsToTagStore } from "store/AllResturantInTags";
+import { withRegion } from "functions/withRegionRoute";
 // import useAllMenuItemsStore from "store/AllMenuItems";
 
 
 const AddTagForImage  = () => {
-    const {tagID} = useParams()
-    console.log(tagID);
-    
+    const {tagID} = useParams();
+    const navigate = useNavigate();
     const [selectedRestaurant, setSelectedRestaurant] = useState("");
     const [selectedItem, setSelectedItem] = useState("");
-
     const uniqueTagID: any = tagID;
     const { items, fetchRestaurantItems, isLoading: itemsLoading } = useRestaurantItemsToTagStore();
+    const { restaurants, fetchAllRestaurants } = useAllRestaurantsToTagStore();
     const { tagRestaurant, isLoading: submitting } = useTagRestaurantOrItemForImage();
-
+    
     useEffect(() => {
+      fetchAllRestaurants()
+      }, [fetchAllRestaurants]);
+    
+      useEffect(() => {
     if (selectedRestaurant) {
         fetchRestaurantItems(selectedRestaurant);
     }
@@ -28,8 +33,6 @@ const AddTagForImage  = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-    
-    
         const formData = new FormData();
         formData.append("tag", uniqueTagID);
         if (selectedRestaurant) formData.append("restaurant", selectedRestaurant);
@@ -39,6 +42,7 @@ const AddTagForImage  = () => {
 
         setSelectedRestaurant("");
         setSelectedItem("");
+        navigate(withRegion('/user-tags'));
     };
   return (
     <CommonLayout>

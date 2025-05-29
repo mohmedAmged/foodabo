@@ -11,13 +11,14 @@ import { UserTag } from "store/UseUserShotsStore";
 
 export interface TagItemProps {
     data: UserTag
-    removeTag: () => void;
-    deleteShot: () => void;
+    removeTag?: () => void;
+    deleteShot?: () => void;
+    isDashboard: boolean;
   };
 
 
 
-const UserShotCard: FC<TagItemProps> = ({data, removeTag, deleteShot}) => {
+const UserShotCard: FC<TagItemProps> = ({data, removeTag, deleteShot, isDashboard}) => {
   const [loaded, setLoaded] = useState(false);
   const navigate = useNavigate()
   let [isOpenModalAmenities, setIsOpenModalAmenities] = useState(false);
@@ -102,19 +103,21 @@ const UserShotCard: FC<TagItemProps> = ({data, removeTag, deleteShot}) => {
 //     );
 //   };
   return (
-    <div className="bg-white dark:bg-neutral-900 overflow-hidden hover:shadow-xl transition-shadow p-4 relative">
-       { !data?.has_tags &&
+    <div className="bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow p-4 relative">
+       { !data?.has_tags && isDashboard === true &&
         <div className="absolute top-6 right-6 bg-[rgba(0,0,0,0.4)] p-2 rounded-full">
         <PlusCircleIcon
         onClick={()=>(navigate(withRegion(`/user-tags/add-tag-for/${data?.id}`)))} 
          title="Add Tag" aria-hidden="true" className="w-5 h-5 text-white cursor-pointer hover:text-gray-300" />
         </div>
       }
-      <div className="absolute top-6 left-6 bg-[rgba(0,0,0,0.4)] p-2 rounded-full">
+      { isDashboard === true &&
+        <div className="absolute top-6 left-6 bg-[rgba(0,0,0,0.4)] p-2 rounded-full">
         <TrashIcon 
         onClick={deleteShot} 
         title="Delete Shot" aria-hidden="true" className="w-4 h-4 text-white cursor-pointer hover:text-gray-300" />
       </div>
+      }
       <img src={data?.image} 
       alt={`image_${data?.id}`}
        className="w-full h-48 object-cover rounded-t-2xl" />
@@ -134,11 +137,13 @@ const UserShotCard: FC<TagItemProps> = ({data, removeTag, deleteShot}) => {
                 </p>
             </div>
         }
-            <div style={{textAlign:'start'}}>
+            { isDashboard === true &&
+              <div style={{textAlign:'start'}}>
             <ButtonSecondary className="mt-5" onClick={removeTag}>
             Remove Tag
             </ButtonSecondary>
             </div>
+            }
             
       </div>}
       {/* {renderMotalAmenities()} */}

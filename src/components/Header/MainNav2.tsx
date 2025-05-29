@@ -73,8 +73,8 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
 
         <div className="hidden md:flex flex-shrink-0 items-center justify-end flex-1 lg:flex-none text-neutral-700 dark:text-neutral-100">
           <div className="hidden items-center lg:flex space-x-1">
-            <CurrencyDropdown />
-            <LangDropdown />
+            {/* <CurrencyDropdown /> */}
+            {/* <LangDropdown /> */}
             {/* <Link
               to="/add-listing-1"
               className="
