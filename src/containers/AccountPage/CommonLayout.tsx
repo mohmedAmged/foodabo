@@ -28,6 +28,18 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
             </NavLink>
             {loginType !== 'user' &&
               <NavLink
+              to={withRegion('/account-images')}
+              className={({ isActive }) =>
+                `block py-5 md:py-8 border-b-2 flex-shrink-0 ${
+                  !isActive ? "border-transparent" : "border-primary-500"
+                }`
+              }
+            >
+              Resturant Images
+            </NavLink>
+            }
+            {loginType !== 'user' &&
+              <NavLink
               to={withRegion('/account-packages')}
               className={({ isActive }) =>
                 `block py-5 md:py-8 border-b-2 flex-shrink-0 ${

@@ -71,6 +71,8 @@ import AddTagForImage from "containers/AccountPage/AddTagForImage";
 import SingleUserPage from "containers/SingleUserPage/SingleUserPage";
 import CuisineSinglePage from "containers/CuisineSinglePage/CuisineSinglePage";
 import AllDealsPage from "containers/AllDealsPage/AllDealsPage";
+import AccountRestaurantImages from "containers/AccountPage/AccountRestaurantImages";
+import StoreNewRestaurantImage from "containers/AccountPage/StoreNewRestaurantImage";
 
 export const pages = [
   // fodaboo routes
@@ -100,6 +102,8 @@ export const pages = [
   { path: "/account-menu/create-category", component: CreateMenuCategory },
   { path: "/account-menu/edit-category/:categID", component: CreateMenuCategory },
   { path: "/account-deals", component: AccountDeals },
+  { path: "/account-images", component: AccountRestaurantImages },
+  { path: "/account-images/store-new-image", component: StoreNewRestaurantImage },
   { path: "/account-packages", component: AccountPackages },
   { path: "/pay-failed", component: PayFailed },
   { path: "/verify-account", component: VerifyUserAccount },
