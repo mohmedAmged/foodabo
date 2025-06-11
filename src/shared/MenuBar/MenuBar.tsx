@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect } from "react";
 import { Transition, Dialog } from "@headlessui/react";
 import NavMobile from "shared/Navigation/NavMobile";
 import { useLocation } from "react-router-dom";
+import FoodaboNavMobile from "shared/Navigation/FoodaboNavMobile";
 
 export interface MenuBarProps {
   className?: string;
@@ -53,7 +54,9 @@ const MenuBar: React.FC<MenuBarProps> = ({
                 leaveTo="opacity-0 translate-x-56"
               >
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden transition-all ">
-                  <NavMobile onClickClose={handleCloseMenu} />
+                  {/* <NavMobile onClickClose={handleCloseMenu} /> */}
+                  <FoodaboNavMobile onClickClose={handleCloseMenu} />
+
                 </Dialog.Panel>
               </Transition.Child>
             </div>

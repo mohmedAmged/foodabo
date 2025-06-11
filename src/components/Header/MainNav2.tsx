@@ -67,9 +67,9 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
           </div>
         </div>
 
-        <div className="lg:hidden flex-[3] max-w-lg !mx-auto md:px-3">
+        {/* <div className="lg:hidden flex-[3] max-w-lg !mx-auto md:px-3">
           <HeroSearchForm2MobileFactory />
-        </div>
+        </div> */}
 
         <div className="hidden md:flex flex-shrink-0 items-center justify-end flex-1 lg:flex-none text-neutral-700 dark:text-neutral-100">
           <div className="hidden items-center lg:flex space-x-1">
@@ -83,6 +83,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
             >
               List your property
             </Link> */}
+            <SwitchDarkMode />
             {token ? (
               <button
                 type="button"
@@ -100,15 +101,19 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
               </Link>
             )}
             <div></div>
-            <SwitchDarkMode />
-            <div className="pr-1.5">
+            {/* <SwitchDarkMode /> */}
+            {/* <div className="pr-1.5">
               <NotifyDropdown className="-ml-2 xl:-ml-1" />
-            </div>
-            <AvatarDropdown loginType={loginType} token={token} currentRestaurantData={currResturantData}/>
+            </div> */}
+            { loginType &&
+              <AvatarDropdown loginType={loginType} token={token} currentRestaurantData={currResturantData}/>
+            }
           </div>
           <div className="flex items-center space-x-2 lg:hidden">
-            <NotifyDropdown />
-            <AvatarDropdown loginType={loginType} token={token} currentRestaurantData={currResturantData}/>
+            {/* <NotifyDropdown /> */}
+            { loginType &&
+              <AvatarDropdown loginType={loginType} token={token} currentRestaurantData={currResturantData}/>
+            }
             <MenuBar />
           </div>
         </div>

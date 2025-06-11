@@ -3,6 +3,7 @@ import {
   MagnifyingGlassIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
+import Cookies from "js-cookie";
 import React, { useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { PathName } from "routers/types";
@@ -16,11 +17,14 @@ interface NavItem {
   link?: PathName;
   icon: any;
 }
-
+    const loginType = Cookies.get("loginType");
+    const token = Cookies.get("auth_token");
+    const logInData: any =  Cookies.get("logInData");
+      const currLogInData = JSON.parse(logInData || '{}')
 const NAV: NavItem[] = [
   {
     name: "Explore",
-    link: "/",
+    link: "/explore",
     icon: MagnifyingGlassIcon,
   },
   {
@@ -28,11 +32,11 @@ const NAV: NavItem[] = [
     link: "/account-savelists",
     icon: HeartIcon,
   },
-  {
-    name: "Log in",
-    link: "/account",
-    icon: UserCircleIcon,
-  },
+  // {
+  //   name: "Log in",
+  //   link: "/account",
+  //   icon: UserCircleIcon,
+  // },
   {
     name: "Menu",
     icon: MenuBar,

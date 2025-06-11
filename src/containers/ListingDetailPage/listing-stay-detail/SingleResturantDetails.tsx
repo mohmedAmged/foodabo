@@ -646,16 +646,16 @@ const { claimDeal, isLoading } = useClaimDealStore();
           {
             deals?.map((deal)=>(
             <div key={deal?.id} className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl p-4">
-                <div className="flex justify-between items-center">
-                <span className="text-xl font-semibold">{deal?.deal_type_translated} for {deal?.discount_value}</span>
-                { loginType === 'user' &&
-                  <button
-                  type="button"
-                  onClick={() => claimDeal(`${deal?.id}`)}
-                  className="bg-primary-6000 text-white px-4 py-2 rounded-lg"
-                >
-                  Claim
-                 </button>}
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                  <span className="text-xl font-semibold">{deal?.deal_type_translated} for {deal?.discount_value}</span>
+                  { loginType === 'user' &&
+                    <button
+                    type="button"
+                    onClick={() => claimDeal(`${deal?.id}`)}
+                    className="bg-primary-6000 text-white px-4 py-2 sm:px-2 rounded-lg"
+                  >
+                    Claim
+                  </button>}
                 </div>
                 <span className="text-neutral-6000 dark:text-neutral-300">you can use in {deal?.used_in} (view terms)</span>
             </div>
@@ -754,7 +754,7 @@ const { claimDeal, isLoading } = useClaimDealStore();
         </div>
 
         {/* SIDEBAR */}
-        <div className="hidden lg:block flex-grow mt-8 lg:mt-0 xl:w-3/5">
+        <div className=" lg:block flex-grow mt-8 lg:mt-0 xl:w-3/5">
           <div className="sticky top-28">{renderSidebar()}</div>
         </div>
       </main>
